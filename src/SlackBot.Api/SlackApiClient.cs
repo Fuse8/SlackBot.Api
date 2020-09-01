@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 
 namespace SlackBot.Api
@@ -11,6 +12,7 @@ namespace SlackBot.Api
 
         public SlackApiClient(HttpClient httpClient)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             _httpClient = httpClient;
         }
 
