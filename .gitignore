@@ -358,3 +358,6 @@ MigrationBackup/
 
 # Assets
 dist/
+
+# Custom rules
+src/SlackBot.Samples/appsettings.Development.json
