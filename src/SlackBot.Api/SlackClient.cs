@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Models;
@@ -33,13 +34,27 @@ namespace SlackBot.Api
 
             return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
         }
+        
+        public Task<UploadFileResponse> UploadFile(UploadFile message)
+        {
+            var multipartFormDataContent = new MultipartFormDataContent();
+            if (message.File != default)
+            {
+                var content = new StreamContent(message.File);
+                multipartFormDataContent.Add(content, "file", message.File.Name);
+            }
+
+            var queryParams = GetQueryParams(message);
+            var filesUploadUrl = $"files.upload{(string.IsNullOrWhiteSpace(queryParams) ? string.Empty : $"?{queryParams}")}";
+            return SendPostAsync<UploadFileResponse>(filesUploadUrl, multipartFormDataContent);
+        }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        
+
         private async Task<TResponse> SendPostAsync<TResponse>(string path, HttpContent content)
             where TResponse : SlackResponseBase
         {
@@ -49,7 +64,7 @@ namespace SlackBot.Api
             
             return slackApiResponse;
         }
-        
+
         private TResponse ParseResponse<TResponse>(string responseContent)
             where TResponse : SlackResponseBase
         {
@@ -61,7 +76,7 @@ namespace SlackBot.Api
 
             return slackApiResponse;
         }
-        
+
         private StringContent GetStringContent<TRequest>(TRequest request)
             where TRequest : class
         {
@@ -70,14 +85,12 @@ namespace SlackBot.Api
             
             return jsonContent;
         }
-        
-        private FormUrlEncodedContent GetFormContent<TRequest>(TRequest request)
-            where TRequest : class
+
+        private string GetQueryParams<TRequest>(TRequest request)
         {
-            var dataDictionary = ConvertToDictionary(request);
-            var content = new FormUrlEncodedContent(dataDictionary);
-            
-            return content;
+            var formContent = GetJsonPropertyValues(request).Select(p => $"{p.JsonPropertyName}={p.PropertyValue}");
+            var queryParams = string.Join("&", formContent);
+            return queryParams;
         }
 
         private HttpClient InitHttpClient(string token)
@@ -88,12 +101,25 @@ namespace SlackBot.Api
 
             return httpClient;
         }
-        
-        private Dictionary<string, string> ConvertToDictionary<T>(T model)
-            => model.GetType()
+
+        private IEnumerable<(string JsonPropertyName, string PropertyValue)> GetJsonPropertyValues<T>(T model) =>
+            model.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .ToDictionary(property => property.Name, property => property.GetValue(model)?.ToString());
-        
+                .Select(
+                    propertyInfo =>
+                        new
+                        {
+                            JsonPropertyName = propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name,
+                            PropertyInfo = propertyInfo
+                        })
+                .Where(p => p.JsonPropertyName != null)
+                .Select(
+                    property => (
+                        JsonPropertyName: property.JsonPropertyName,
+                        PropertyValue: property.PropertyInfo.GetValue(model)?.ToString()
+                    ))
+                .Where(p => p.PropertyValue != null);
+
 
         private void Dispose(bool disposing)
         {

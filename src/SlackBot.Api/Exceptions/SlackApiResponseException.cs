@@ -4,7 +4,7 @@ using SlackBot.Api.Models;
 
 namespace SlackBot.Api.Exceptions
 {
-    public class SlackApiResponseException: ApplicationException
+    public class SlackApiResponseException : ApplicationException
     {
         public SlackApiResponseException(string errorResponseString)
             : base($"Incorrect Slack API request: {errorResponseString}")
