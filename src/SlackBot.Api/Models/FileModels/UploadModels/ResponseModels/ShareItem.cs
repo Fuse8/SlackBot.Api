@@ -1,11 +1,11 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SlackBot.Api.Models
+namespace SlackBot.Api.Models.FileModels.UploadModels.ResponseModels
 {
-    public class SharesItem
+    public class ShareItem
     {
         [JsonPropertyName("reply_users")]
-        public object[] ReplyUsers { get; set; }
+        public string[] ReplyUsers { get; set; }
 
         [JsonPropertyName("reply_users_count")]
         public long ReplyUsersCount { get; set; }
@@ -24,5 +24,8 @@ namespace SlackBot.Api.Models
 
         [JsonPropertyName("share_user_id")]
         public string ShareUserId { get; set; }
+
+        [JsonPropertyName("latest_reply")]
+        public string LatestReply { get; set; }
     }
 }

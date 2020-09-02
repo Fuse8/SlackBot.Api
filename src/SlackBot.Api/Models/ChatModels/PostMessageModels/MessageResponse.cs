@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SlackBot.Api.Models
+namespace SlackBot.Api.Models.ChatModels.PostMessageModels
 {
     public class MessageResponse : SlackResponseBase
     {

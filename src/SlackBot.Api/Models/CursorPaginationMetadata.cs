@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api.Models
 {
-	public class ResponseMetadata
+	public class CursorPaginationMetadata
 	{		
 		[JsonPropertyName("next_cursor")]
 		public string NextCursor { get; set; }

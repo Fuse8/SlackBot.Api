@@ -2,7 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
-using SlackBot.Api.Models;
+using SlackBot.Api.Models.ChatModels.PostMessageModels;
+using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
+using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.RequestModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
@@ -18,55 +22,66 @@ namespace SlackBot.Samples
 			var slackBotSettings = configuration.GetSection<SlackBotSettings>("SlackBotSettings");
 
 			var slackClient = new SlackClient(slackBotSettings.Token);
+            
+            //var postMessageResponse = await PostMessage(slackClient);
+            
+            // Upload plain file content 
+            var uploadContentResponse = await UploadContent(slackClient);
+            
+            // Upload file from disk 
+            var uploadFileResponse = await UploadFile(slackClient);
+            
+            // Gets list of bot channels
+            var userConversationsResponse = await GetUserConversations(slackClient);
+        }
 
-			// Post message
-			/* * /
+        private static Task<MessageResponse> PostMessage(SlackClient slackClient)
+        {
 			var message = new Message
 			{
 				Channel = Channel,
 				Text = "some message"
 			};
-			var postMessage = await slackClient.PostMessage(message);
-			/**/
+            return slackClient.PostMessage(message);
+        }
+        
+        private static async Task<UploadFileResponse> UploadContent(SlackClient slackClient)
+        {
+	        var content = await File.ReadAllTextAsync("./appsettings.json");
+            var contentMessage = new ContentToUpload
+            {
+                Comment = "Upload content",
+                Title = "Title",
+                Channels = "slack-bot-api-test",
+                Content = content,
+                Filename = "appsettings.json",
+                FileType = "javascript"
+            };
 
-			// Upload plain file content 
-			/*	* /
-			var content = await File.ReadAllTextAsync("./appsettings.json");
+            return await slackClient.UploadContent(contentMessage);
+        }
+        
+        private static async Task<UploadFileResponse> UploadFile(SlackClient slackClient)
+        {
+	        await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
+            var fileMessage = new FileToUpload
+            {
+                Channels = "slack-bot-api-test",
+                FileStream = fileStream,
+            };
 
-			var plainText = new UploadFile
-			{
-				Channels = Channel,
-				Content = content
-			};
-
-			var fileResponse = await slackClient.UploadFile(plainText);
-			/**/
-
-			// Upload file from disk 
-			/* * /
-			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
-
-			var uploadFile = new UploadFile
-			{
-				Channels = Channel,
-				File = fileStream,
-				Filename = "settings.json"
-			};
-
-			var fileResponse = await slackClient.UploadFile(uploadFile);
-			/**/
-			
-			// Gets list of bot channels  
-			/* */
-
-			var userConversations = new UserConversations
-			{
-				Types = "public_channel,private_channel,mpim,im"
-			};
-
-			var conversationList = await slackClient.UserConversations(userConversations);
-			/**/
+            return await slackClient.UploadFile(fileMessage);
 		}
+        
+        private static Task<ConversationResponse> GetUserConversations(SlackClient slackClient)
+        {
+	        var userConversations = new UserConversations
+	        {
+		        Types = "public_channel,private_channel,mpim,im"
+	        };
+
+	        return slackClient.UserConversations(userConversations);
+        }
 
 		private static IConfiguration GetConfiguration() =>
 			new ConfigurationBuilder()

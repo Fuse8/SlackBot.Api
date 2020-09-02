@@ -7,10 +7,15 @@ using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using SlackBot.Api.Attributes;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Models;
+using SlackBot.Api.Models.ChatModels.PostMessageModels;
+using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
+using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.RequestModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels;
 
 namespace SlackBot.Api
 {
@@ -28,9 +33,37 @@ namespace SlackBot.Api
             _jsonSerializerOptions = new JsonSerializerOptions { IgnoreNullValues = true };
         }
 
+        public Task<UploadFileResponse> UploadContent(ContentToUpload contentToUpload)
+        {
+            var stringContent = GetFormContent(contentToUpload);
+
+            return SendPostAsync<UploadFileResponse>("files.upload", stringContent);
+        }
+        
+        public Task<UploadFileResponse> UploadFile(FileToUpload fileToUpload)
+        {
+            var multipartContent = new MultipartFormDataContent
+            {
+                { new StreamContent(fileToUpload.FileStream), "file", fileToUpload.FileStream.Name } //TODO get name "file" from attribute of property FileMessage.file
+            };
+
+            var dataDictionary = ConvertToDictionary(fileToUpload, nameof(FileToUpload.FileStream), nameof(FileToUpload.Filename));
+            foreach (var propertyData in dataDictionary)
+            {
+                var dataValue = propertyData.Value;
+                if (dataValue != null)
+                {
+                    multipartContent.Add(new StringContent(dataValue), propertyData.Key);
+                }
+            }
+
+            return SendPostAsync<UploadFileResponse>("files.upload", multipartContent);
+        }
+        
+
         public Task<MessageResponse> PostMessage(Message message)
         {
-            var stringContent = GetStringContent(message);
+            var stringContent = GetFormContent(message);
 
             return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
         }
@@ -38,20 +71,6 @@ namespace SlackBot.Api
         public Task<ConversationResponse> UserConversations(UserConversations message)
         {
             return SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
-        }
-        
-        public Task<UploadFileResponse> UploadFile(UploadFile message)
-        {
-            var multipartFormDataContent = new MultipartFormDataContent();
-            if (message.File != default)
-            {
-                var content = new StreamContent(message.File);
-                multipartFormDataContent.Add(content, "file", message.File.Name);
-            }
-
-            var queryParams = GetQueryParams(message);
-            var filesUploadUrl = $"files.upload{(string.IsNullOrWhiteSpace(queryParams) ? string.Empty : $"?{queryParams}")}";
-            return SendPostAsync<UploadFileResponse>(filesUploadUrl, multipartFormDataContent);
         }
 
         public void Dispose()
@@ -100,22 +119,44 @@ namespace SlackBot.Api
             return slackApiResponse;
         }
 
-        private StringContent GetStringContent<TRequest>(TRequest request)
+        private IEnumerable<(string PropertyName, string PropertyValue)> GetFormPropertyValues<T>(T model) => //TODO возможно унести в хелпер
+            model.GetType()
+                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Select(
+                    propertyInfo =>
+                    (
+                        PropertyName: propertyInfo.GetCustomAttribute<FormPropertyNameAttribute>()?.Name ?? propertyInfo.Name,
+                        PropertyValue: propertyInfo.GetValue(model)?.ToString()
+                    ))
+                .Where(p => p.PropertyValue != null);
+
+
+        private StringContent GetJsonStringContent<TRequest>(TRequest request)
             where TRequest : class
         {
             var json = JsonSerializer.Serialize(request, _jsonSerializerOptions);
-            var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
             
-            return jsonContent;
+            return stringContent;
+        }
+        
+        private FormUrlEncodedContent GetFormContent<TRequest>(TRequest request)
+            where TRequest : class
+        {
+            var dataDictionary = ConvertToDictionary(request);
+            var formUrlEncodedContent = new FormUrlEncodedContent(dataDictionary);
+            
+            return formUrlEncodedContent;
         }
 
         private string GetQueryParams<TRequest>(TRequest request)
         {
-            var formContent = GetJsonPropertyValues(request).Select(p => $"{p.JsonPropertyName}={p.PropertyValue}");
+            var formContent = GetFormPropertyValues(request).Select(p => $"{p.PropertyName}={p.PropertyValue}");
             var queryParams = string.Join("&", formContent);
+            
             return queryParams;
         }
-
+        
         private HttpClient InitHttpClient(string token)
         {
             var httpClientHandler = new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }; 
@@ -125,24 +166,11 @@ namespace SlackBot.Api
             return httpClient;
         }
 
-        private IEnumerable<(string JsonPropertyName, string PropertyValue)> GetJsonPropertyValues<T>(T model) =>
-            model.GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Select(
-                    propertyInfo =>
-                        new
-                        {
-                            JsonPropertyName = propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name,
-                            PropertyInfo = propertyInfo
-                        })
-                .Where(p => p.JsonPropertyName != null)
-                .Select(
-                    property => (
-                        JsonPropertyName: property.JsonPropertyName,
-                        PropertyValue: property.PropertyInfo.GetValue(model)?.ToString()
-                    ))
-                .Where(p => p.PropertyValue != null);
-
+        private Dictionary<string, string> ConvertToDictionary<T>(T model, params string[] excludedProperties)
+            => GetFormPropertyValues(model)
+                .Where(property => !excludedProperties.Contains(property.PropertyName))
+                .ToDictionary(property => property.PropertyName, propertyInfo => propertyInfo.PropertyValue);
+        
 
         private void Dispose(bool disposing)
         {
