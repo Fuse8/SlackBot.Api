@@ -35,6 +35,11 @@ namespace SlackBot.Api
             return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
         }
         
+        public Task<ConversationResponse> UserConversations(UserConversations message)
+        {
+            return SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
+        }
+        
         public Task<UploadFileResponse> UploadFile(UploadFile message)
         {
             var multipartFormDataContent = new MultipartFormDataContent();
@@ -59,6 +64,24 @@ namespace SlackBot.Api
             where TResponse : SlackResponseBase
         {
             var response = await _httpClient.PostAsync(new Uri(BaseApiUri, path), content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var slackApiResponse = ParseResponse<TResponse>(responseContent);
+            
+            return slackApiResponse;
+        }  
+        
+        private Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
+            where TResponse : SlackResponseBase
+        {
+            var queryParams = GetQueryParams(request);
+
+            return SendGetAsync<TResponse>($"{path}?{queryParams}");
+        }
+        
+        private async Task<TResponse> SendGetAsync<TResponse>(string path)
+            where TResponse : SlackResponseBase
+        {
+            var response = await _httpClient.GetAsync(new Uri(BaseApiUri, path));
             var responseContent = await response.Content.ReadAsStringAsync();
             var slackApiResponse = ParseResponse<TResponse>(responseContent);
             

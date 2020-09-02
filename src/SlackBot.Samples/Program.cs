@@ -20,7 +20,7 @@ namespace SlackBot.Samples
 			var slackClient = new SlackClient(slackBotSettings.Token);
 
 			// Post message
-			/* */
+			/* * /
 			var message = new Message
 			{
 				Channel = Channel,
@@ -54,6 +54,17 @@ namespace SlackBot.Samples
 			};
 
 			var fileResponse = await slackClient.UploadFile(uploadFile);
+			/**/
+			
+			// Gets list of bot channels  
+			/* */
+
+			var userConversations = new UserConversations
+			{
+				Types = "public_channel,private_channel,mpim,im"
+			};
+
+			var conversationList = await slackClient.UserConversations(userConversations);
 			/**/
 		}
 
