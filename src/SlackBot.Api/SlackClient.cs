@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,6 +11,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Models;
+using SlackBot.Api.Models.UploadFile.RequestModels;
+using SlackBot.Api.Models.UploadFile.ResponseModels;
 
 namespace SlackBot.Api
 {
@@ -27,11 +30,39 @@ namespace SlackBot.Api
             _jsonSerializerOptions = new JsonSerializerOptions { IgnoreNullValues = true };
         }
 
+        public Task<UploadFileResponse> UploadContent(ContentMessage contentMessage)
+        {
+            var stringContent = GetFormContent(contentMessage);
+
+            return SendPostAsync<UploadFileResponse>("files.upload", stringContent);
+        }
+        
+        public Task<UploadFileResponse> UploadFile(FileMessage fileMessageMessage)
+        {
+            var multipartContent = new MultipartFormDataContent
+            {
+                { new StreamContent(fileMessageMessage.file), "file", fileMessageMessage.filename } //TODO get name "file" from attribute of property FileMessage.file
+            };
+
+            var dataDictionary = ConvertToDictionary(fileMessageMessage, nameof(FileMessage.file), nameof(FileMessage.filename));
+            foreach (var propertyData in dataDictionary)
+            {
+                var dataValue = propertyData.Value;
+                if (dataValue != null)
+                {
+                    multipartContent.Add(new StringContent(dataValue), propertyData.Key);
+                }
+            }
+
+            return SendPostAsync<UploadFileResponse>("files.upload", multipartContent); //TODO сделать константы для урлов
+        }
+        
+
         public Task<MessageResponse> PostMessage(Message message)
         {
-            var stringContent = GetStringContent(message);
+            var stringContent = GetFormContent(message);
 
-            return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
+            return SendPostAsync<MessageResponse>("files.upload", stringContent);
         }
 
         public void Dispose()
@@ -66,20 +97,20 @@ namespace SlackBot.Api
             where TRequest : class
         {
             var json = JsonSerializer.Serialize(request, _jsonSerializerOptions);
-            var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
+            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
             
-            return jsonContent;
+            return stringContent;
         }
         
         private FormUrlEncodedContent GetFormContent<TRequest>(TRequest request)
             where TRequest : class
         {
             var dataDictionary = ConvertToDictionary(request);
-            var content = new FormUrlEncodedContent(dataDictionary);
+            var formUrlEncodedContent = new FormUrlEncodedContent(dataDictionary);
             
-            return content;
+            return formUrlEncodedContent;
         }
-
+        
         private HttpClient InitHttpClient(string token)
         {
             var httpClientHandler = new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }; 
@@ -89,10 +120,11 @@ namespace SlackBot.Api
             return httpClient;
         }
         
-        private Dictionary<string, string> ConvertToDictionary<T>(T model)
+        private Dictionary<string, string> ConvertToDictionary<T>(T model, params string[] excludedProperties)
             => model.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .ToDictionary(property => property.Name, property => property.GetValue(model)?.ToString());
+                .Where(propertyInfo => !excludedProperties.Contains(propertyInfo.Name))
+                .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(model)?.ToString());
         
 
         private void Dispose(bool disposing)
