@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace SlackBot.Api.Models
+namespace SlackBot.Api.Models.UploadFileModels.ResponseModels
 {
 	public class SlackFile
 	{
@@ -9,7 +9,7 @@ namespace SlackBot.Api.Models
 		public string Id { get; set; }
 
 		[JsonPropertyName("created")]
-		public long Created { get; set; }
+		public long Created { get; set; } //TODO может добавть ко всем датам приставку "Unix" или "Timestamp" 
 
 		[JsonPropertyName("timestamp")]
 		public long Timestamp { get; set; }
@@ -21,22 +21,22 @@ namespace SlackBot.Api.Models
 		public string Title { get; set; }
 
 		[JsonPropertyName("mimetype")]
-		public string Mimetype { get; set; }
+		public string MimeType { get; set; }
 
 		[JsonPropertyName("filetype")]
-		public string Filetype { get; set; }
+		public string FileType { get; set; }
 
 		[JsonPropertyName("pretty_type")]
 		public string PrettyType { get; set; }
 
 		[JsonPropertyName("user")]
-		public string User { get; set; }
+		public string UserId { get; set; }
 
 		[JsonPropertyName("editable")]
 		public bool Editable { get; set; }
 
 		[JsonPropertyName("size")]
-		public long Size { get; set; }
+		public long SizeBytes { get; set; }
 
 		[JsonPropertyName("mode")]
 		public string Mode { get; set; }
@@ -105,7 +105,7 @@ namespace SlackBot.Api.Models
 		public string[] Groups { get; set; }
 
 		[JsonPropertyName("ims")]
-		public string[] Ims { get; set; }
+		public string[] IMChannels { get; set; }
 
 		[JsonPropertyName("has_rich_preview")]
 		public bool HasRichPreview { get; set; }
