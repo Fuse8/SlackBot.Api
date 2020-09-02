@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using SlackBot.Api.Attributes;
 using SlackBot.Api.Exceptions;
+using SlackBot.Api.Helpers;
 using SlackBot.Api.Models;
 using SlackBot.Api.Models.ChatModels.PostMessageModels;
 using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
@@ -42,12 +41,15 @@ namespace SlackBot.Api
         
         public Task<UploadFileResponse> UploadFile(FileToUpload fileToUpload)
         {
+            var nameOfFileStreamProperty = nameof(FileToUpload.FileStream);
+            var fileFormPropertyName = FormPropertyHelper.GetFormPropertyName<FileToUpload>(nameOfFileStreamProperty);
+            
             var multipartContent = new MultipartFormDataContent
             {
-                { new StreamContent(fileToUpload.FileStream), "file", fileToUpload.FileStream.Name } //TODO get name "file" from attribute of property FileMessage.file
+                { new StreamContent(fileToUpload.FileStream), fileFormPropertyName, fileToUpload.FileStream.Name }
             };
 
-            var dataDictionary = ConvertToDictionary(fileToUpload, nameof(FileToUpload.FileStream), nameof(FileToUpload.Filename));
+            var dataDictionary = ConvertToDictionary(fileToUpload, nameOfFileStreamProperty);
             foreach (var propertyData in dataDictionary)
             {
                 var dataValue = propertyData.Value;
@@ -119,18 +121,6 @@ namespace SlackBot.Api
             return slackApiResponse;
         }
 
-        private IEnumerable<(string PropertyName, string PropertyValue)> GetFormPropertyValues<T>(T model) => //TODO возможно унести в хелпер
-            model.GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Select(
-                    propertyInfo =>
-                    (
-                        PropertyName: propertyInfo.GetCustomAttribute<FormPropertyNameAttribute>()?.Name ?? propertyInfo.Name,
-                        PropertyValue: propertyInfo.GetValue(model)?.ToString()
-                    ))
-                .Where(p => p.PropertyValue != null);
-
-
         private StringContent GetJsonStringContent<TRequest>(TRequest request)
             where TRequest : class
         {
@@ -151,7 +141,7 @@ namespace SlackBot.Api
 
         private string GetQueryParams<TRequest>(TRequest request)
         {
-            var formContent = GetFormPropertyValues(request).Select(p => $"{p.PropertyName}={p.PropertyValue}");
+            var formContent = FormPropertyHelper.GetFormProperties(request).Select(p => $"{p.PropertyName}={p.PropertyValue}");
             var queryParams = string.Join("&", formContent);
             
             return queryParams;
@@ -167,7 +157,7 @@ namespace SlackBot.Api
         }
 
         private Dictionary<string, string> ConvertToDictionary<T>(T model, params string[] excludedProperties)
-            => GetFormPropertyValues(model)
+            => FormPropertyHelper.GetFormProperties(model)
                 .Where(property => !excludedProperties.Contains(property.PropertyName))
                 .ToDictionary(property => property.PropertyName, propertyInfo => propertyInfo.PropertyValue);
         
