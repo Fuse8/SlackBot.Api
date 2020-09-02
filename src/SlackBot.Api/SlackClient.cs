@@ -12,6 +12,7 @@ using SlackBot.Api.Attributes;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Models;
 using SlackBot.Api.Models.ChatModels.PostMessageModels;
+using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel;
 using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
 using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
 using SlackBot.Api.Models.UserModels.ConversationModels.RequestModels;

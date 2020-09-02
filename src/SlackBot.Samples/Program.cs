@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Models.ChatModels.PostMessageModels;
+using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel;
 using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
 using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
 using SlackBot.Api.Models.UserModels.ConversationModels.RequestModels;
