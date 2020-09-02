@@ -1,11 +1,9 @@
-﻿using System;
+﻿using System.IO;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using SlackBot.Api;
 using SlackBot.Api.Models;
-using Microsoft.Extensions.Hosting;
 using SlackBot.Api.Models.UploadFile.RequestModels;
 using SlackBot.Api.Models.UploadFile.ResponseModels;
 using SlackBot.Samples.Configurations;
@@ -13,21 +11,16 @@ using SlackBot.Samples.Extensions;
 
 namespace SlackBot.Samples
 {
-    public class Program
-    {
-        const string EnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
-        
-        public static async Task Main(string[] args)
-        {
-            var host = BuildHost(args);
-            
-            using var scope = host.Services.CreateScope();
-            var serviceProvider = scope.ServiceProvider;
-            
-            var configuration = serviceProvider.GetService<IConfiguration>();
-            var slackBotSettings = configuration.GetSection<SlackBotSettings>("SlackBotSettings");
+	public class Program
+	{
+		private const string Channel = "slack-bot-api-test";
 
-            var slackClient = new SlackClient(slackBotSettings.Token);
+		public static async Task Main(string[] args)
+		{
+			var configuration = GetConfiguration();
+			var slackBotSettings = configuration.GetSection<SlackBotSettings>("SlackBotSettings");
+
+			var slackClient = new SlackClient(slackBotSettings.Token);
             
             //var postMessageResponse = await PostMessage(slackClient);
             
@@ -38,12 +31,11 @@ namespace SlackBot.Samples
 
         private static Task<MessageResponse> PostMessage(SlackClient slackClient)
         {
-            var message = new Message
-            {
-                Channel = "slack-bot-api-test",
-                Text = "some message"
-            };
-
+			var message = new Message
+			{
+				Channel = Channel,
+				Text = "some message"
+			};
             return slackClient.PostMessage(message);
         }
         
@@ -75,22 +67,50 @@ namespace SlackBot.Samples
             };
 
             return slackClient.UploadFile(fileMessage);
-        }
 
-        private static IHost BuildHost(string[] args)
-        {
-            var hostBuilder = Host.CreateDefaultBuilder(args);
+			// Upload plain file content 
+			/*	* /
+			var content = await File.ReadAllTextAsync("./appsettings.json");
 
-            var environment = ParseEnvironment();
-            if (!string.IsNullOrEmpty(environment))
-            {
-                hostBuilder.UseEnvironment(environment);
-            }
-            
-            return hostBuilder.Build();
-        }
+			var plainText = new UploadFile
+			{
+				Channels = Channel,
+				Content = content
+			};
 
-        private static string ParseEnvironment() 
-            => Environment.GetEnvironmentVariable(EnvironmentVariableName);
-    }
+			var fileResponse = await slackClient.UploadFile(plainText);
+			/**/
+
+			// Upload file from disk 
+			/* * /
+			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
+
+			var uploadFile = new UploadFile
+			{
+				Channels = Channel,
+				File = fileStream,
+				Filename = "settings.json"
+			};
+
+			var fileResponse = await slackClient.UploadFile(uploadFile);
+			/**/
+			
+			// Gets list of bot channels  
+			/* */
+
+			var userConversations = new UserConversations
+			{
+				Types = "public_channel,private_channel,mpim,im"
+			};
+
+			var conversationList = await slackClient.UserConversations(userConversations);
+			/**/
+		}
+
+		private static IConfiguration GetConfiguration() =>
+			new ConfigurationBuilder()
+				.AddJsonFile("appsettings.json")
+				.AddJsonFile("appsettings.Development.json", optional: true)
+				.Build();
+	}
 }

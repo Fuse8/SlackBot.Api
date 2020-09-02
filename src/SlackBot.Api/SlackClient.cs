@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Models;
@@ -64,13 +65,32 @@ namespace SlackBot.Api
 
             return SendPostAsync<MessageResponse>("files.upload", stringContent);
         }
+        
+        public Task<ConversationResponse> UserConversations(UserConversations message)
+        {
+            return SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
+        }
+        
+        public Task<UploadFileResponse> UploadFile(UploadFile message)
+        {
+            var multipartFormDataContent = new MultipartFormDataContent();
+            if (message.File != default)
+            {
+                var content = new StreamContent(message.File);
+                multipartFormDataContent.Add(content, "file", message.File.Name);
+            }
+
+            var queryParams = GetQueryParams(message);
+            var filesUploadUrl = $"files.upload{(string.IsNullOrWhiteSpace(queryParams) ? string.Empty : $"?{queryParams}")}";
+            return SendPostAsync<UploadFileResponse>(filesUploadUrl, multipartFormDataContent);
+        }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        
+
         private async Task<TResponse> SendPostAsync<TResponse>(string path, HttpContent content)
             where TResponse : SlackResponseBase
         {
@@ -79,8 +99,26 @@ namespace SlackBot.Api
             var slackApiResponse = ParseResponse<TResponse>(responseContent);
             
             return slackApiResponse;
+        }  
+        
+        private Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
+            where TResponse : SlackResponseBase
+        {
+            var queryParams = GetQueryParams(request);
+
+            return SendGetAsync<TResponse>($"{path}?{queryParams}");
         }
         
+        private async Task<TResponse> SendGetAsync<TResponse>(string path)
+            where TResponse : SlackResponseBase
+        {
+            var response = await _httpClient.GetAsync(new Uri(BaseApiUri, path));
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var slackApiResponse = ParseResponse<TResponse>(responseContent);
+            
+            return slackApiResponse;
+        }
+
         private TResponse ParseResponse<TResponse>(string responseContent)
             where TResponse : SlackResponseBase
         {
@@ -92,7 +130,7 @@ namespace SlackBot.Api
 
             return slackApiResponse;
         }
-        
+
         private StringContent GetStringContent<TRequest>(TRequest request)
             where TRequest : class
         {
@@ -101,9 +139,8 @@ namespace SlackBot.Api
             
             return stringContent;
         }
-        
-        private FormUrlEncodedContent GetFormContent<TRequest>(TRequest request)
-            where TRequest : class
+
+        private string GetQueryParams<TRequest>(TRequest request)
         {
             var dataDictionary = ConvertToDictionary(request);
             var formUrlEncodedContent = new FormUrlEncodedContent(dataDictionary);
@@ -119,7 +156,7 @@ namespace SlackBot.Api
 
             return httpClient;
         }
-        
+
         private Dictionary<string, string> ConvertToDictionary<T>(T model, params string[] excludedProperties)
             => model.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
