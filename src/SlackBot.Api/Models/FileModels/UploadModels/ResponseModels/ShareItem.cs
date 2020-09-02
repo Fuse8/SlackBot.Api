@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SlackBot.Api.Models.UploadFileModels.ResponseModels
+namespace SlackBot.Api.Models.FileModels.UploadModels.ResponseModels
 {
     public class ShareItem
     {

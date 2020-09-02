@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace SlackBot.Api.Models.UploadFileModels.ResponseModels
+namespace SlackBot.Api.Models.FileModels.UploadModels.ResponseModels
 {
 	public class SlackFile
 	{
@@ -9,10 +9,7 @@ namespace SlackBot.Api.Models.UploadFileModels.ResponseModels
 		public string Id { get; set; }
 
 		[JsonPropertyName("created")]
-		public long Created { get; set; } //TODO может добавть ко всем датам приставку "Unix" или "Timestamp" 
-
-		[JsonPropertyName("timestamp")]
-		public long Timestamp { get; set; }
+		public long Created { get; set; }
 
 		[JsonPropertyName("name")]
 		public string Name { get; set; }
@@ -105,7 +102,7 @@ namespace SlackBot.Api.Models.UploadFileModels.ResponseModels
 		public string[] Groups { get; set; }
 
 		[JsonPropertyName("ims")]
-		public string[] IMChannels { get; set; }
+		public string[] DirectMessageChannels { get; set; }
 
 		[JsonPropertyName("has_rich_preview")]
 		public bool HasRichPreview { get; set; }

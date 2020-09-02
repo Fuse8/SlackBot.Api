@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 using SlackBot.Api.Attributes;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Models;
-using SlackBot.Api.Models.UploadFileModels.RequestModels;
-using SlackBot.Api.Models.UploadFileModels.ResponseModels;
-using SlackBot.Api.Models.UserConversationModels;
+using SlackBot.Api.Models.ChatModels.PostMessageModels;
+using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
+using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.RequestModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels;
 
 namespace SlackBot.Api
 {
@@ -55,7 +57,7 @@ namespace SlackBot.Api
                 }
             }
 
-            return SendPostAsync<UploadFileResponse>("files.upload", multipartContent); //TODO сделать константы для урлов
+            return SendPostAsync<UploadFileResponse>("files.upload", multipartContent);
         }
         
 

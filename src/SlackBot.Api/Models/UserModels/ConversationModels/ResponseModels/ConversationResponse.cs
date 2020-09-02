@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SlackBot.Api.Models.UserConversationModels
+namespace SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels
 {
 	public class ConversationResponse : SlackResponseBase
 	{
@@ -8,6 +8,6 @@ namespace SlackBot.Api.Models.UserConversationModels
 		public Channel[] Channels { get; set; }
 
 		[JsonPropertyName("response_metadata")]
-		public ResponseMetadata Metadata { get; set; }
+		public CursorPaginationMetadata Metadata { get; set; }
 	}
 }

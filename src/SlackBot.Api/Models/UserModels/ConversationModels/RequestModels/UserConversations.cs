@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Models.UserConversationModels
+namespace SlackBot.Api.Models.UserModels.ConversationModels.RequestModels
 {
 	public class UserConversations
 	{

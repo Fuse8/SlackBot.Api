@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
-using SlackBot.Api.Models;
-using SlackBot.Api.Models.UploadFileModels.RequestModels;
-using SlackBot.Api.Models.UploadFileModels.ResponseModels;
-using SlackBot.Api.Models.UserConversationModels;
+using SlackBot.Api.Models.ChatModels.PostMessageModels;
+using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
+using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.RequestModels;
+using SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 

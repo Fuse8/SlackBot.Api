@@ -1,17 +1,17 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Models.UploadFileModels.RequestModels
+namespace SlackBot.Api.Models.FileModels.UploadModels.RequestModels
 {
-    public abstract class FileToUploadBase // TODO maybe make protected
+    public abstract class FileToUploadBase
     {
         [FormPropertyName("channels")]
-        public string Channels { get; set; } //TODO make chanel list
+        public string Channels { get; set; }
 
         [FormPropertyName("filename")]
         public string Filename { get; set; }
 
         [FormPropertyName("filetype")]
-        public string FileType { get; set; } = "auto"; //TODO move to constants
+        public string FileType { get; set; }
 
         [FormPropertyName("initial_comment")]
         public string Comment { get; set; }
