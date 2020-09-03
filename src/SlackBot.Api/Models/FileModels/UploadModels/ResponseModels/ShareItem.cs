@@ -1,31 +1,31 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.FileModels.UploadModels.ResponseModels
 {
     public class ShareItem
     {
-        [JsonPropertyName("reply_users")]
+        [JsonProperty("reply_users")]
         public string[] ReplyUsers { get; set; }
 
-        [JsonPropertyName("reply_users_count")]
+        [JsonProperty("reply_users_count")]
         public long ReplyUsersCount { get; set; }
 
-        [JsonPropertyName("reply_count")]
+        [JsonProperty("reply_count")]
         public long ReplyCount { get; set; }
 
-        [JsonPropertyName("ts")]
+        [JsonProperty("ts")]
         public string ThreadId { get; set; }
 
-        [JsonPropertyName("channel_name")]
+        [JsonProperty("channel_name")]
         public string ChannelName { get; set; }
 
-        [JsonPropertyName("team_id")]
+        [JsonProperty("team_id")]
         public string TeamId { get; set; }
 
-        [JsonPropertyName("share_user_id")]
+        [JsonProperty("share_user_id")]
         public string ShareUserId { get; set; }
 
-        [JsonPropertyName("latest_reply")]
+        [JsonProperty("latest_reply")]
         public string LatestReply { get; set; }
     }
 }

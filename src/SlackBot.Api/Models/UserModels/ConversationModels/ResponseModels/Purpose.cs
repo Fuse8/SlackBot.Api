@@ -1,16 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels
 {
 	public class Purpose
 	{
-		[JsonPropertyName("value")]
+		[JsonProperty("value")]
 		public string Value { get; set; }
 
-		[JsonPropertyName("creator")]
+		[JsonProperty("creator")]
 		public string Creator { get; set; }
 
-		[JsonPropertyName("last_set")]
+		[JsonProperty("last_set")]
 		public long LastSet { get; set; }
 	}
 }

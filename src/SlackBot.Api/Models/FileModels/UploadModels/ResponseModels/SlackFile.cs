@@ -1,137 +1,137 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.FileModels.UploadModels.ResponseModels
 {
 	public class SlackFile
 	{
-		[JsonPropertyName("id")]
+		[JsonProperty("id")]
 		public string Id { get; set; }
 
-		[JsonPropertyName("created")]
+		[JsonProperty("created")]
 		public long Created { get; set; }
 
-		[JsonPropertyName("name")]
+		[JsonProperty("name")]
 		public string Name { get; set; }
 
-		[JsonPropertyName("title")]
+		[JsonProperty("title")]
 		public string Title { get; set; }
 
-		[JsonPropertyName("mimetype")]
+		[JsonProperty("mimetype")]
 		public string MimeType { get; set; }
 
-		[JsonPropertyName("filetype")]
+		[JsonProperty("filetype")]
 		public string FileType { get; set; }
 
-		[JsonPropertyName("pretty_type")]
+		[JsonProperty("pretty_type")]
 		public string PrettyType { get; set; }
 
-		[JsonPropertyName("user")]
+		[JsonProperty("user")]
 		public string UserId { get; set; }
 
-		[JsonPropertyName("editable")]
+		[JsonProperty("editable")]
 		public bool Editable { get; set; }
 
-		[JsonPropertyName("size")]
+		[JsonProperty("size")]
 		public long SizeBytes { get; set; }
 
-		[JsonPropertyName("mode")]
+		[JsonProperty("mode")]
 		public string Mode { get; set; }
 
-		[JsonPropertyName("is_external")]
+		[JsonProperty("is_external")]
 		public bool IsExternal { get; set; }
 
-		[JsonPropertyName("external_type")]
+		[JsonProperty("external_type")]
 		public string ExternalType { get; set; }
 
-		[JsonPropertyName("is_public")]
+		[JsonProperty("is_public")]
 		public bool IsPublic { get; set; }
 
-		[JsonPropertyName("public_url_shared")]
+		[JsonProperty("public_url_shared")]
 		public bool PublicUrlShared { get; set; }
 
-		[JsonPropertyName("display_as_bot")]
+		[JsonProperty("display_as_bot")]
 		public bool DisplayAsBot { get; set; }
 
-		[JsonPropertyName("username")]
+		[JsonProperty("username")]
 		public string Username { get; set; }
 
-		[JsonPropertyName("url_private")]
+		[JsonProperty("url_private")]
 		public Uri UrlPrivate { get; set; }
 
-		[JsonPropertyName("url_private_download")]
+		[JsonProperty("url_private_download")]
 		public Uri UrlPrivateDownload { get; set; }
 
-		[JsonPropertyName("permalink")]
+		[JsonProperty("permalink")]
 		public Uri Permalink { get; set; }
 
-		[JsonPropertyName("permalink_public")]
+		[JsonProperty("permalink_public")]
 		public Uri PermalinkPublic { get; set; }
 
-		[JsonPropertyName("edit_link")]
+		[JsonProperty("edit_link")]
 		public Uri EditLink { get; set; }
 
-		[JsonPropertyName("preview")]
+		[JsonProperty("preview")]
 		public string Preview { get; set; }
 
-		[JsonPropertyName("preview_highlight")]
+		[JsonProperty("preview_highlight")]
 		public string PreviewHighlight { get; set; }
 
-		[JsonPropertyName("lines")]
+		[JsonProperty("lines")]
 		public long Lines { get; set; }
 
-		[JsonPropertyName("lines_more")]
+		[JsonProperty("lines_more")]
 		public long LinesMore { get; set; }
 
-		[JsonPropertyName("preview_is_truncated")]
+		[JsonProperty("preview_is_truncated")]
 		public bool PreviewIsTruncated { get; set; }
 
-		[JsonPropertyName("comments_count")]
+		[JsonProperty("comments_count")]
 		public long CommentsCount { get; set; }
 
-		[JsonPropertyName("is_starred")]
+		[JsonProperty("is_starred")]
 		public bool IsStarred { get; set; }
 
-		[JsonPropertyName("shares")]
+		[JsonProperty("shares")]
 		public Shares Shares { get; set; }
 
-		[JsonPropertyName("channels")]
+		[JsonProperty("channels")]
 		public string[] Channels { get; set; }
 
-		[JsonPropertyName("groups")]
+		[JsonProperty("groups")]
 		public string[] Groups { get; set; }
 
-		[JsonPropertyName("ims")]
+		[JsonProperty("ims")]
 		public string[] DirectMessageChannels { get; set; }
 
-		[JsonPropertyName("has_rich_preview")]
+		[JsonProperty("has_rich_preview")]
 		public bool HasRichPreview { get; set; }
         
-		[JsonPropertyName("thumb_64")]
+		[JsonProperty("thumb_64")]
 		public Uri Thumb64 { get; set; }
 
-		[JsonPropertyName("thumb_80")]
+		[JsonProperty("thumb_80")]
 		public Uri Thumb80 { get; set; }
 
-		[JsonPropertyName("thumb_360")]
+		[JsonProperty("thumb_360")]
 		public Uri Thumb360 { get; set; }
 
-		[JsonPropertyName("thumb_360_w")]
+		[JsonProperty("thumb_360_w")]
 		public long? Thumb360Wight { get; set; }
 
-		[JsonPropertyName("thumb_360_h")]
+		[JsonProperty("thumb_360_h")]
 		public long? Thumb360Height { get; set; }
 
-		[JsonPropertyName("thumb_160")]
+		[JsonProperty("thumb_160")]
 		public Uri Thumb160 { get; set; }
 
-		[JsonPropertyName("original_w")]
+		[JsonProperty("original_w")]
 		public long? OriginalWight { get; set; }
 
-		[JsonPropertyName("original_h")]
+		[JsonProperty("original_h")]
 		public long? OriginalHeight { get; set; }
 
-		[JsonPropertyName("thumb_tiny")]
+		[JsonProperty("thumb_tiny")]
 		public string ThumbTiny { get; set; }
 	}
 }

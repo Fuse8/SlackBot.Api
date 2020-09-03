@@ -1,85 +1,85 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels
 {
 	public class Channel
 	{
-		[JsonPropertyName("id")]
+		[JsonProperty("id")]
 		public string Id { get; set; }
 
-		[JsonPropertyName("name")]
+		[JsonProperty("name")]
 		public string Name { get; set; }
 
-		[JsonPropertyName("is_channel")]
+		[JsonProperty("is_channel")]
 		public bool IsChannel { get; set; }
 
-		[JsonPropertyName("is_group")]
+		[JsonProperty("is_group")]
 		public bool IsGroup { get; set; }
 
-		[JsonPropertyName("is_im")]
+		[JsonProperty("is_im")]
 		public bool IsIm { get; set; }
 
-		[JsonPropertyName("created")]
+		[JsonProperty("created")]
 		public long Created { get; set; }
 
-		[JsonPropertyName("creator")]
+		[JsonProperty("creator")]
 		public string Creator { get; set; }
 
-		[JsonPropertyName("is_archived")]
+		[JsonProperty("is_archived")]
 		public bool IsArchived { get; set; }
 
-		[JsonPropertyName("is_general")]
+		[JsonProperty("is_general")]
 		public bool IsGeneral { get; set; }
 
-		[JsonPropertyName("unlinked")]
+		[JsonProperty("unlinked")]
 		public long Unlinked { get; set; }
 
-		[JsonPropertyName("name_normalized")]
+		[JsonProperty("name_normalized")]
 		public string NameNormalized { get; set; }
 
-		[JsonPropertyName("is_read_only")]
+		[JsonProperty("is_read_only")]
 		public bool IsReadOnly { get; set; }
 
-		[JsonPropertyName("is_shared")]
+		[JsonProperty("is_shared")]
 		public bool IsShared { get; set; }
 
-		[JsonPropertyName("is_ext_shared")]
+		[JsonProperty("is_ext_shared")]
 		public bool IsExtShared { get; set; }
 
-		[JsonPropertyName("is_org_shared")]
+		[JsonProperty("is_org_shared")]
 		public bool IsOrgShared { get; set; }
 
-		[JsonPropertyName("pending_shared")]
+		[JsonProperty("pending_shared")]
 		public object[] PendingShared { get; set; }
 
-		[JsonPropertyName("is_pending_ext_shared")]
+		[JsonProperty("is_pending_ext_shared")]
 		public bool IsPendingExtShared { get; set; }
 
-		[JsonPropertyName("is_member")]
+		[JsonProperty("is_member")]
 		public bool IsMember { get; set; }
 
-		[JsonPropertyName("is_private")]
+		[JsonProperty("is_private")]
 		public bool IsPrivate { get; set; }
 
-		[JsonPropertyName("is_mpim")]
+		[JsonProperty("is_mpim")]
 		public bool IsMpim { get; set; }
 
-		[JsonPropertyName("last_read")]
+		[JsonProperty("last_read")]
 		public string LastRead { get; set; }
 
-		[JsonPropertyName("topic")]
+		[JsonProperty("topic")]
 		public Purpose Topic { get; set; }
 
-		[JsonPropertyName("purpose")]
+		[JsonProperty("purpose")]
 		public Purpose Purpose { get; set; }
 
-		[JsonPropertyName("previous_names")]
+		[JsonProperty("previous_names")]
 		public string[] PreviousNames { get; set; }
 
-		[JsonPropertyName("num_members")]
+		[JsonProperty("num_members")]
 		public long NumMembers { get; set; }
 
-		[JsonPropertyName("locale")]
+		[JsonProperty("locale")]
 		public string Locale { get; set; }
 	}
 }

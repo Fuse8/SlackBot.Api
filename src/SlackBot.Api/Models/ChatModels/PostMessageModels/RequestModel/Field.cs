@@ -1,16 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel
 {
 	public class Field
 	{
-		[JsonPropertyName("title")]
+		[JsonProperty("title")]
 		public string Title { get; set; }
 
-		[JsonPropertyName("value")]
+		[JsonProperty("value")]
 		public string Value { get; set; }
 
-		[JsonPropertyName("short")]
+		[JsonProperty("short")]
 		public bool Short { get; set; }
 	}
 }

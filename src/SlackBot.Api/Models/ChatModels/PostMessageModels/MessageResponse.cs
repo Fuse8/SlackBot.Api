@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.ChatModels.PostMessageModels
 {
     public class MessageResponse : SlackResponseBase
     {
-        [JsonPropertyName("channel")]
+        [JsonProperty("channel")]
         public string Channel { get; set; }
 
-        [JsonPropertyName("ts")]
+        [JsonProperty("ts")]
         public string ThreadId { get; set; }
     }
 }

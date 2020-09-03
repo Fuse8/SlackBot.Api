@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models
 {
 	public class CursorPaginationMetadata
 	{		
-		[JsonPropertyName("next_cursor")]
+		[JsonProperty("next_cursor")]
 		public string NextCursor { get; set; }
 	}
 }

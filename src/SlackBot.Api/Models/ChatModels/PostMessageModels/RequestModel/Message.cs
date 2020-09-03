@@ -1,53 +1,54 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Blocks;
 
 namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel
 {
 	public class Message
 	{
-		[JsonPropertyName("channel")]
+		[JsonProperty("channel")]
 		public string Channel { get; set; }
 
-		[JsonPropertyName("text")]
+		[JsonProperty("text")]
 		public string Text { get; set; }
 
-		[JsonPropertyName("as_user")]
+		[JsonProperty("as_user")]
 		public bool? AsUser { get; set; }
 
-		[JsonPropertyName("attachments")]
+		[JsonProperty("attachments")]
 		public Attachment[] Attachments { get; set; }
 
-		[JsonPropertyName("blocks")]
-		public Block[] Blocks { get; set; }
+		[JsonProperty("blocks")]
+		public BlockBase[] Blocks { get; set; }
 
-		[JsonPropertyName("icon_emoji")]
+		[JsonProperty("icon_emoji")]
 		public string IconEmoji { get; set; }
 
-		[JsonPropertyName("icon_url")]
+		[JsonProperty("icon_url")]
 		public Uri IconUrl { get; set; }
 
-		[JsonPropertyName("linkNames")]
+		[JsonProperty("linkNames")]
 		public bool? LinkNames { get; set; }
 
-		[JsonPropertyName("mrkdwn")]
+		[JsonProperty("mrkdwn")]
 		public bool? Mrkdwn { get; set; }
 
-		[JsonPropertyName("parse")]
+		[JsonProperty("parse")]
 		public string Parse { get; set; }
 
-		[JsonPropertyName("reply_broadcast")]
+		[JsonProperty("reply_broadcast")]
 		public bool? ReplyBroadcast { get; set; }
 
-		[JsonPropertyName("ThreadId")]
+		[JsonProperty("ThreadId")]
 		public string ThreadId { get; set; }
 
-		[JsonPropertyName("unfurl_links")]
+		[JsonProperty("unfurl_links")]
 		public bool? UnfurlLinks { get; set; }
 		
-		[JsonPropertyName("unfurl_media")]
+		[JsonProperty("unfurl_media")]
 		public bool? UnfurlMedia { get; set; }
 		
-		[JsonPropertyName("username")]
+		[JsonProperty("username")]
 		public string Username { get; set; }
 	}
 }

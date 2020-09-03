@@ -1,53 +1,53 @@
 ﻿using System;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel
 {
 	public class Attachment
 	{
-		[JsonPropertyName("fallback")]
+		[JsonProperty("fallback")]
 		public string Fallback { get; set; }
 
-		[JsonPropertyName("color")]
+		[JsonProperty("color")]
 		public string Color { get; set; }
 
-		[JsonPropertyName("pretext")]
+		[JsonProperty("pretext")]
 		public string Pretext { get; set; }
 
-		[JsonPropertyName("author_name")]
+		[JsonProperty("author_name")]
 		public string AuthorName { get; set; }
 
-		[JsonPropertyName("author_link")]
+		[JsonProperty("author_link")]
 		public Uri AuthorLink { get; set; }
 
-		[JsonPropertyName("author_icon")]
+		[JsonProperty("author_icon")]
 		public Uri AuthorIcon { get; set; }
 
-		[JsonPropertyName("title")]
+		[JsonProperty("title")]
 		public string Title { get; set; }
 
-		[JsonPropertyName("title_link")]
+		[JsonProperty("title_link")]
 		public Uri TitleLink { get; set; }
 
-		[JsonPropertyName("text")]
+		[JsonProperty("text")]
 		public string Text { get; set; }
 
-		[JsonPropertyName("fields")]
+		[JsonProperty("fields")]
 		public Field[] Fields { get; set; }
 
-		[JsonPropertyName("image_url")]
+		[JsonProperty("image_url")]
 		public Uri ImageUrl { get; set; }
 
-		[JsonPropertyName("thumb_url")]
+		[JsonProperty("thumb_url")]
 		public Uri ThumbUrl { get; set; }
 
-		[JsonPropertyName("footer")]
+		[JsonProperty("footer")]
 		public string Footer { get; set; }
 
-		[JsonPropertyName("footer_icon")]
+		[JsonProperty("footer_icon")]
 		public Uri FooterIcon { get; set; }
 
-		[JsonPropertyName("ts")]
+		[JsonProperty("ts")]
 		public long Ts { get; set; }
 	}
 }

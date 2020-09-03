@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.FileModels.UploadModels.ResponseModels
 {
 	public class Shares
 	{
-		[JsonPropertyName("private")]
+		[JsonProperty("private")]
 		public Dictionary<string, ShareItem[]> Private { get; set; }
         
-		[JsonPropertyName("public")]
+		[JsonProperty("public")]
 		public Dictionary<string, ShareItem[]> Public { get; set; }
 	}
 }

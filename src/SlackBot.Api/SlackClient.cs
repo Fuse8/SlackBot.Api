@@ -6,10 +6,11 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using SlackBot.Api.Attributes;
+using SlackBot.Api.Enums;
 using SlackBot.Api.Exceptions;
+using SlackBot.Api.Extensions;
 using SlackBot.Api.Models;
 using SlackBot.Api.Models.ChatModels.PostMessageModels;
 using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel;
@@ -25,13 +26,11 @@ namespace SlackBot.Api
         private static readonly Uri BaseApiUri = new Uri("https://slack.com/api/");
         private bool _disposed;
 
-        private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly HttpClient _httpClient;
 
         public SlackClient(string token)
         {
             _httpClient = InitHttpClient(token);
-            _jsonSerializerOptions = new JsonSerializerOptions { IgnoreNullValues = true };
         }
 
         public Task<UploadFileResponse> UploadContent(ContentToUpload contentToUpload)
@@ -64,7 +63,7 @@ namespace SlackBot.Api
 
         public Task<MessageResponse> PostMessage(Message message)
         {
-            var stringContent = GetFormContent(message);
+            var stringContent = GetJsonStringContent(message);
 
             return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
         }
@@ -111,8 +110,8 @@ namespace SlackBot.Api
         private TResponse ParseResponse<TResponse>(string responseContent)
             where TResponse : SlackResponseBase
         {
-            var slackApiResponse = JsonSerializer.Deserialize<TResponse>(responseContent);
-            if (!slackApiResponse.Ok)
+            var slackApiResponse = responseContent.FromJson<TResponse>(ExceptionHandlingMode.DoNotProcess);
+            if (slackApiResponse?.Ok != true)
             {
                 throw new SlackApiResponseException(responseContent);
             }
@@ -135,7 +134,7 @@ namespace SlackBot.Api
         private StringContent GetJsonStringContent<TRequest>(TRequest request)
             where TRequest : class
         {
-            var json = JsonSerializer.Serialize(request, _jsonSerializerOptions);
+            var json = request.ToJson();
             var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
             
             return stringContent;
