@@ -5,9 +5,7 @@ using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Models.ChatModels.PostMessageModels;
 using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.BlockElements;
 using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Blocks;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Enums;
 using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Sections;
 using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
 using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
@@ -30,6 +28,7 @@ namespace SlackBot.Samples
 			var slackClient = new SlackClient(slackBotSettings.Token);
 
 			var postMessageResponse = await PostMessage(slackClient);
+			// var postMessageResponse = await PostMessageWithMultipleFiles(slackClient);
 			/* * /
 			// Upload plain file content 
 			var uploadContentResponse = await UploadContent(slackClient);
@@ -47,32 +46,71 @@ namespace SlackBot.Samples
 			var message = new Message
 			{
 				Channel = Channel,
-				Text = "some message",
+				Text = "",
 				Blocks = new BlockBase[]
 				{
-					new ActionBlock
+					new ContextBlock
 					{
-						Elements = new ActionElementBase[]
+						Elements = new SectionBase[]
 						{
-							new ButtonActionElement
-							{
-								Text = (PlainTextSection)"go to google",
-								ActionId = "button_1",
-								Url = new Uri("https://google.com"),
-								Style = StyleType.Danger,
-								Confirm = new ConfirmSection
-								{
-									Text = "Open google?",
-									Title = "What's up",
-									Deny = "NoNoNo",
-									Confirm = "Sure",
-								}
-							}
+							(PlainTextSection) "Some text",
+						}
+					},
+					new HeaderBlock
+					{
+						Text = "Heder"
+					},
+					new ImageBlock
+					{
+						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+						Text = new PlainTextSection
+						{
+							Emoji = true,
+							Text = ":cat:"
+						},
+						AltText = "Kitty"
+					},
+				}
+			};
+			
+			return slackClient.PostMessage(message);
+		}
+		
+		private static  async Task<MessageResponse> PostMessageWithMultipleFiles(SlackClient slackClient)
+		{
+			var content = await File.ReadAllTextAsync("./appsettings.json");
+			// Upload files without Channel
+			var contentMessage = new ContentToUpload
+			{
+				Comment = "Upload content",
+				Title = "File1",
+				Content = content,
+				Filename = "appsettings.json",
+				FileType = "javascript"
+			};
+
+			var firstFile = await slackClient.UploadContent(contentMessage);
+			
+			contentMessage.Title = "File2";
+			var secondFile = await slackClient.UploadContent(contentMessage);
+			
+			var message = new Message
+			{
+				Channel = Channel,
+				Text = firstFile.File.Permalink + " " + secondFile.File.Permalink,
+				Blocks = new BlockBase[]
+				{
+					new ContextBlock
+					{
+						Elements = new SectionBase[]
+						{
+							(PlainTextSection) "Some text", 
 						}
 					}
 				}
 			};
-			return slackClient.PostMessage(message);
+			
+			return await slackClient.PostMessage(message);
 		}
 
 		private static async Task<UploadFileResponse> UploadContent(SlackClient slackClient)
