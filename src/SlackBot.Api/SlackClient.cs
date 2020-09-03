@@ -84,25 +84,22 @@ namespace SlackBot.Api
         private async Task<TResponse> SendPostAsync<TResponse>(string path, HttpContent content)
             where TResponse : SlackResponseBase
         {
-            var response = await _httpClient.PostAsync(new Uri(BaseApiUri, path), content);
+            var url = CustomUrlHelper.BuildUrl(BaseApiUri, path);
+            var response = await _httpClient.PostAsync(url, content);
             var responseContent = await response.Content.ReadAsStringAsync();
             var slackApiResponse = ParseResponse<TResponse>(responseContent);
             
             return slackApiResponse;
-        }  
-        
-        private Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
-            where TResponse : SlackResponseBase
-        {
-            var queryParams = GetQueryParams(request);
-
-            return SendGetAsync<TResponse>($"{path}?{queryParams}");
         }
         
-        private async Task<TResponse> SendGetAsync<TResponse>(string path)
+        private async Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
             where TResponse : SlackResponseBase
+            where TRequest : class
         {
-            var response = await _httpClient.GetAsync(new Uri(BaseApiUri, path));
+            var queryParamsDictionary = FormPropertyHelper.GetFormProperties(request).ToDictionary(p => p.PropertyName, p => p.PropertyValue);
+            var url = CustomUrlHelper.BuildUrl(BaseApiUri, path, queryParamsDictionary);
+            
+            var response = await _httpClient.GetAsync(url);
             var responseContent = await response.Content.ReadAsStringAsync();
             var slackApiResponse = ParseResponse<TResponse>(responseContent);
             
@@ -137,14 +134,6 @@ namespace SlackBot.Api
             var formUrlEncodedContent = new FormUrlEncodedContent(dataDictionary);
             
             return formUrlEncodedContent;
-        }
-
-        private string GetQueryParams<TRequest>(TRequest request)
-        {
-            var formContent = FormPropertyHelper.GetFormProperties(request).Select(p => $"{p.PropertyName}={p.PropertyValue}");
-            var queryParams = string.Join("&", formContent);
-            
-            return queryParams;
         }
         
         private HttpClient InitHttpClient(string token)

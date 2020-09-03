@@ -26,10 +26,10 @@ namespace SlackBot.Samples
             //var postMessageResponse = await PostMessage(slackClient);
             
             // Upload plain file content 
-            var uploadContentResponse = await UploadContent(slackClient);
+            //var uploadContentResponse = await UploadContent(slackClient);
             
             // Upload file from disk 
-            var uploadFileResponse = await UploadFile(slackClient);
+            //var uploadFileResponse = await UploadFile(slackClient);
             
             // Gets list of bot channels
             var userConversationsResponse = await GetUserConversations(slackClient);

@@ -17,7 +17,7 @@ namespace SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels
 		public bool IsGroup { get; set; }
 
 		[JsonPropertyName("is_im")]
-		public bool IsIm { get; set; }
+		public bool IsDirectMessageChannel { get; set; }
 
 		[JsonPropertyName("created")]
 		public long Created { get; set; }
