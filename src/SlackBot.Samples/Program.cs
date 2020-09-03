@@ -62,10 +62,10 @@ namespace SlackBot.Samples
 								Style = StyleType.Danger,
 								Confirm = new ConfirmSection
 								{
-									Text = (PlainTextSection) "Open google?",
-									Title = (PlainTextSection) "What's up",
-									Deny = (PlainTextSection) "NoNoNo",
-									Confirm = (PlainTextSection) "Sure",
+									Text = "Open google?",
+									Title = "What's up",
+									Deny = "NoNoNo",
+									Confirm = "Sure",
 								}
 							}
 						}
