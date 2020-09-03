@@ -17,13 +17,7 @@ namespace SlackBot.Api.Helpers
                     ))
                 .Where(p => p.PropertyValue != null);
 
-        public static string GetFormPropertyName<T>(string propertyName)
-        {
-            var propertyInfo = PropertyInfoHelper.GetPublicProperties<T>().FirstOrDefault(p => p.Name == propertyName);
-            return GetFormPropertyName(propertyInfo);
-        }
-
-        private static string GetFormPropertyName(PropertyInfo propertyInfo)
+        public static string GetFormPropertyName(PropertyInfo propertyInfo)
             => propertyInfo.GetCustomAttribute<FormPropertyNameAttribute>()?.Name ?? propertyInfo.Name;
     }
 }

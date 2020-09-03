@@ -23,16 +23,16 @@ namespace SlackBot.Samples
 
 			var slackClient = new SlackClient(slackBotSettings.Token);
             
-            //var postMessageResponse = await PostMessage(slackClient);
+			/* * /var postMessageResponse = await PostMessage(slackClient);/**/
             
             // Upload plain file content 
-            //var uploadContentResponse = await UploadContent(slackClient);
+            /* * /var uploadContentResponse = await UploadContent(slackClient);/**/
             
             // Upload file from disk 
-            //var uploadFileResponse = await UploadFile(slackClient);
+            /* * /var uploadFileResponse = await UploadFile(slackClient);/**/
             
             // Gets list of bot channels
-            var userConversationsResponse = await GetUserConversations(slackClient);
+            /* * /var userConversationsResponse = await GetUserConversations(slackClient);/**/
         }
 
         private static Task<MessageResponse> PostMessage(SlackClient slackClient)
@@ -67,7 +67,7 @@ namespace SlackBot.Samples
             var fileMessage = new FileToUpload
             {
                 Channels = "slack-bot-api-test",
-                FileStream = fileStream,
+                Stream =  fileStream,
             };
 
             return await slackClient.UploadFile(fileMessage);

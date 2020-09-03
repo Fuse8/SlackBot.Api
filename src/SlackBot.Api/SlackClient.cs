@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -32,37 +32,12 @@ namespace SlackBot.Api
             _jsonSerializerOptions = new JsonSerializerOptions { IgnoreNullValues = true };
         }
 
-        public Task<UploadFileResponse> UploadContent(ContentToUpload contentToUpload)
-        {
-            var stringContent = GetFormContent(contentToUpload);
+        public Task<UploadFileResponse> UploadContent(ContentToUpload contentToUpload) 
+            => SendPostMultipartFormAsync("files.upload", contentToUpload);
 
-            return SendPostAsync<UploadFileResponse>("files.upload", stringContent);
-        }
+        public Task<UploadFileResponse> UploadFile(FileToUpload fileToUpload) 
+            => SendPostMultipartFormAsync("files.upload", fileToUpload);
         
-        public Task<UploadFileResponse> UploadFile(FileToUpload fileToUpload)
-        {
-            var nameOfFileStreamProperty = nameof(FileToUpload.FileStream);
-            var fileFormPropertyName = FormPropertyHelper.GetFormPropertyName<FileToUpload>(nameOfFileStreamProperty);
-            
-            var multipartContent = new MultipartFormDataContent
-            {
-                { new StreamContent(fileToUpload.FileStream), fileFormPropertyName, fileToUpload.FileStream.Name }
-            };
-
-            var dataDictionary = ConvertToDictionary(fileToUpload, nameOfFileStreamProperty);
-            foreach (var propertyData in dataDictionary)
-            {
-                var dataValue = propertyData.Value;
-                if (dataValue != null)
-                {
-                    multipartContent.Add(new StringContent(dataValue), propertyData.Key);
-                }
-            }
-
-            return SendPostAsync<UploadFileResponse>("files.upload", multipartContent);
-        }
-        
-
         public Task<MessageResponse> PostMessage(Message message)
         {
             var stringContent = GetFormContent(message);
@@ -70,15 +45,48 @@ namespace SlackBot.Api
             return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
         }
         
-        public Task<ConversationResponse> UserConversations(UserConversations message)
-        {
-            return SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
-        }
+        public Task<ConversationResponse> UserConversations(UserConversations message) 
+            => SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private Task<UploadFileResponse> SendPostMultipartFormAsync<TRequest>(string path, TRequest request)
+            where TRequest : class
+        {
+            var multipartContent = new MultipartFormDataContent();
+
+            var properties = PropertyInfoHelper.GetPublicProperties<TRequest>();
+            foreach (var property in properties)
+            {
+                var propertyValue = property.GetValue(request);
+                if (propertyValue != null)
+                {
+                    var fileFormPropertyName = FormPropertyHelper.GetFormPropertyName(property);
+                    AddContent(propertyValue, fileFormPropertyName);
+                }
+            }
+
+            return SendPostAsync<UploadFileResponse>(path, multipartContent);
+
+            void AddContent(object propertyValue, string fileFormPropertyName)
+            {
+                if (propertyValue is FileStream fileStream)
+                {
+                    multipartContent.Add(new StreamContent(fileStream), fileFormPropertyName, fileStream.Name);
+                }
+                else if (propertyValue is Stream || propertyValue.GetType().BaseType == typeof(Stream))
+                {
+                    multipartContent.Add(new StreamContent((Stream)propertyValue), fileFormPropertyName, Guid.NewGuid().ToString());
+                }
+                else
+                {
+                    multipartContent.Add(new StringContent(propertyValue.ToString()), fileFormPropertyName);
+                }
+            }
         }
 
         private async Task<TResponse> SendPostAsync<TResponse>(string path, HttpContent content)
@@ -130,7 +138,8 @@ namespace SlackBot.Api
         private FormUrlEncodedContent GetFormContent<TRequest>(TRequest request)
             where TRequest : class
         {
-            var dataDictionary = ConvertToDictionary(request);
+            var dataDictionary =FormPropertyHelper.GetFormProperties(request)
+                .ToDictionary(property => property.PropertyName, propertyInfo => propertyInfo.PropertyValue);
             var formUrlEncodedContent = new FormUrlEncodedContent(dataDictionary);
             
             return formUrlEncodedContent;
@@ -144,12 +153,6 @@ namespace SlackBot.Api
 
             return httpClient;
         }
-
-        private Dictionary<string, string> ConvertToDictionary<T>(T model, params string[] excludedProperties)
-            => FormPropertyHelper.GetFormProperties(model)
-                .Where(property => !excludedProperties.Contains(property.PropertyName))
-                .ToDictionary(property => property.PropertyName, propertyInfo => propertyInfo.PropertyValue);
-        
 
         private void Dispose(bool disposing)
         {
