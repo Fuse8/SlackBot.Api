@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Helpers;
 using SlackBot.Api.Models;
-using SlackBot.Api.Models.ChatModels.PostMessageModels;
-using SlackBot.Api.Models.FileModels.UploadModels.RequestModels;
-using SlackBot.Api.Models.FileModels.UploadModels.ResponseModels;
-using SlackBot.Api.Models.UserModels.ConversationModels.RequestModels;
-using SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels;
+using SlackBot.Api.Models.Chat.PostMessage;
+using SlackBot.Api.Models.File.Upload.Request;
+using SlackBot.Api.Models.File.Upload.Response;
+using SlackBot.Api.Models.User.Conversation.Request;
+using SlackBot.Api.Models.User.Conversation.Response;
 
 namespace SlackBot.Api
 {
