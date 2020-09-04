@@ -3,10 +3,12 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
-using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.Request;
+using SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Request.Blocks;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.Request.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
@@ -47,29 +49,76 @@ namespace SlackBot.Samples
 			var message = new Message
 			{
 				Channel = Channel,
-				Text = "",
 				Blocks = new BlockBase[]
 				{
-					new ContextBlock
+					new ActionBlock
 					{
-						Elements = new SectionBase[]
+						Elements = new IActionElement[]
 						{
-							(PlainTextSection) "Some text",
+							new ButtonActionElement
+							{
+								Text = new PlainTextObject
+								{
+									Emoji = true,
+									Text = ":cat: Button"
+								},
+								Url = new Uri("https://google.com"),
+								Confirm = new ConfirmObject
+								{
+									Title = "Action Block confirmation",
+									Confirm = "Sure",
+									Deny = "Nope",
+									Text = "I wanna open google"
+								}
+							},
+
+							new DatepickerActionElement
+							{
+								Placeholder = "Select date",
+								InitialDate = "2020-02-22",
+							},
 						}
 					},
+					new ContextBlock
+					{
+						Elements = new IContextElement[]
+						{
+							(PlainTextObject) "This is Context Block",
+							new ImageElement
+							{
+								AltText = "Kitty in the Context block",
+								ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+							},
+						}
+					},
+					new DividerBlock(),
 					new HeaderBlock
 					{
-						Text = "Heder"
+						Text = "This is Header Block"
 					},
 					new ImageBlock
 					{
 						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-						Text = new PlainTextSection
+						Text = new PlainTextObject
 						{
 							Emoji = true,
 							Text = ":cat:"
 						},
 						AltText = "Kitty"
+					},
+					new SectionBlock
+					{
+						Text = (PlainTextObject) "This is Section Block",
+						Fields = new TextObjectBase[]
+						{
+							(MrkdwnTextObject) "*Bold Text*",
+							(MrkdwnTextObject) "_Italic Text_"
+						},
+						Accessory = new ImageElement
+						{
+							AltText = "Kitty in the Section block",
+							ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+						},
 					},
 				}
 			};
@@ -104,9 +153,9 @@ namespace SlackBot.Samples
 				{
 					new ContextBlock
 					{
-						Elements = new SectionBase[]
+						Elements = new IContextElement[]
 						{
-							(PlainTextSection) "Some text", 
+							(PlainTextObject) "Some text", 
 						}
 					}
 				}
@@ -122,7 +171,7 @@ namespace SlackBot.Samples
 			{
 				Comment = "Upload content",
 				Title = "Title",
-				Channels = "slack-bot-api-test",
+				Channels = Channel,
 				Content = content,
 				Filename = "appsettings.json",
 				FileType = "javascript"
@@ -136,7 +185,7 @@ namespace SlackBot.Samples
 			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
 			var fileMessage = new FileToUpload
 			{
-				Channels = "slack-bot-api-test",
+				Channels = Channel,
 				Stream = fileStream,
 			};
 

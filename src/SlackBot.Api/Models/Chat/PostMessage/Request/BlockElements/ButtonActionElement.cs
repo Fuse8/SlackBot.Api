@@ -1,20 +1,18 @@
 ﻿using System;
 using Newtonsoft.Json;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Request.Enums;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request.MessageObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements
 {
-	public class ButtonActionElement : ActionElementBase
+	public class ButtonActionElement : ActionElementBase, ISectionElement, IActionElement
 	{
 		protected override string SectionType => "button";
 		
 		[JsonProperty("text")]
-		public TextSectionBase Text { get; set; }
+		public TextObjectBase Text { get; set; }
 		
-		[JsonProperty("action_id")]
-		public string ActionId { get; set; }
-
 		[JsonProperty("url")]
 		public Uri Url { get; set; }
 		
@@ -25,6 +23,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements
 		public StyleType? Style { get; set; }
 		
 		[JsonProperty("confirm")]
-		public ConfirmSection Confirm { get; set; }
+		public ConfirmObject Confirm { get; set; }
 	}
 }

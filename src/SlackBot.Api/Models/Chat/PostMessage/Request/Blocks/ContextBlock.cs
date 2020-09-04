@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts.BlockElements;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Request.Blocks
 {
@@ -8,7 +9,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Request.Blocks
 		protected override string SectionType => "context";
 		
 		[JsonProperty("elements")]
-		public SectionBase[] Elements { get; set; } 
+		public IContextElement[] Elements { get; set; } 
 
 		[JsonProperty("block_id")]
 		public string BlockId { get; set; }

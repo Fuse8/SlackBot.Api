@@ -1,22 +1,20 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.Request.MessageObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements
 {
-	public class CheckboxActionElement : ActionElementBase
+	public class CheckboxActionElement : ActionElementBase //todo use in Home tabs and  Modals
 	{
 		protected override string SectionType => "checkboxes";
 
-		[JsonProperty("action_id")]
-		public string ActionId { get; set; }
-
 		[JsonProperty("options")]
-		public OptionSection[] Options { get; set; }
+		public OptionObject[] Options { get; set; }
 
 		[JsonProperty("initial_options")]
-		public OptionSection[] InitialOption { get; set; }
+		public OptionObject[] InitialOption { get; set; }
 		
 		[JsonProperty("confirm")]
-		public ConfirmSection Confirm { get; set; }
+		public ConfirmObject Confirm { get; set; }
 	}
 }

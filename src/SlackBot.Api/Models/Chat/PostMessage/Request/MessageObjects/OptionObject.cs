@@ -1,18 +1,18 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.Chat.PostMessage.Request.Sections
+namespace SlackBot.Api.Models.Chat.PostMessage.Request.MessageObjects
 {
-	public class OptionSection
+	public class OptionObject
 	{
 		[JsonProperty("text")]
-		public TextSectionBase Text { get; set; }
+		public TextObjectBase Text { get; set; }
 		
 		[JsonProperty("value")]
 		public string Value { get; set; }
 		
 		[JsonProperty("description")]
-		public PlainTextSection Description { get; set; }
+		public PlainTextObject Description { get; set; }
 		
 		[JsonProperty("url")]
 		public Uri Url { get; set; }

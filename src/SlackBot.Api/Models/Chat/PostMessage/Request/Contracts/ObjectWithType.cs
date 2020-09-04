@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.Chat.PostMessage.Request.Sections
+namespace SlackBot.Api.Models.Chat.PostMessage.Request.Contracts
 {
-	public abstract class SectionBase
+	public abstract class ObjectWithType
 	{
 		protected abstract string SectionType { get; }
 

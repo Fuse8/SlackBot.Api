@@ -1,22 +1,20 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.Request.MessageObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements
 {
-	public class DatepickerActionElement : ActionElementBase
+	public class DatepickerActionElement : ActionElementBase, ISectionElement, IActionElement, IInputElement
 	{
 		protected override string SectionType => "datepicker";
 
-		[JsonProperty("action_id")]
-		public string ActionId { get; set; }
-
 		[JsonProperty("placeholder")]
-		public PlainTextSection Placeholder { get; set; }
+		public PlainTextObject Placeholder { get; set; }
 
 		[JsonProperty("initial_date")]
 		public string InitialDate { get; set; }
 		
 		[JsonProperty("confirm")]
-		public ConfirmSection Confirm { get; set; }
+		public ConfirmObject Confirm { get; set; }
 	}
 }

@@ -1,19 +1,30 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.Request.MessageObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements
 {
-	public class MultiSelectActionElement : CheckboxActionElement
+	public class MultiSelectActionElement : ActionElementBase, ISectionElement, IInputElement
 	{
 		protected override string SectionType => "multi_static_select";
+		
+		[JsonProperty("options")]
+		public OptionObject[] Options { get; set; }
 
+		[JsonProperty("initial_options")]
+		public OptionObject[] InitialOption { get; set; }
+		
+		
 		[JsonProperty("placeholder")]
-		public PlainTextSection Placeholder { get; set; }
+		public PlainTextObject Placeholder { get; set; }
 
 		[JsonProperty("option_groups")]
-		public OptionGroupSection OptionGroup { get; set; }
+		public OptionGroupObject OptionGroup { get; set; }
 
 		[JsonProperty("max_selected_items")]
 		public int? MaxSelectedItems { get; set; }
+		
+		[JsonProperty("confirm")]
+		public ConfirmObject Confirm { get; set; }
 	}
 }
