@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels
+namespace SlackBot.Api.Models.User.Conversation.Response
 {
 	public class Channel
 	{
@@ -17,7 +17,7 @@ namespace SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels
 		public bool IsGroup { get; set; }
 
 		[JsonProperty("is_im")]
-		public bool IsIm { get; set; }
+		public bool IsDirectMessageChannel { get; set; }
 
 		[JsonProperty("created")]
 		public long Created { get; set; }

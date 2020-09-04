@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Models.UserModels.ConversationModels.RequestModels
+namespace SlackBot.Api.Models.User.Conversation.Request
 {
 	public class UserConversations
 	{
@@ -8,10 +8,10 @@ namespace SlackBot.Api.Models.UserModels.ConversationModels.RequestModels
 		public string Cursor { get; set; }
 
 		[FormPropertyName("exclude_archived")]
-		public bool ExcludeArchived { get; set; }
+		public bool? ExcludeArchived { get; set; }
 	
 		[FormPropertyName("limit")]
-		public int? Limit { get; set; }
+		public long? Limit { get; set; }
 		
 		[FormPropertyName("types")]
 		public string Types { get; set; }

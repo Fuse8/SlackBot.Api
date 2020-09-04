@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.UserModels.ConversationModels.ResponseModels
+namespace SlackBot.Api.Models.User.Conversation.Response
 {
 	public class ConversationResponse : SlackResponseBase
 	{

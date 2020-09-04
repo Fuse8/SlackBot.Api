@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.FileModels.UploadModels.ResponseModels
+namespace SlackBot.Api.Models.File.Upload.Response
 {
     public class ShareItem
     {
