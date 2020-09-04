@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.BlockElements
+namespace SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements
 {
 	public class ImageElement : ActionElementBase
 	{

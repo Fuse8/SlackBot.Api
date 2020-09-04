@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel
+namespace SlackBot.Api.Models.Chat.PostMessage.Request
 {
 	public class Attachment
 	{

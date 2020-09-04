@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Blocks
+namespace SlackBot.Api.Models.Chat.PostMessage.Request.Blocks
 {
 	public class DividerBlock : BlockBase
 	{

@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Models.Chat.PostMessage;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Blocks;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Blocks;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -29,7 +30,7 @@ namespace SlackBot.Samples
             
 			/* * /var postMessageResponse = await PostMessage(slackClient);/**/
 			
-            /* * /var postMessageResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
+            /* * /var postMessageWithFilesResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
             
             // Upload plain file content 
             /* * /var uploadContentResponse = await UploadContent(slackClient);/**/

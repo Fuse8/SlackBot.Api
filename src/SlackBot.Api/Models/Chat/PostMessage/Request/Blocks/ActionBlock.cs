@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements;
 
-namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Blocks
+namespace SlackBot.Api.Models.Chat.PostMessage.Request.Blocks
 {
 	public class ActionBlock : BlockBase
 	{

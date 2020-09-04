@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Enums;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Sections;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Enums;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Sections;
 
-namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.BlockElements
+namespace SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements
 {
 	public class ButtonActionElement : ActionElementBase
 	{

@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Sections
+﻿namespace SlackBot.Api.Models.Chat.PostMessage.Request.Sections
 {
 	public class MrkdwnTextSection : TextSectionBase
 	{

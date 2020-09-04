@@ -1,8 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Blocks;
+using SlackBot.Api.Models.Chat.PostMessage.Request.Blocks;
 
-namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel
+namespace SlackBot.Api.Models.Chat.PostMessage.Request
 {
 	public class Message
 	{

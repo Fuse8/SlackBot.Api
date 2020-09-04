@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.ChatModels.PostMessageModels.RequestModel.Sections
+namespace SlackBot.Api.Models.Chat.PostMessage.Request.Sections
 {
 	public abstract class TextSectionBase : SectionBase
 	{
