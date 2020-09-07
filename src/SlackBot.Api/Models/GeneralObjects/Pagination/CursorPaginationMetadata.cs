@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SlackBot.Api.Models
+namespace SlackBot.Api.Models.GeneralObjects.Pagination
 {
 	public class CursorPaginationMetadata
 	{		

@@ -11,10 +11,13 @@ using SlackBot.Api.Exceptions;
 using SlackBot.Api.Helpers;
 using SlackBot.Api.Models;
 using SlackBot.Api.Models.Chat.PostMessage;
+using SlackBot.Api.Models.Conversation.History.Request;
+using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
+using MessageResponse = SlackBot.Api.Models.Chat.PostMessage.MessageResponse;
 
 namespace SlackBot.Api
 {
@@ -45,8 +48,11 @@ namespace SlackBot.Api
             return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
         }
         
-        public Task<ConversationResponse> UserConversations(UserConversations message) 
-            => SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
+        public Task<ConversationResponse> UserConversations(UserConversations userConversation) 
+            => SendGetAsync<UserConversations, ConversationResponse>("users.conversations", userConversation);
+        
+        public Task<ConversationsHistoryResponse> ConversationsHistory(ConversationsHistory conversationsHistory) 
+            => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
 
         public void Dispose()
         {

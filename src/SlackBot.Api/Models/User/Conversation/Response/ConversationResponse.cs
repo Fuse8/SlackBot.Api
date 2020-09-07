@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using SlackBot.Api.Models.GeneralObjects.Pagination;
 
 namespace SlackBot.Api.Models.User.Conversation.Response
 {

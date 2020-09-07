@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Models.File.Upload.Response
 {

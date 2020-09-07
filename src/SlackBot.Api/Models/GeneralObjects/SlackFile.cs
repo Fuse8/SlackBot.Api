@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using SlackBot.Api.Models.File.Upload.Response;
 
-namespace SlackBot.Api.Models.File.Upload.Response
+namespace SlackBot.Api.Models.GeneralObjects
 {
 	public class SlackFile
 	{
