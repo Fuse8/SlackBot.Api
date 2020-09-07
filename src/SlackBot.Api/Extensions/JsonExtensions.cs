@@ -3,14 +3,22 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using SlackBot.Api.Enums;
+using SlackBot.Api.JsonConverters;
 
 namespace SlackBot.Api.Extensions
 {
 	public static class JsonExtensions
 	{
-		public static T FromJson<T>(this string data, ExceptionHandlingMode exceptionHandlingMode = ExceptionHandlingMode.Throw)
-			where T : class =>
-			Convert(data, exceptionHandlingMode, JsonConvert.DeserializeObject<T>);
+		public static T FromJson<T>(
+			this string obj,
+			bool isCamelCase = true,
+			ExceptionHandlingMode exceptionHandlingMode = ExceptionHandlingMode.Throw)
+			where T : class
+		{
+			var jsonSerializerSettings = ConfigureSettings(isCamelCase);
+
+			return Convert(obj, exceptionHandlingMode, data => JsonConvert.DeserializeObject<T>(data, jsonSerializerSettings));
+		}
 
 		public static string ToJson(
 			this object obj,
@@ -62,6 +70,12 @@ namespace SlackBot.Api.Extensions
 				: new DefaultNamingStrategy();
 			
 			settings.Converters.Add(new StringEnumConverter(namingStrategy));
+			
+			foreach (var jsonConverter in JsonConverterHelper.GetSpecificClassConverters())
+			{
+				settings.Converters.Add(jsonConverter);
+			}
+			
 			settings.ContractResolver = new DefaultContractResolver {NamingStrategy = namingStrategy};
 
 			return settings;

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Helpers;
 using SlackBot.Api.Models;
-using SlackBot.Api.Models.Chat.PostMessage.Request;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
@@ -17,6 +16,7 @@ using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Api.Enums;
 using SlackBot.Api.Extensions;
+using SlackBot.Api.Models.Chat.PostMessage;
 
 namespace SlackBot.Api
 {
@@ -117,7 +117,7 @@ namespace SlackBot.Api
         private TResponse ParseResponse<TResponse>(string responseContent)
             where TResponse : SlackResponseBase
         {
-            var slackApiResponse = responseContent.FromJson<TResponse>(ExceptionHandlingMode.DoNotProcess);
+            var slackApiResponse = responseContent.FromJson<TResponse>(exceptionHandlingMode: ExceptionHandlingMode.DoNotProcess);
             if (slackApiResponse?.Ok != true)
             {
                 throw new SlackApiResponseException(responseContent);

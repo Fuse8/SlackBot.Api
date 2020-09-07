@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Response
 {
-	public class BotMessageResponse : MessageBase<object>
+	public class BotMessageResponse : Message
 	{
 		[JsonProperty("bot_id")]
 		public string BotId { get; set; }

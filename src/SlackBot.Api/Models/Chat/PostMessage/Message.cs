@@ -1,9 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
+using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 
-namespace SlackBot.Api.Models.Chat.PostMessage.Contracts
+namespace SlackBot.Api.Models.Chat.PostMessage
 {
-	public class MessageBase<TBlock>
+	public class Message
 	{
 		[JsonProperty("channel")]
 		public string Channel { get; set; }
@@ -15,10 +16,10 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Contracts
 		public bool? AsUser { get; set; }
 
 		[JsonProperty("attachments")]
-		public AttachmentBase<TBlock>[] Attachments { get; set; }
+		public Attachment.Attachment[] Attachments { get; set; }
 
 		[JsonProperty("blocks")]
-		public TBlock[] Blocks { get; set; }
+		public BlockBase[] Blocks { get; set; }
 
 		[JsonProperty("icon_emoji")]
 		public string IconEmoji { get; set; }

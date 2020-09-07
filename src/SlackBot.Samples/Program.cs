@@ -3,13 +3,13 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
+using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.Attachment;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Blocks;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
-using SlackBot.Api.Models.Chat.PostMessage.Request;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
@@ -125,7 +125,7 @@ namespace SlackBot.Samples
 				Channel = Channel,
 				Blocks = blocks,
 				Text = "ala",
-				Attachments = new AttachmentBase<BlockBase>[]
+				Attachments = new[]
 				{
 					new Attachment
 					{
