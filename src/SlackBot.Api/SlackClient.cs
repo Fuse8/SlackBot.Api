@@ -38,11 +38,11 @@ namespace SlackBot.Api
         public Task<UploadFileResponse> UploadFile(FileToUpload fileToUpload) 
             => SendPostMultipartFormAsync("files.upload", fileToUpload);
         
-        public Task<MessageResponse> PostMessage(Message message)
+        public Task<PostMessageResponse> PostMessage(Message message)
         {
             var stringContent = GetJsonStringContent(message);
 
-            return SendPostAsync<MessageResponse>("chat.postMessage", stringContent);
+            return SendPostAsync<PostMessageResponse>("chat.postMessage", stringContent);
         }
         
         public Task<ConversationResponse> UserConversations(UserConversations message) 

@@ -3,12 +3,13 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
+using SlackBot.Api.Models.Chat.PostMessage.Attachment;
+using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.Blocks;
+using SlackBot.Api.Models.Chat.PostMessage.Contracts;
+using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Request;
-using SlackBot.Api.Models.Chat.PostMessage.Request.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Blocks;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts;
-using SlackBot.Api.Models.Chat.PostMessage.Request.Contracts.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.Request.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
@@ -44,89 +45,100 @@ namespace SlackBot.Samples
             /* * /var userConversationsResponse = await GetUserConversations(slackClient);/**/
 		}
 
-		private static Task<MessageResponse> PostMessage(SlackClient slackClient)
+		private static Task<PostMessageResponse> PostMessage(SlackClient slackClient)
 		{
+			var blocks = new BlockBase[]
+			{
+				new ActionBlock
+				{
+					Elements = new IActionElement[]
+					{
+						new ButtonActionElement
+						{
+							Text = new PlainTextObject
+							{
+								Emoji = true,
+								Text = ":cat: Button"
+							},
+							Url = new Uri("https://google.com"),
+							Confirm = new ConfirmObject
+							{
+								Title = "Action Block confirmation",
+								Confirm = "Sure",
+								Deny = "Nope",
+								Text = "I wanna open google"
+							}
+						},
+
+						new DatepickerActionElement
+						{
+							Placeholder = "Select date",
+							InitialDate = "2020-02-22",
+						},
+					}
+				},
+				new ContextBlock
+				{
+					Elements = new IContextElement[]
+					{
+						(PlainTextObject) "This is Context Block",
+						new ImageElement
+						{
+							AltText = "Kitty in the Context block",
+							ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+						},
+					}
+				},
+				new DividerBlock(),
+				new HeaderBlock
+				{
+					Text = "This is Header Block"
+				},
+				new ImageBlock
+				{
+					ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+					Text = new PlainTextObject
+					{
+						Emoji = true,
+						Text = ":cat:"
+					},
+					AltText = "Kitty"
+				},
+				new SectionBlock
+				{
+					Text = (PlainTextObject) "This is Section Block",
+					Fields = new TextObjectBase[]
+					{
+						(MrkdwnTextObject) "*Bold Text*",
+						(MrkdwnTextObject) "_Italic Text_"
+					},
+					Accessory = new ImageElement
+					{
+						AltText = "Kitty in the Section block",
+						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+					},
+				},
+			};
+			
 			var message = new Message
 			{
 				Channel = Channel,
-				Blocks = new BlockBase[]
+				Blocks = blocks,
+				Text = "ala",
+				Attachments = new AttachmentBase<BlockBase>[]
 				{
-					new ActionBlock
+					new Attachment
 					{
-						Elements = new IActionElement[]
-						{
-							new ButtonActionElement
-							{
-								Text = new PlainTextObject
-								{
-									Emoji = true,
-									Text = ":cat: Button"
-								},
-								Url = new Uri("https://google.com"),
-								Confirm = new ConfirmObject
-								{
-									Title = "Action Block confirmation",
-									Confirm = "Sure",
-									Deny = "Nope",
-									Text = "I wanna open google"
-								}
-							},
-
-							new DatepickerActionElement
-							{
-								Placeholder = "Select date",
-								InitialDate = "2020-02-22",
-							},
-						}
-					},
-					new ContextBlock
-					{
-						Elements = new IContextElement[]
-						{
-							(PlainTextObject) "This is Context Block",
-							new ImageElement
-							{
-								AltText = "Kitty in the Context block",
-								ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-							},
-						}
-					},
-					new DividerBlock(),
-					new HeaderBlock
-					{
-						Text = "This is Header Block"
-					},
-					new ImageBlock
-					{
-						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-						Text = new PlainTextObject
-						{
-							Emoji = true,
-							Text = ":cat:"
-						},
-						AltText = "Kitty"
-					},
-					new SectionBlock
-					{
-						Text = (PlainTextObject) "This is Section Block",
-						Fields = new TextObjectBase[]
-						{
-							(MrkdwnTextObject) "*Bold Text*",
-							(MrkdwnTextObject) "_Italic Text_"
-						},
-						Accessory = new ImageElement
-						{
-							AltText = "Kitty in the Section block",
-							ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-						},
-					},
+						Color = "#36a64f",
+						Blocks = blocks
+					}, 
 				}
 			};
 			
 			return slackClient.PostMessage(message);
 		}
 		
-		private static  async Task<MessageResponse> PostMessageWithMultipleFiles(SlackClient slackClient)
+		private static  async Task<PostMessageResponse> PostMessageWithMultipleFiles(SlackClient slackClient)
 		{
 			var content = await File.ReadAllTextAsync("./appsettings.json");
 			
