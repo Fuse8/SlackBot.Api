@@ -1,6 +1,6 @@
 ﻿namespace SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements
 {
-	public interface IInputElement
+	public interface IInputElement : IObjectWithType
 	{
 	}
 }

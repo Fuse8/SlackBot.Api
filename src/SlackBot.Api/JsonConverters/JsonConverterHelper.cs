@@ -11,12 +11,12 @@ namespace SlackBot.Api.JsonConverters
 		public static IEnumerable<JsonConverter> GetSpecificClassConverters() =>
 			new JsonConverter[]
 			{
-				new ObjectWithTypeBaseConverter<BlockBase>(),
-				new ObjectWithTypeBaseConverter<TextObjectBase>(),
-				new SubclassConverter<IActionElement>(),
-				new SubclassConverter<IContextElement>(),
-				new SubclassConverter<IInputElement>(),
-				new SubclassConverter<ISectionElement>(),
+				new ObjectWithTypeConverter<BlockBase, UnknownObject>(),
+				new ObjectWithTypeConverter<TextObjectBase, UnknownTextObject>(),
+				new ObjectWithTypeConverter<IActionElement, UnknownObject>(),
+				new ObjectWithTypeConverter<IContextElement, UnknownObject>(),
+				new ObjectWithTypeConverter<IInputElement, UnknownObject>(),
+				new ObjectWithTypeConverter<ISectionElement, UnknownObject>(),
 			};
 	}
 }
