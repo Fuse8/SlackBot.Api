@@ -13,7 +13,6 @@ namespace SlackBot.Api.Extensions
 			this string obj,
 			bool isCamelCase = true,
 			ExceptionHandlingMode exceptionHandlingMode = ExceptionHandlingMode.Throw)
-			where T : class
 		{
 			var jsonSerializerSettings = ConfigureSettings(isCamelCase);
 
@@ -34,10 +33,8 @@ namespace SlackBot.Api.Extensions
 			TData data,
 			ExceptionHandlingMode exceptionHandlingMode,
 			Func<TData, TResult> converter)
-			where TResult : class
-			where TData : class
 		{
-			TResult result = null;
+			TResult result = default;
 
 			try
 			{
