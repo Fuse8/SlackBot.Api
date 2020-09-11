@@ -1,10 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Helpers;
@@ -33,18 +31,14 @@ namespace SlackBot.Api
         }
 
         public Task<UploadFileResponse> UploadContent(ContentToUpload contentToUpload) 
-            => SendPostMultipartFormAsync("files.upload", contentToUpload);
+            => SendPostMultipartFormAsync<ContentToUpload, UploadFileResponse>("files.upload", contentToUpload);
 
         public Task<UploadFileResponse> UploadFile(FileToUpload fileToUpload) 
-            => SendPostMultipartFormAsync("files.upload", fileToUpload);
+            => SendPostMultipartFormAsync<FileToUpload, UploadFileResponse>("files.upload", fileToUpload);
         
-        public Task<PostMessageResponse> PostMessage(Message message)
-        {
-            var stringContent = GetJsonStringContent(message);
+        public Task<PostMessageResponse> PostMessage(Message message) 
+            => SendPostJsonStringAsync<Message, PostMessageResponse>("chat.postMessage", message);
 
-            return SendPostAsync<PostMessageResponse>("chat.postMessage", stringContent);
-        }
-        
         public Task<ConversationResponse> UserConversations(UserConversations message) 
             => SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
 
@@ -54,60 +48,40 @@ namespace SlackBot.Api
             GC.SuppressFinalize(this);
         }
 
-        private Task<UploadFileResponse> SendPostMultipartFormAsync<TRequest>(string path, TRequest request)
-            where TRequest : class
-        {
-            var multipartContent = new MultipartFormDataContent();
+        private Task<TResponse> SendPostJsonStringAsync<TRequest, TResponse>(string path, TRequest request)
+            where TRequest : class 
+            where TResponse : SlackResponseBase 
+            => SendPostAsync<TRequest, TResponse>(path, request, HttpContentHelper.GetJsonStringContent);
+        
+        private Task<TResponse> SendPostFormUrlEncodedAsync<TRequest, TResponse>(string path, TRequest request)
+            where TRequest : class 
+            where TResponse : SlackResponseBase 
+            => SendPostAsync<TRequest, TResponse>(path, request, HttpContentHelper.GetFormUrlEncodedContent);    
+        
+        private Task<TResponse> SendPostMultipartFormAsync<TRequest, TResponse>(string path, TRequest request)
+            where TRequest : class 
+            where TResponse : SlackResponseBase 
+            => SendPostAsync<TRequest, TResponse>(path, request, HttpContentHelper.GetMultipartForm);
 
-            var properties = PropertyInfoHelper.GetPublicProperties<TRequest>();
-            foreach (var property in properties)
-            {
-                var propertyValue = property.GetValue(request);
-                if (propertyValue != null)
-                {
-                    var fileFormPropertyName = FormPropertyHelper.GetFormPropertyName(property);
-                    AddContent(propertyValue, fileFormPropertyName);
-                }
-            }
-
-            return SendPostAsync<UploadFileResponse>(path, multipartContent);
-
-            void AddContent(object propertyValue, string fileFormPropertyName)
-            {
-                if (propertyValue is FileStream fileStream)
-                {
-                    multipartContent.Add(new StreamContent(fileStream), fileFormPropertyName, fileStream.Name);
-                }
-                else if (propertyValue is Stream || propertyValue.GetType().BaseType == typeof(Stream))
-                {
-                    multipartContent.Add(new StreamContent((Stream)propertyValue), fileFormPropertyName, Guid.NewGuid().ToString());
-                }
-                else
-                {
-                    multipartContent.Add(new StringContent(propertyValue.ToString()), fileFormPropertyName);
-                }
-            }
-        }
-
-        private async Task<TResponse> SendPostAsync<TResponse>(string path, HttpContent content)
+        private async Task<TResponse> SendPostAsync<TRequest, TResponse>(string path, TRequest request, Func<TRequest, HttpContent> getHttpContext)
             where TResponse : SlackResponseBase
         {
-            var url = CustomUrlHelper.BuildUrl(BaseApiUri, path);
-            var response = await _httpClient.PostAsync(url, content);
+            var httpContext = getHttpContext(request);
+            var response = await _httpClient.PostAsync(path, httpContext);
             var responseContent = await response.Content.ReadAsStringAsync();
             var slackApiResponse = ParseResponse<TResponse>(responseContent);
             
             return slackApiResponse;
-        }
+        } 
         
         private async Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
             where TResponse : SlackResponseBase
             where TRequest : class
         {
             var queryParamsDictionary = FormPropertyHelper.GetFormProperties(request).ToDictionary(p => p.PropertyName, p => p.PropertyValue);
-            var url = CustomUrlHelper.BuildUrl(BaseApiUri, path, queryParamsDictionary);
+            var queryString = CustomUrlHelper.CreateQueryString(path, queryParamsDictionary);
             
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync(queryString);
             var responseContent = await response.Content.ReadAsStringAsync();
             var slackApiResponse = ParseResponse<TResponse>(responseContent);
             
@@ -126,29 +100,10 @@ namespace SlackBot.Api
             return slackApiResponse;
         }
 
-        private StringContent GetJsonStringContent<TRequest>(TRequest request)
-            where TRequest : class
-        {
-            var json = request.ToJson();
-            var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-            
-            return stringContent;
-        }
-        
-        private FormUrlEncodedContent GetFormContent<TRequest>(TRequest request)
-            where TRequest : class
-        {
-            var dataDictionary =FormPropertyHelper.GetFormProperties(request)
-                .ToDictionary(property => property.PropertyName, propertyInfo => propertyInfo.PropertyValue);
-            var formUrlEncodedContent = new FormUrlEncodedContent(dataDictionary);
-            
-            return formUrlEncodedContent;
-        }
-        
         private HttpClient InitHttpClient(string token)
         {
             var httpClientHandler = new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }; 
-            var httpClient = new HttpClient(httpClientHandler);
+            var httpClient = new HttpClient(httpClientHandler) { BaseAddress = BaseApiUri };
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return httpClient;
