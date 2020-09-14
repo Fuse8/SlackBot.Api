@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
+using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 
 namespace SlackBot.Api.Models.Chat.PostMessage
 {
@@ -16,7 +17,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 		public bool? AsUser { get; set; }
 
 		[JsonProperty("attachments")]
-		public Attachment.Attachment[] Attachments { get; set; }
+		public Attachment[] Attachments { get; set; }
 
 		[JsonProperty("blocks")]
 		public BlockBase[] Blocks { get; set; }
@@ -44,10 +45,10 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 
 		[JsonProperty("unfurl_links")]
 		public bool? UnfurlLinks { get; set; }
-		
+
 		[JsonProperty("unfurl_media")]
 		public bool? UnfurlMedia { get; set; }
-		
+
 		[JsonProperty("username")]
 		public string Username { get; set; }
 	}

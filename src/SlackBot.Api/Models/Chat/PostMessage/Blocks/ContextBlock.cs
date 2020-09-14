@@ -10,8 +10,5 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 		
 		[JsonProperty("elements")]
 		public IContextElement[] Elements { get; set; } 
-
-		[JsonProperty("block_id")]
-		public string BlockId { get; set; }
 	}
 }

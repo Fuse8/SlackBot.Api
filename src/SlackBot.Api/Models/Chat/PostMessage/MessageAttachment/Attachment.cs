@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 
-namespace SlackBot.Api.Models.Chat.PostMessage.Attachment
+namespace SlackBot.Api.Models.Chat.PostMessage.MessageAttachment
 {
 	public class Attachment
 	{
@@ -52,6 +52,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Attachment
 		public Uri FooterIcon { get; set; }
 
 		[JsonProperty("ts")]
-		public long? Ts { get; set; }
+		public long? Timestamp { get; set; }
 	}
 }

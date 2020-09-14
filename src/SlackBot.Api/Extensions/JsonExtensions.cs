@@ -11,20 +11,18 @@ namespace SlackBot.Api.Extensions
 	{
 		public static T FromJson<T>(
 			this string obj,
-			bool isCamelCase = true,
 			ExceptionHandlingMode exceptionHandlingMode = ExceptionHandlingMode.Throw)
 		{
-			var jsonSerializerSettings = ConfigureSettings(isCamelCase);
+			var jsonSerializerSettings = ConfigureSettings();
 
 			return Convert(obj, exceptionHandlingMode, data => JsonConvert.DeserializeObject<T>(data, jsonSerializerSettings));
 		}
 
 		public static string ToJson(
 			this object obj,
-			bool isCamelCase = true,
 			ExceptionHandlingMode exceptionHandlingMode = ExceptionHandlingMode.Throw)
 		{
-			var jsonSerializerSettings = ConfigureSettings(isCamelCase);
+			var jsonSerializerSettings = ConfigureSettings();
 
 			return Convert(obj, exceptionHandlingMode, data => JsonConvert.SerializeObject(data, jsonSerializerSettings));
 		}
@@ -54,7 +52,7 @@ namespace SlackBot.Api.Extensions
 			return result;
 		}
 
-		private static JsonSerializerSettings ConfigureSettings(bool isCamelCase)
+		private static JsonSerializerSettings ConfigureSettings()
 		{
 			var settings = new JsonSerializerSettings
 			{
@@ -62,9 +60,7 @@ namespace SlackBot.Api.Extensions
 				NullValueHandling = NullValueHandling.Ignore,
 			};
 
-			var namingStrategy = isCamelCase
-				? (NamingStrategy) new CamelCaseNamingStrategy()
-				: new DefaultNamingStrategy();
+			var namingStrategy = new DefaultNamingStrategy();
 			
 			settings.Converters.Add(new StringEnumConverter(namingStrategy));
 			

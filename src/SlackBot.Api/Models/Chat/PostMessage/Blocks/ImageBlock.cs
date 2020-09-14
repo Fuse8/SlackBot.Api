@@ -2,15 +2,13 @@
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 {
 	public class ImageBlock : BlockBase
 	{
 		protected override string SectionType => "image";
-
-		[JsonProperty("block_id")]
-		public string BlockId { get; set; }
 
 		[JsonProperty("image_url")]
 		public Uri ImageUrl { get; set; }

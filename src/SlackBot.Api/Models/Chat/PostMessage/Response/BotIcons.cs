@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Response
 {
-	public class Icons
+	public class BotIcons
 	{
 		[JsonProperty("image_36")]
 		public Uri Image36 { get; set; }

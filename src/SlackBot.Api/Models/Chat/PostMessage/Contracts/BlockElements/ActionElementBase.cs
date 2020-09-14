@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements
 {
@@ -6,5 +7,8 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements
 	{
 		[JsonProperty("action_id")]
 		public string ActionId { get; set; }
+		
+		[JsonProperty("confirm")]
+		public ConfirmObject Confirm { get; set; }
 	}
 }

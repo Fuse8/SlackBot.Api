@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Models.Chat.PostMessage;
-using SlackBot.Api.Models.Chat.PostMessage.Attachment;
+using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Blocks;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
@@ -31,7 +32,7 @@ namespace SlackBot.Samples
 
 			var slackClient = new SlackClient(slackBotSettings.Token);
             
-			/* * /var postMessageResponse = await PostMessage(slackClient);/**/
+			/* * /var postMessageResponse = await PostMessageWithBlocks(slackClient);/**/
 			
             /* * /var postMessageWithFilesResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
             
@@ -45,7 +46,7 @@ namespace SlackBot.Samples
             /* * /var userConversationsResponse = await GetUserConversations(slackClient);/**/
 		}
 
-		private static Task<PostMessageResponse> PostMessage(SlackClient slackClient)
+		private static Task<PostMessageResponse> PostMessageWithBlocks(SlackClient slackClient)
 		{
 			var blocks = new BlockBase[]
 			{
@@ -57,7 +58,7 @@ namespace SlackBot.Samples
 						{
 							Text = new PlainTextObject
 							{
-								Emoji = true,
+								UseEmoji = true,
 								Text = ":cat: Button"
 							},
 							Url = new Uri("https://google.com"),
@@ -99,7 +100,7 @@ namespace SlackBot.Samples
 					ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
 					Text = new PlainTextObject
 					{
-						Emoji = true,
+						UseEmoji = true,
 						Text = ":cat:"
 					},
 					AltText = "Kitty"

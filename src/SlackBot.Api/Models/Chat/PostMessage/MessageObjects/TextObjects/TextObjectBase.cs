@@ -2,7 +2,7 @@
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 
-namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
+namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects
 {
 	public abstract class TextObjectBase : ObjectWithType, IInputElement, IContextElement
 	{

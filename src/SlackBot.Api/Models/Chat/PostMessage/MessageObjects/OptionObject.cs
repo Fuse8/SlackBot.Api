@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
 {

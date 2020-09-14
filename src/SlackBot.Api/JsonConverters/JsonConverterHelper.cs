@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Api.JsonConverters
 {

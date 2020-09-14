@@ -20,7 +20,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Response
 		public string AppId { get; set; }
 
 		[JsonProperty("icons")]
-		public Icons Icons { get; set; }
+		public BotIcons Icons { get; set; }
 
 		[JsonProperty("team_id")]
 		public string TeamId { get; set; }

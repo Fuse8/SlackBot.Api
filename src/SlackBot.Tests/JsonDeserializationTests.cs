@@ -5,10 +5,11 @@ using SlackBot.Api.Models.Chat.PostMessage.Blocks;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Tests
 {
-	public class JsonDeserializationTests
+	internal class JsonDeserializationTests
 	{
 		[TestFixture(TypeArgs = new[] {typeof(BlockBase), typeof(UnknownObject)})]
 		[TestFixture(TypeArgs = new[] {typeof(IActionElement), typeof(UnknownObject)})]
@@ -61,14 +62,14 @@ namespace SlackBot.Tests
 			DeserializeAndCheckTypeOfResult<BlockBase>(json, expectedType);
 		}
 
+		private static void DeserializeAndCheckTypeOfResult<TParse, TExpected>(string json) 
+			=> DeserializeAndCheckTypeOfResult<TParse>(json, typeof(TExpected));
+
 		private static void DeserializeAndCheckTypeOfResult<TParse>(string json, Type expectedType)
 		{
 			var result = json.FromJson<TParse>();
 
 			Assert.IsInstanceOf(expectedType, result);
 		}
-
-		private static void DeserializeAndCheckTypeOfResult<TParse, TExpected>(string json) 
-			=> DeserializeAndCheckTypeOfResult<TParse>(json, typeof(TExpected));
 	}
 }

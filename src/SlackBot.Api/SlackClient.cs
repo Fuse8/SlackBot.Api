@@ -68,8 +68,7 @@ namespace SlackBot.Api
         {
             var httpContext = getHttpContext(request);
             var response = await _httpClient.PostAsync(path, httpContext);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var slackApiResponse = ParseResponse<TResponse>(responseContent);
+            var slackApiResponse = await ParseResponseAsync<TResponse>(response);
             
             return slackApiResponse;
         } 
@@ -79,19 +78,19 @@ namespace SlackBot.Api
             where TRequest : class
         {
             var queryParamsDictionary = FormPropertyHelper.GetFormProperties(request).ToDictionary(p => p.PropertyName, p => p.PropertyValue);
-            var queryString = CustomUrlHelper.CreateQueryString(path, queryParamsDictionary);
+            var url = CustomUrlHelper.CreateQueryString(path, queryParamsDictionary);
             
-            var response = await _httpClient.GetAsync(queryString);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var slackApiResponse = ParseResponse<TResponse>(responseContent);
+            var response = await _httpClient.GetAsync(url); 
+            var slackApiResponse = await ParseResponseAsync<TResponse>(response);
             
             return slackApiResponse;
         }
 
-        private TResponse ParseResponse<TResponse>(string responseContent)
+        private async Task<TResponse> ParseResponseAsync<TResponse>(HttpResponseMessage response)
             where TResponse : SlackResponseBase
         {
-            var slackApiResponse = responseContent.FromJson<TResponse>(exceptionHandlingMode: ExceptionHandlingMode.DoNotProcess);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var slackApiResponse = responseContent.FromJson<TResponse>(ExceptionHandlingMode.DoNotProcess);
             if (slackApiResponse?.Ok != true)
             {
                 throw new SlackApiResponseException(responseContent);

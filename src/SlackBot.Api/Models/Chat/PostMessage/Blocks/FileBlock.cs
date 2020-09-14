@@ -7,9 +7,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 	{
 		protected override string SectionType => "file";
 
-		[JsonProperty("block_id")]
-		public string BlockId { get; set; }
-
 		[JsonProperty("external_id")]
 		public string ExternalId { get; set; }
 
