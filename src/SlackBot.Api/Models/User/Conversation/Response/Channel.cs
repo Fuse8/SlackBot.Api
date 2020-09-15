@@ -11,13 +11,16 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		public string Name { get; set; }
 
 		[JsonProperty("is_channel")]
-		public bool IsChannel { get; set; }
+		public bool IsChannel { get; set; } //TODO возможно нужно все bool сделать наллбл
 
 		[JsonProperty("is_group")]
 		public bool IsGroup { get; set; }
 
 		[JsonProperty("is_im")]
 		public bool IsDirectMessageChannel { get; set; }
+
+		[JsonProperty("is_mpim")]
+		public bool IsMultiPersonDirectMessageChannel { get; set; }
 
 		[JsonProperty("created")]
 		public long Created { get; set; }
@@ -60,9 +63,6 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 
 		[JsonProperty("is_private")]
 		public bool IsPrivate { get; set; }
-
-		[JsonProperty("is_mpim")]
-		public bool IsMpim { get; set; }
 
 		[JsonProperty("last_read")]
 		public string LastRead { get; set; }

@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.Conversation.History.Response
+namespace SlackBot.Api.Models.GeneralObjects.BotInfo
 {
-    public class BotIconItem
+    public class BotIcons
     {
         [JsonProperty("image_36")]
         public Uri Image36Url { get; set; }

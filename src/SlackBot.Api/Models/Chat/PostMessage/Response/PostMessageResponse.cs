@@ -8,7 +8,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Response
         public string Channel { get; set; }
 
         [JsonProperty("ts")]
-        public string ThreadId { get; set; }
+        public string Timestamp { get; set; }
         
         [JsonProperty("message")]
         public BotMessageResponse Message { get; set; }

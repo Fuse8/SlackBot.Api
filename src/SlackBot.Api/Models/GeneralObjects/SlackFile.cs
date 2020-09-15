@@ -109,13 +109,13 @@ namespace SlackBot.Api.Models.GeneralObjects
 		public bool HasRichPreview { get; set; }
         
 		[JsonProperty("thumb_64")]
-		public Uri Thumb64 { get; set; }
+		public Uri Thumb64Url { get; set; }
 
 		[JsonProperty("thumb_80")]
-		public Uri Thumb80 { get; set; }
+		public Uri Thumb80Url { get; set; }
 
 		[JsonProperty("thumb_360")]
-		public Uri Thumb360 { get; set; }
+		public Uri Thumb360Url { get; set; }
 
 		[JsonProperty("thumb_360_w")]
 		public long? Thumb360Wight { get; set; }
@@ -124,7 +124,7 @@ namespace SlackBot.Api.Models.GeneralObjects
 		public long? Thumb360Height { get; set; }
 
 		[JsonProperty("thumb_160")]
-		public Uri Thumb160 { get; set; }
+		public Uri Thumb160Url { get; set; }
 
 		[JsonProperty("original_w")]
 		public long? OriginalWight { get; set; }

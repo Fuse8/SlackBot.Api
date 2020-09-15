@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.Conversation.History.Response
+namespace SlackBot.Api.Models.GeneralObjects.BotInfo
 {
     public class BotInfo
     {
@@ -23,6 +23,9 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public string UserId { get; set; }
 
         [JsonProperty("icons")]
-        public BotIconItem Icons { get; set; }
+        public BotIcons Icons { get; set; }
+
+        [JsonProperty("team_id")]
+        public string TeamId { get; set; }
     }
 }
