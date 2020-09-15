@@ -1,28 +1,28 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
 {
     public class BotInfo
     {
-        [JsonPropertyName("id")]
+        [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonPropertyName("deleted")]
+        [JsonProperty("deleted")]
         public bool IsDeleted { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("updated")]
+        [JsonProperty("updated")]
         public long Updated { get; set; }
 
-        [JsonPropertyName("app_id")]
+        [JsonProperty("app_id")]
         public string AppId { get; set; }
 
-        [JsonPropertyName("user_id")]
+        [JsonProperty("user_id")]
         public string UserId { get; set; }
 
-        [JsonPropertyName("icons")]
+        [JsonProperty("icons")]
         public BotIconItem Icons { get; set; }
     }
 }

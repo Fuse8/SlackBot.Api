@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
 {
     public class MessageEditedInfo
     {
-        [JsonPropertyName("user")]
+        [JsonProperty("user")]
         public string UserId { get; set; }
 
-        [JsonPropertyName("ts")]
-        public string EditedOn { get; set; }
+        [JsonProperty("ts")]
+        public string Timestamp { get; set; }
     }
 }

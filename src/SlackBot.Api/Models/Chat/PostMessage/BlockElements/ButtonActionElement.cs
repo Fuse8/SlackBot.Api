@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Enums;
-using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.BlockElements

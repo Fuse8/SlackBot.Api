@@ -1,189 +1,189 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
 {
     public class MessageResponse
     {
-        [JsonPropertyName("type")]
+        [JsonProperty("type")]
         public string Type { get; set; }
         
-        [JsonPropertyName("subtype")]
+        [JsonProperty("subtype")]
         public string Subtype { get; set; }
         
-        [JsonPropertyName("hidden")]
+        [JsonProperty("hidden")]
         public bool? Hidden { get; set; }
         
-        [JsonPropertyName("is_starred")]
+        [JsonProperty("is_starred")]
         public bool? IsStarred { get; set; }
         
-        [JsonPropertyName("pinned_to")]
+        [JsonProperty("pinned_to")]
         public List<string> PinnedToChannelIds { get; set; }
         
-        [JsonPropertyName("pinned_info")]
+        [JsonProperty("pinned_info")]
         public PinnedInfo PinnedInfo { get; set; }
         
-        [JsonPropertyName("reactions")]
+        [JsonProperty("reactions")]
         public List<MessageReactionItem> Reactions { get; set; }
         
-        [JsonPropertyName("channel")]
+        [JsonProperty("channel")]
         public string ChannelId { get; set; }
         
-        [JsonPropertyName("user")]
+        [JsonProperty("user")]
         public string UserId { get; set; }
 
-        [JsonPropertyName("text")]
+        [JsonProperty("text")]
         public string Text { get; set; }
 
-        [JsonPropertyName("ts")]
+        [JsonProperty("ts")]
         public string Timestamp { get; set; }
 
-        [JsonPropertyName("edited")]
+        [JsonProperty("edited")]
         public MessageEditedInfo EditedInfo { get; set; }
 
-        [JsonPropertyName("blocks")]
+        [JsonProperty("blocks")]
         public object[] Blocks { get; set; } //TODO возможно заюзать базовый тип или сделать свой для респонса с типом блока и его айдихой
 
-        [JsonPropertyName("team")]
+        [JsonProperty("team")]
         public string TeamId { get; set; }
         
-        [JsonPropertyName("display_as_bot")]
+        [JsonProperty("display_as_bot")]
         public bool? DisplayAsBot { get; set; }
         
-        [JsonPropertyName("bot_id")]
+        [JsonProperty("bot_id")]
         public string BotId { get; set; }
 
-        [JsonPropertyName("bot_profile")]
+        [JsonProperty("bot_profile")]
         public BotInfo BotInfo { get; set; }
         
-        [JsonPropertyName("files")]
+        [JsonProperty("files")]
         public List<SlackFile> Files { get; set; }
         
-        [JsonPropertyName("thread_ts")]
+        [JsonProperty("thread_ts")]
         public string ThreadTimestamp { get; set; }
         
-        [JsonPropertyName("reply_count")]
+        [JsonProperty("reply_count")]
         public long? ReplyCount { get; set; }
         
-        [JsonPropertyName("reply_users_count")]
+        [JsonProperty("reply_users_count")]
         public long? ReplyUsersCount { get; set; }
         
-        [JsonPropertyName("latest_reply")]
+        [JsonProperty("latest_reply")]
         public string LatestReplyTimestamp { get; set; }
         
-        [JsonPropertyName("reply_users")]
+        [JsonProperty("reply_users")]
         public List<string> ReplyUserIds { get; set; }
         
-        [JsonPropertyName("subscribed")]
+        [JsonProperty("subscribed")]
         public bool? Subscribed { get; set; }
         
-        [JsonPropertyName("upload")]
+        [JsonProperty("upload")]
         public bool? Upload { get; set; }
         
-        [JsonPropertyName("client_msg_id")]
+        [JsonProperty("client_msg_id")]
         public string ClientMessageIdGuid { get; set; }
         
         #region "bot_message" type
 
-        [JsonPropertyName("username")]
+        [JsonProperty("username")]
         public string Username { get; set; }
 
         #endregion
         
         #region "channel_join" type
         
-        [JsonPropertyName("inviter")]
+        [JsonProperty("inviter")]
         public string InviterId { get; set; }
 
         #endregion
         
         #region "channel_name" and "group_name" type
         
-        [JsonPropertyName("old_name")]
+        [JsonProperty("old_name")]
         public string OldName { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         #endregion
         
         #region "channel_purpose" and "group_purpose" type
         
-        [JsonPropertyName("purpose")]
+        [JsonProperty("purpose")]
         public string PurposeText { get; set; }
 
         #endregion
         
         #region "channel_topic" and "group_topic" type
         
-        [JsonPropertyName("topic")]
+        [JsonProperty("topic")]
         public string TopicText { get; set; }
 
         #endregion
         
         #region "file_comment" and "file_mention" type
         
-        [JsonPropertyName("file")]
+        [JsonProperty("file")]
         public SlackFile File { get; set; }
         
         #endregion
         
         #region "file_comment" type
         
-        [JsonPropertyName("comment")]
+        [JsonProperty("comment")]
         public object Comment { get; set; } //TODO
 
         #endregion
         
         #region "group_archive" type
         
-        [JsonPropertyName("members")]
+        [JsonProperty("members")]
         public List<string> MemberIds { get; set; }
 
         #endregion
         
         #region "message_changed" and "message_replied" type
         
-        [JsonPropertyName("message")]
+        [JsonProperty("message")]
         public MessageResponse UpdatedMessage { get; set; }
 
         #endregion
         
         #region "message_deleted" type
         
-        [JsonPropertyName("deleted_ts")]
+        [JsonProperty("deleted_ts")]
         public string DeletedTimestamp { get; set; }
 
         #endregion
         
         #region "message_replied" type
         
-        [JsonPropertyName("event_ts")]
+        [JsonProperty("event_ts")]
         public string EventTimestamp { get; set; }
 
         #endregion
         
         #region "pinned_item" and "unpinned_item" type
         
-        [JsonPropertyName("item_type")]
+        [JsonProperty("item_type")]
         public string ItemType { get; set; }
         
-        [JsonPropertyName("item")]
+        [JsonProperty("item")]
         public object Item { get; set; }  //TODO
 
         #endregion
         
         #region "file_share" type
         
-        [JsonPropertyName("channel_type")]
+        [JsonProperty("channel_type")]
         public string ChannelType { get; set; }
 
         #endregion
         
         #region "thread_broadcast" type
         
-        [JsonPropertyName("root")]
+        [JsonProperty("root")]
         public MessageResponse RootMessage { get; set; }
 
         #endregion

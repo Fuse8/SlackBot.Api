@@ -21,7 +21,6 @@ using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
-using MessageResponse = SlackBot.Api.Models.Chat.PostMessage.MessageResponse;
 
 namespace SlackBot.Samples
 {
@@ -39,18 +38,18 @@ namespace SlackBot.Samples
 		{
 			var slackClient = new SlackClient(_slackBotSettings.Token);
             
-			/* */var postMessageResponse = await PostMessageWithBlocks(slackClient);/**/
+			/* * /var postMessageResponse = await PostMessageWithBlocks(slackClient);/**/
 			
-            /* */var postMessageWithFilesResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
+            /* * /var postMessageWithFilesResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
             
             // Upload plain file content 
-            /* */var uploadContentResponse = await UploadContent(slackClient);/**/
+            /* * /var uploadContentResponse = await UploadContent(slackClient);/**/
             
             // Upload file from disk 
-            /* */var uploadFileResponse = await UploadFile(slackClient);/**/
+            /* * /var uploadFileResponse = await UploadFile(slackClient);/**/
             
             // Gets list of bot channels
-            /* */var userConversationsResponse = await GetUserConversations(slackClient);/**/
+            /* * /var userConversationsResponse = await GetUserConversations(slackClient);/**/
             
             // Gets conversation's history of messages and events.
             /* */var conversationsHistoryResponse = await GetConversationsHistory(slackClient);/**/
@@ -183,7 +182,7 @@ namespace SlackBot.Samples
 			
 			var message = new Message
 			{
-				Channel = Channel,
+				Channel = _slackBotSettings.ChannelName,
 				Text = firstFile.File.Permalink + " " + secondFile.File.Permalink,
 				Blocks = new BlockBase[]
 				{
@@ -207,7 +206,7 @@ namespace SlackBot.Samples
 			{
 				Comment = "Upload content",
 				Title = "Title",
-				Channels = Channel,
+				Channels = _slackBotSettings.ChannelName,
 				Content = content,
 				Filename = "appsettings.json",
 				FileType = "javascript"
@@ -221,7 +220,7 @@ namespace SlackBot.Samples
 			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
 			var fileMessage = new FileToUpload
 			{
-				Channels = Channel,
+				Channels = _slackBotSettings.ChannelName,
 				Stream = fileStream,
 			};
 

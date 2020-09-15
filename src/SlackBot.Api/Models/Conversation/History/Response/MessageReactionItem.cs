@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
 {
     public class MessageReactionItem
     {
-        [JsonPropertyName("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
         
-        [JsonPropertyName("count")]
+        [JsonProperty("count")]
         public long Count { get; set; }
         
-        [JsonPropertyName("users")]
+        [JsonProperty("users")]
         public List<string> UserIds { get; set; }
     }
 }

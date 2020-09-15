@@ -1,16 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
 {
     public class PinnedInfo
     {
-        [JsonPropertyName("channel")]
+        [JsonProperty("channel")]
         public string ChannelId { get; set; }
 
-        [JsonPropertyName("pinned_by")]
+        [JsonProperty("pinned_by")]
         public string PinnedById { get; set; }
 
-        [JsonPropertyName("pinned_ts")]
+        [JsonProperty("pinned_ts")]
         public long PinnedOn { get; set; }
     }
 }
