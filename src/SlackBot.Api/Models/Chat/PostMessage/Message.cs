@@ -32,7 +32,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 		public bool? LinkNames { get; set; }
 
 		[JsonProperty("mrkdwn")]
-		public bool? Mrkdwn { get; set; }
+		public bool? UseMrkdwn { get; set; }
 
 		[JsonProperty("parse")]
 		public string Parse { get; set; }

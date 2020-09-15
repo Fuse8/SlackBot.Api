@@ -1,6 +1,4 @@
-﻿using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
-
-namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
+﻿namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects
 {
 	public class MrkdwnTextObject : TextObjectBase
 	{

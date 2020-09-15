@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api.Helpers
 {
-    public static class PropertyInfoHelper
+    internal static class PropertyInfoHelper
     {
         public static IEnumerable<PropertyInfo> GetPublicProperties<T>()
             => typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);

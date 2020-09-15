@@ -7,7 +7,7 @@ using SlackBot.Api.Extensions;
 
 namespace SlackBot.Api.Helpers
 {
-	public static class HttpContentHelper
+	internal static class HttpContentHelper
 	{
 		public static StringContent GetJsonStringContent<TRequest>(TRequest request)
 			where TRequest : class

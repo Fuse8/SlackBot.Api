@@ -3,7 +3,7 @@ using System.Web;
 
 namespace SlackBot.Api.Helpers
 {
-    public static class CustomUrlHelper
+    internal static class CustomUrlHelper
     {
         public static string CreateQueryString(string path, Dictionary<string, string> queryParams)
         {

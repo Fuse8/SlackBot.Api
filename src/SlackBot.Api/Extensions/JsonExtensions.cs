@@ -60,17 +60,13 @@ namespace SlackBot.Api.Extensions
 				NullValueHandling = NullValueHandling.Ignore,
 			};
 
-			var namingStrategy = new DefaultNamingStrategy();
-			
-			settings.Converters.Add(new StringEnumConverter(namingStrategy));
+			settings.Converters.Add(new StringEnumConverter());
 			
 			foreach (var jsonConverter in JsonConverterHelper.GetSpecificClassConverters())
 			{
 				settings.Converters.Add(jsonConverter);
 			}
 			
-			settings.ContractResolver = new DefaultContractResolver {NamingStrategy = namingStrategy};
-
 			return settings;
 		}
 	}

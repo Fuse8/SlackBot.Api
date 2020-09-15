@@ -8,7 +8,7 @@ using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 
 namespace SlackBot.Api.JsonConverters
 {
-	public class ObjectWithTypeConverter<T, TUnknownType> : JsonConverter<T>
+	internal class ObjectWithTypeConverter<T, TUnknownType> : JsonConverter<T>
 		where T : class, IObjectWithType
 		where TUnknownType : T, IUnknownObjectWithType, new()
 	{
@@ -17,21 +17,27 @@ namespace SlackBot.Api.JsonConverters
 
 		public ObjectWithTypeConverter()
 		{
-			_typeJsonPropertyName = typeof(IObjectWithType).GetProperty(nameof(IObjectWithType.Type)).GetJsonPropertyName();
+			_typeJsonPropertyName = typeof(ObjectWithType).GetProperty(nameof(ObjectWithType.Type)).GetJsonPropertyName();
 			
+			var subtypes = GetSubtypes();
+
+			_allObjects = subtypes.Select(objectType => (T) Activator.CreateInstance(objectType)).ToArray();
+		}
+
+		private static Type[] GetSubtypes()
+		{
 			var convertSubtypesOfType = typeof(T);
 			var unknownObjectType = typeof(IUnknownObjectWithType);
 
 			var subtypes = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(domainAssembly => domainAssembly.GetTypes(), (domainAssembly, assemblyType) => assemblyType)
 				.Where(
-					classType => convertSubtypesOfType.IsAssignableFrom(classType) 
-					             && !unknownObjectType.IsAssignableFrom(classType) 
-					             && classType != convertSubtypesOfType 
+					classType => convertSubtypesOfType.IsAssignableFrom(classType)
+					             && !unknownObjectType.IsAssignableFrom(classType)
+					             && classType != convertSubtypesOfType
 					             && !classType.IsAbstract)
 				.ToArray();
-			
-			_allObjects = subtypes.Select(objectType => (T) Activator.CreateInstance(objectType)).ToArray();
+			return subtypes;
 		}
 
 		public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer) => throw new NotImplementedException();
@@ -40,24 +46,24 @@ namespace SlackBot.Api.JsonConverters
 		{
 			if (reader.TokenType == JsonToken.StartObject)
 			{
-				var obj = JObject.Load(reader);
-				var typeToParse = GetSubtypeToConvertTo(obj);
+				var objToParse = JObject.Load(reader);
+				var typeToParse = GetSubtypeToConvertTo(objToParse);
 
 				if (typeToParse != null)
 				{
 					try
 					{
 						existingValue = (T) Activator.CreateInstance(typeToParse);
-						serializer.Populate(obj.CreateReader(), existingValue);
+						serializer.Populate(objToParse.CreateReader(), existingValue);
 					}
 					catch 
 					{
-						existingValue = CreateUnknownObject(serializer, obj);	
+						existingValue = CreateUnknownObject(serializer, objToParse);	
 					}
 				}
 				else
 				{
-					existingValue = CreateUnknownObject(serializer, obj);
+					existingValue = CreateUnknownObject(serializer, objToParse);
 				}
 			}
 
@@ -70,8 +76,8 @@ namespace SlackBot.Api.JsonConverters
 
 		private Type GetSubtypeToConvertTo(JObject jObject)
 		{
-			var jToken = jObject[_typeJsonPropertyName];
-			return _allObjects.FirstOrDefault(p => p.Type == jToken?.Value<string>())?.GetType();
+			var objectTypeValue = jObject[_typeJsonPropertyName]?.Value<string>();
+			return _allObjects.FirstOrDefault(p => p.Type == objectTypeValue)?.GetType();
 		}
 
 		private static TUnknownType CreateUnknownObject(JsonSerializer serializer, JObject jObject)
