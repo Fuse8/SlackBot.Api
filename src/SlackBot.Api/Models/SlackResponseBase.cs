@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models
 {
     public abstract class SlackResponseBase
     {
-        [JsonPropertyName("ok")]
+        [JsonProperty("ok")]
         public bool Ok { get; set; }
     }
 }

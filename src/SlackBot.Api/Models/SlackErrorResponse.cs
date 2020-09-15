@@ -1,13 +1,13 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models
 {
     public class SlackErrorResponse
     {
-        [JsonPropertyName("error")]
+        [JsonProperty("error")]
         public string Error { get; set; }
 
-        [JsonPropertyName("warning")]
+        [JsonProperty("warning")]
         public string Warning { get; set; }
     }
 }
