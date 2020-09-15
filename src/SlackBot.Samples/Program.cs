@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
+using SlackBot.Api.Helpers;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
@@ -30,7 +31,8 @@ namespace SlackBot.Samples
 			var configuration = GetConfiguration();
 			var slackBotSettings = configuration.GetSection<SlackBotSettings>("SlackBotSettings");
 
-			var slackClient = new SlackClient(slackBotSettings.Token);
+			var slackHttpClient = HttpClientHelpers.GetSlackHttpClient(slackBotSettings.Token);
+			var slackClient = new SlackClient(slackHttpClient);
             
 			/* */var postMessageResponse = await PostMessageWithBlocks(slackClient);/**/
 			
@@ -98,7 +100,7 @@ namespace SlackBot.Samples
 				new ImageBlock
 				{
 					ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-					Text = new PlainTextObject
+					Title = new PlainTextObject
 					{
 						UseEmoji = true,
 						Text = ":cat:"

@@ -60,7 +60,7 @@ namespace SlackBot.Api.Extensions
 				NullValueHandling = NullValueHandling.Ignore,
 			};
 
-			settings.Converters.Add(new StringEnumConverter());
+			settings.Converters.Add(new StringEnumConverter(true));
 			
 			foreach (var jsonConverter in JsonConverterHelper.GetSpecificClassConverters())
 			{

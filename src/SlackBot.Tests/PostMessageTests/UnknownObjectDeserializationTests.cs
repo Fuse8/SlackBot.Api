@@ -4,12 +4,11 @@ using SlackBot.Api.Extensions;
 using SlackBot.Api.Models.Chat.PostMessage.Blocks;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
-namespace SlackBot.Tests
+namespace SlackBot.Tests.PostMessageTests
 {
-	internal class JsonDeserializationTests
+	internal class UnknownObjectDeserializationTests
 	{
 		[TestFixture(TypeArgs = new[] {typeof(BlockBase), typeof(UnknownObject)})]
 		[TestFixture(TypeArgs = new[] {typeof(IActionElement), typeof(UnknownObject)})]
