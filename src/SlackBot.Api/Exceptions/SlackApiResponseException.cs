@@ -10,9 +10,16 @@ namespace SlackBot.Api.Exceptions
         public SlackApiResponseException(string errorResponseString)
             : base($"Incorrect Slack API request: {errorResponseString}")
         {
-            ApiError = errorResponseString.FromJson<SlackErrorResponse>(ExceptionHandlingMode.DoNotProcess); 
+            var parsedError = errorResponseString.FromJson<SlackErrorResponse>(ExceptionHandlingMode.DoNotProcess);
+            if (parsedError != null)
+            {
+                Error = parsedError.Error;
+                Warning = parsedError.Warning;
+            }
         }
 
-        public SlackErrorResponse ApiError { get; set; } //TODO сделать спец класс для полей ошибки
+        public string Error { get; }
+        
+        public string Warning { get; }
     }
 }

@@ -22,6 +22,13 @@ using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
+#region disable Resharper rules
+	
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedVariable
+
+#endregion
+
 namespace SlackBot.Samples
 {
 	public class Program
@@ -53,19 +60,6 @@ namespace SlackBot.Samples
             
             // Gets conversation's history of messages and events.
             /* */var conversationsHistoryResponse = await GetConversationsHistory(slackClient);/**/
-
-            var asd = conversationsHistoryResponse.Messages.Where(p => !string.IsNullOrEmpty(p.Subtype)).ToList();
-            var starred = conversationsHistoryResponse.Messages.Where(p => p.IsStarred.GetValueOrDefault()).ToList();
-            var commented = conversationsHistoryResponse.Messages.Where(p => p.Comment != null).ToList();
-            var deleted = conversationsHistoryResponse.Messages.Where(p => p.DeletedTimestamp != null).ToList();
-            var edited = conversationsHistoryResponse.Messages.Where(p => p.EditedInfo != null).ToList();
-            var filed = conversationsHistoryResponse.Messages.Where(p => p.File != null).ToList();
-            var pinned = conversationsHistoryResponse.Messages.Where(p => p.PinnedToChannelIds != null && p.PinnedToChannelIds.Any()).ToList();
-            var updated = conversationsHistoryResponse.Messages.Where(p => p.UpdatedMessage != null).ToList();
-            var usenamed = conversationsHistoryResponse.Messages.Where(p => p.Username != null).ToList();
-            var reacted = conversationsHistoryResponse.Messages.Where(p => p.Reactions != null && p.Reactions.Any()).ToList();
-            var icons = conversationsHistoryResponse.Messages.Where(p => p.BotInfo != null).ToList();
-            var files = conversationsHistoryResponse.Messages.Where(p => p.Files != null && p.Files.Any()).ToList();
 		}
 
 		private static Task<PostMessageResponse> PostMessageWithBlocks(SlackClient slackClient)
@@ -240,13 +234,8 @@ namespace SlackBot.Samples
         private static async Task<ConversationsHistoryResponse> GetConversationsHistory(SlackClient slackClient)
         {
 	        var channelId = await GetChannelId(slackClient);
-	        
-	        var conversationsHistory = new ConversationsHistory
-	        {
-		        ChannelId = channelId,
-		        Limit = 1000,
-		        Latest = "1598951031.000400"
-	        };
+
+	        var conversationsHistory = new ConversationsHistory(channelId, 1000);
 
 	        return await slackClient.ConversationsHistory(conversationsHistory);
         }

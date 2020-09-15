@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.BotInfo;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
 {
-    public class MessageResponse
+    public class ConversationMessageResponse
     {
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -44,7 +45,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public MessageEditedInfo EditedInfo { get; set; }
 
         [JsonProperty("blocks")]
-        public object[] Blocks { get; set; } //TODO возможно заюзать базовый тип или сделать свой для респонса с типом блока и его айдихой
+        public BlockBase[] Blocks { get; set; }
 
         [JsonProperty("team")]
         public string TeamId { get; set; }
@@ -133,7 +134,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         #region "file_comment" type
         
         [JsonProperty("comment")]
-        public object Comment { get; set; } //TODO
+        public object Comment { get; set; } // TODO Couldn't find a description of this field in the documentation
 
         #endregion
         
@@ -147,7 +148,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         #region "message_changed" and "message_replied" type
         
         [JsonProperty("message")]
-        public MessageResponse UpdatedMessage { get; set; }
+        public ConversationMessageResponse UpdatedMessage { get; set; }
 
         #endregion
         
@@ -171,7 +172,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public string ItemType { get; set; }
         
         [JsonProperty("item")]
-        public object Item { get; set; }  //TODO
+        public object Item { get; set; }  // TODO Couldn't find a description of this field in the documentation
 
         #endregion
         
@@ -185,7 +186,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         #region "thread_broadcast" type
         
         [JsonProperty("root")]
-        public MessageResponse RootMessage { get; set; }
+        public ConversationMessageResponse RootMessage { get; set; }
 
         #endregion
     }
