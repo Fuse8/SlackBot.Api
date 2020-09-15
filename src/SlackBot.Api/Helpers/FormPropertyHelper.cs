@@ -5,7 +5,7 @@ using SlackBot.Api.Attributes;
 
 namespace SlackBot.Api.Helpers
 {
-    public static class FormPropertyHelper
+    internal static class FormPropertyHelper
     {
         public static IEnumerable<(string PropertyName, string PropertyValue)> GetFormProperties<T>(T model)
             => PropertyInfoHelper.GetPublicProperties<T>()

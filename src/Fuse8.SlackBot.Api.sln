@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackBot.Api", "SlackBot.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackBot.Samples", "SlackBot.Samples\SlackBot.Samples.csproj", "{020C6286-C3BD-4A11-A0CC-27D80BE9B13E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackBot.Tests", "SlackBot.Tests\SlackBot.Tests.csproj", "{0228397D-E352-4DBF-8EAE-C42CEEB6AD00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{020C6286-C3BD-4A11-A0CC-27D80BE9B13E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{020C6286-C3BD-4A11-A0CC-27D80BE9B13E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{020C6286-C3BD-4A11-A0CC-27D80BE9B13E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0228397D-E352-4DBF-8EAE-C42CEEB6AD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0228397D-E352-4DBF-8EAE-C42CEEB6AD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0228397D-E352-4DBF-8EAE-C42CEEB6AD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0228397D-E352-4DBF-8EAE-C42CEEB6AD00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

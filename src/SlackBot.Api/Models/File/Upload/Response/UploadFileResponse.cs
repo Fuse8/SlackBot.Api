@@ -1,10 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.File.Upload.Response
 {
 	public class UploadFileResponse : SlackResponseBase
 	{
-		[JsonPropertyName("file")]
+		[JsonProperty("file")]
 		public SlackFile File { get; set; }
 	}
 }

@@ -1,8 +1,17 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Models.Chat.PostMessage;
+using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
+using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.Blocks;
+using SlackBot.Api.Models.Chat.PostMessage.Contracts;
+using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
+using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
+using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -23,65 +32,188 @@ namespace SlackBot.Samples
 
 			var slackClient = new SlackClient(slackBotSettings.Token);
             
-			/* * /var postMessageResponse = await PostMessage(slackClient);/**/
+			/* */var postMessageResponse = await PostMessageWithBlocks(slackClient);/**/
+			
+            /* */var postMessageWithFilesResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
             
             // Upload plain file content 
-            /* * /var uploadContentResponse = await UploadContent(slackClient);/**/
+            /* */var uploadContentResponse = await UploadContent(slackClient);/**/
             
             // Upload file from disk 
-            /* * /var uploadFileResponse = await UploadFile(slackClient);/**/
+            /* */var uploadFileResponse = await UploadFile(slackClient);/**/
             
             // Gets list of bot channels
-            /* * /var userConversationsResponse = await GetUserConversations(slackClient);/**/
-        }
+            /* */var userConversationsResponse = await GetUserConversations(slackClient);/**/
+		}
 
-        private static Task<MessageResponse> PostMessage(SlackClient slackClient)
-        {
+		private static Task<PostMessageResponse> PostMessageWithBlocks(SlackClient slackClient)
+		{
+			var blocks = new BlockBase[]
+			{
+				new ActionBlock
+				{
+					Elements = new IActionElement[]
+					{
+						new ButtonActionElement
+						{
+							Text = new PlainTextObject
+							{
+								UseEmoji = true,
+								Text = ":cat: Button"
+							},
+							Url = new Uri("https://google.com"),
+							Confirm = new ConfirmObject
+							{
+								Title = "Action Block confirmation",
+								Confirm = "Sure",
+								Deny = "Nope",
+								Text = "I wanna open google"
+							}
+						},
+
+						new DatepickerActionElement
+						{
+							Placeholder = "Select date",
+							InitialDate = "2020-02-22",
+						},
+					}
+				},
+				new ContextBlock
+				{
+					Elements = new IContextElement[]
+					{
+						(PlainTextObject) "This is Context Block",
+						new ImageElement
+						{
+							AltText = "Kitty in the Context block",
+							ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+						},
+					}
+				},
+				new DividerBlock(),
+				new HeaderBlock
+				{
+					Text = "This is Header Block"
+				},
+				new ImageBlock
+				{
+					ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+					Text = new PlainTextObject
+					{
+						UseEmoji = true,
+						Text = ":cat:"
+					},
+					AltText = "Kitty"
+				},
+				new SectionBlock
+				{
+					Text = (PlainTextObject) "This is Section Block",
+					Fields = new TextObjectBase[]
+					{
+						(MrkdwnTextObject) "*Bold Text*",
+						(MrkdwnTextObject) "_Italic Text_"
+					},
+					Accessory = new ImageElement
+					{
+						AltText = "Kitty in the Section block",
+						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+					},
+				},
+			};
+			
 			var message = new Message
 			{
 				Channel = Channel,
-				Text = "some message"
+				Blocks = blocks,
+				Text = "ala",
+				Attachments = new[]
+				{
+					new Attachment
+					{
+						Color = "#36a64f",
+						Blocks = blocks
+					}, 
+				}
 			};
-            return slackClient.PostMessage(message);
-        }
-        
-        private static async Task<UploadFileResponse> UploadContent(SlackClient slackClient)
-        {
-	        var content = await File.ReadAllTextAsync("./appsettings.json");
-            var contentMessage = new ContentToUpload
-            {
-                Comment = "Upload content",
-                Title = "Title",
-                Channels = "slack-bot-api-test",
-                Content = content,
-                Filename = "appsettings.json",
-                FileType = "javascript"
-            };
-
-            return await slackClient.UploadContent(contentMessage);
-        }
-        
-        private static async Task<UploadFileResponse> UploadFile(SlackClient slackClient)
-        {
-	        await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
-            var fileMessage = new FileToUpload
-            {
-                Channels = "slack-bot-api-test",
-                Stream =  fileStream,
-            };
-
-            return await slackClient.UploadFile(fileMessage);
+			
+			return slackClient.PostMessage(message);
 		}
-        
-        private static Task<ConversationResponse> GetUserConversations(SlackClient slackClient)
-        {
-	        var userConversations = new UserConversations
-	        {
-		        Types = "public_channel,private_channel,mpim,im"
-	        };
+		
+		private static  async Task<PostMessageResponse> PostMessageWithMultipleFiles(SlackClient slackClient)
+		{
+			var content = await File.ReadAllTextAsync("./appsettings.json");
+			
+			// Upload files without Channel
+			var contentMessage = new ContentToUpload
+			{
+				Comment = "Upload content",
+				Title = "File1",
+				Content = content,
+				Filename = "appsettings.json",
+				FileType = "javascript"
+			};
 
-	        return slackClient.UserConversations(userConversations);
-        }
+			var firstFile = await slackClient.UploadContent(contentMessage);
+			
+			contentMessage.Title = "File2";
+			var secondFile = await slackClient.UploadContent(contentMessage);
+			
+			var message = new Message
+			{
+				Channel = Channel,
+				Text = firstFile.File.Permalink + " " + secondFile.File.Permalink,
+				Blocks = new BlockBase[]
+				{
+					new ContextBlock
+					{
+						Elements = new IContextElement[]
+						{
+							(PlainTextObject) "Some text", 
+						}
+					}
+				}
+			};
+			
+			return await slackClient.PostMessage(message);
+		}
+
+		private static async Task<UploadFileResponse> UploadContent(SlackClient slackClient)
+		{
+			var content = await File.ReadAllTextAsync("./appsettings.json");
+			var contentMessage = new ContentToUpload
+			{
+				Comment = "Upload content",
+				Title = "Title",
+				Channels = Channel,
+				Content = content,
+				Filename = "appsettings.json",
+				FileType = "javascript"
+			};
+
+			return await slackClient.UploadContent(contentMessage);
+		}
+
+		private static async Task<UploadFileResponse> UploadFile(SlackClient slackClient)
+		{
+			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
+			var fileMessage = new FileToUpload
+			{
+				Channels = Channel,
+				Stream = fileStream,
+			};
+
+			return await slackClient.UploadFile(fileMessage);
+		}
+
+		private static Task<ConversationResponse> GetUserConversations(SlackClient slackClient)
+		{
+			var userConversations = new UserConversations
+			{
+				Types = "public_channel,private_channel,mpim,im"
+			};
+
+			return slackClient.UserConversations(userConversations);
+		}
 
 		private static IConfiguration GetConfiguration() =>
 			new ConfigurationBuilder()
