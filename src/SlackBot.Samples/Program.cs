@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
-using SlackBot.Api.Helpers;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
@@ -31,21 +30,20 @@ namespace SlackBot.Samples
 			var configuration = GetConfiguration();
 			var slackBotSettings = configuration.GetSection<SlackBotSettings>("SlackBotSettings");
 
-			var slackHttpClient = HttpClientHelpers.GetSlackHttpClient(slackBotSettings.Token);
-			var slackClient = new SlackClient(slackHttpClient);
+			var slackClient = SlackClientFactory.CreateSlackClient(slackBotSettings.Token);
             
-			/* */var postMessageResponse = await PostMessageWithBlocks(slackClient);/**/
+			/* * /var postMessageResponse = await PostMessageWithBlocks(slackClient);/**/
 			
-            /* */var postMessageWithFilesResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
+            /* * /var postMessageWithFilesResponse = await PostMessageWithMultipleFiles(slackClient);/**/ 
             
             // Upload plain file content 
-            /* */var uploadContentResponse = await UploadContent(slackClient);/**/
+            /* * /var uploadContentResponse = await UploadContent(slackClient);/**/
             
             // Upload file from disk 
-            /* */var uploadFileResponse = await UploadFile(slackClient);/**/
+            /* * /var uploadFileResponse = await UploadFile(slackClient);/**/
             
             // Gets list of bot channels
-            /* */var userConversationsResponse = await GetUserConversations(slackClient);/**/
+            /* * /var userConversationsResponse = await GetUserConversations(slackClient);/**/
 		}
 
 		private static Task<PostMessageResponse> PostMessageWithBlocks(SlackClient slackClient)

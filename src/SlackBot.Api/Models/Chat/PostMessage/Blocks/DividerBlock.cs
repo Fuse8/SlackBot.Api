@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts;
+﻿using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 {

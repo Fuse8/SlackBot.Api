@@ -24,7 +24,7 @@ namespace SlackBot.Tests.Helpers
 			return requestMessage;
 		}
 
-		private static SlackClient GetSlackClient(Action<HttpRequestMessage> resultCallBack)
+		private static SlackClient GetSlackClient(Action<HttpRequestMessage> requestCallback)
 		{
 			var httpMessageHandler = new Mock<HttpMessageHandler>();
 			var fixture = new Fixture();
@@ -38,7 +38,7 @@ namespace SlackBot.Tests.Helpers
 				.ReturnsAsync(
 					(HttpRequestMessage request, CancellationToken token) =>
 					{
-						resultCallBack(request);
+						requestCallback(request);
 						var response = new HttpResponseMessage
 						{
 							StatusCode = HttpStatusCode.OK,
@@ -50,7 +50,6 @@ namespace SlackBot.Tests.Helpers
 					});
 
 			var httpClient = new HttpClient(httpMessageHandler.Object) {BaseAddress = fixture.Create<Uri>()};
-
 
 			return new SlackClient(httpClient);
 		}
