@@ -18,18 +18,33 @@ namespace SlackBot.Api
 		{
 		}
 
+		/// <summary>
+		/// Creates content as a file and uploads it.
+		/// </summary>
 		public Task<UploadFileResponse> UploadContentAsync(ContentToUpload contentToUpload)
 			=> SendPostMultipartFormAsync<ContentToUpload, UploadFileResponse>("files.upload", contentToUpload);
 
+		/// <summary>
+		/// Uploads a file.
+		/// </summary>
 		public Task<UploadFileResponse> UploadFileAsync(FileToUpload fileToUpload)
 			=> SendPostMultipartFormAsync<FileToUpload, UploadFileResponse>("files.upload", fileToUpload);
 
+		/// <summary>
+		/// Sends a message to a channel.
+		/// </summary>
 		public Task<PostMessageResponse> PostMessageAsync(Message message)
 			=> SendPostJsonStringAsync<Message, PostMessageResponse>("chat.postMessage", message);
 
+		/// <summary>
+		/// Gets conversations list the calling user may access.
+		/// </summary>
 		public Task<ConversationResponse> UserConversationsAsync(UserConversations message)
 			=> SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
         
+		/// <summary>
+		/// Fetches a conversation's history of messages and events.
+		/// </summary>
         public Task<ConversationsHistoryResponse> ConversationsHistoryAsync(ConversationsHistory conversationsHistory) 
             => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
 	}

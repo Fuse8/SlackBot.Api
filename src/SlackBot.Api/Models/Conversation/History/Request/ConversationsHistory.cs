@@ -31,6 +31,7 @@ namespace SlackBot.Api.Models.Conversation.History.Request
         /// <summary>
         /// Conversation ID to fetch history for.
         /// </summary>
+        /// <example>C1234567890</example>
         [FormPropertyName("channel")]
         public string ChannelId { get; set; }
 
@@ -38,6 +39,7 @@ namespace SlackBot.Api.Models.Conversation.History.Request
         /// Include messages with latest or oldest timestamp in results only when either timestamp is specified.
         /// <para><strong>Default: false</strong></para>
         /// </summary>
+        /// <example>true</example>
         [FormPropertyName("inclusive")]
         public bool? Inclusive { get; set; }
 
@@ -45,6 +47,7 @@ namespace SlackBot.Api.Models.Conversation.History.Request
         /// End of time range of messages to include in results.
         /// <para><strong>Default: now</strong></para>
         /// </summary>
+        /// <example>1234567890.123456</example>
         [FormPropertyName("latest")]
         public string Latest { get; set; }
 		
@@ -52,6 +55,7 @@ namespace SlackBot.Api.Models.Conversation.History.Request
         /// Start of time range of messages to include in results.
         /// <para><strong>Default: 0</strong></para>
         /// </summary>
+        /// <example>1234567890.123456</example>
         [FormPropertyName("oldest")]
         public string Oldest { get; set; }
     }
