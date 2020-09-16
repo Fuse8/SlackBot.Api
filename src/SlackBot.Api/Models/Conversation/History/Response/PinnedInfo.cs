@@ -11,6 +11,6 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public string PinnedById { get; set; }
 
         [JsonProperty("pinned_ts")]
-        public long PinnedOn { get; set; }
+        public long PinnedTimestamp { get; set; }
     }
 }

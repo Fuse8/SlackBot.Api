@@ -5,8 +5,6 @@ namespace SlackBot.Api.Models.Conversation.History.Request
 {
     public class ConversationsHistory : CursorPaginationBase
     {
-        #region Constructors
-     
         public ConversationsHistory()
         {
         }
@@ -29,8 +27,6 @@ namespace SlackBot.Api.Models.Conversation.History.Request
             Latest = latest;
             Oldest = oldest;
         }
-        
-        #endregion
 
         /// <summary>
         /// Conversation ID to fetch history for.

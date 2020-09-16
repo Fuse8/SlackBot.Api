@@ -53,7 +53,7 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		public bool? IsOrgShared { get; set; }
 
 		[JsonProperty("pending_shared")]
-		public object[] PendingShared { get; set; }
+		public object[] PendingShared { get; set; } // TODO Couldn't find a description of this field in the documentation
 
 		[JsonProperty("is_pending_ext_shared")]
 		public bool? IsPendingExtShared { get; set; }

@@ -22,10 +22,12 @@ using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
-#region disable Resharper rules
+
+#region disable formatting rules
 	
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
+#pragma warning disable 1998
 
 #endregion
 
@@ -59,7 +61,7 @@ namespace SlackBot.Samples
             /* * /var userConversationsResponse = await GetUserConversations(slackClient);/**/
             
             // Gets conversation's history of messages and events.
-            /* */var conversationsHistoryResponse = await GetConversationsHistory(slackClient);/**/
+            /* * /var conversationsHistoryResponse = await GetConversationsHistory(slackClient);/**/
 		}
 
 		private static Task<PostMessageResponse> PostMessageWithBlocks(SlackClient slackClient)

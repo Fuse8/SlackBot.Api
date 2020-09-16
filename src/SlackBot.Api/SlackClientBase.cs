@@ -14,7 +14,7 @@ namespace SlackBot.Api
 {
     public abstract class SlackClientBase : IDisposable
     {
-        private static readonly Uri BaseApiUri = new Uri("https://slack.com/api/");
+        private static readonly Uri _baseApiUri = new Uri("https://slack.com/api/");
         private readonly HttpClient _httpClient;
         private bool _disposed;
         
@@ -83,7 +83,7 @@ namespace SlackBot.Api
         private HttpClient InitHttpClient(string token)
         {
             var httpClientHandler = new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }; 
-            var httpClient = new HttpClient(httpClientHandler) { BaseAddress = BaseApiUri };
+            var httpClient = new HttpClient(httpClientHandler) { BaseAddress = _baseApiUri };
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             return httpClient;

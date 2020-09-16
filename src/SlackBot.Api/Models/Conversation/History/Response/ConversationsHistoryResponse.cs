@@ -21,7 +21,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public CursorPaginationMetadata Metadata { get; set; }
 
         [JsonProperty("channel_actions_ts")]
-        public string ChannelActionsTimeStamp { get; set; } // TODO Couldn't find a description of this field in the documentation
+        public string ChannelActionsTimestamp { get; set; } // TODO Couldn't find a description of this field in the documentation
 
         [JsonProperty("channel_actions_count")]
         public long? ChannelActionsCount { get; set; }

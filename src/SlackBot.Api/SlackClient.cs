@@ -31,6 +31,5 @@ namespace SlackBot.Api
         
         public Task<ConversationsHistoryResponse> ConversationsHistory(ConversationsHistory conversationsHistory) 
             => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
-
     }
 }
