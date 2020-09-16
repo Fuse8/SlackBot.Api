@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
@@ -12,6 +13,8 @@ using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
+using SlackBot.Api.Models.Conversation.History.Request;
+using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -19,40 +22,49 @@ using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
+
+#region disable formatting rules
+	
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
-// ReSharper disable InconsistentNaming
+#pragma warning disable 1998
+
+#endregion
 
 namespace SlackBot.Samples
 {
 	public class Program
 	{
-		private const string Channel = "slack-bot-api-test";
+		private static readonly SlackBotSettings _slackBotSettings;
 		
-		public static async Task Main(string[] args)
+		static Program()
 		{
 			var configuration = GetConfiguration();
-			var slackBotSettings = configuration.GetSection<SlackBotSettings>("SlackBotSettings");
+			_slackBotSettings = configuration.GetSection<SlackBotSettings>("SlackBotSettings");
+		}
 
-			var slackClient = SlackClientFactory.CreateSlackClient(slackBotSettings.Token);
+		// ReSharper disable once InconsistentNaming
+		public static async Task Main(string[] args)
+		{
+			var slackClient = SlackClientFactory.CreateSlackClient(_slackBotSettings.Token);
 
-			/* * /
+			/* Sends message with some blocks * /
 			var postMessageResponse = await PostMessageWithBlocksAsync(slackClient); /**/
 
-			/* * /
+			/* Uploads some files and sends message with them * /
 			var postMessageWithFilesResponse = await PostMessageWithMultipleFilesAsync(slackClient); /**/
 
-			// Upload plain file content 
-			/* * /
+			/* Uploads plain file content * /
 			var uploadContentResponse = await UploadContentAsync(slackClient); /**/
-
-			// Upload file from disk 
-			/* * /
+ 
+			/* Uploads file from disk * /
 			var uploadFileResponse = await UploadFileAsync(slackClient); /**/
 
-			// Gets list of bot channels
-			/* * /
-			var userConversationsResponse = await GetUserConversationsAsync(slackClient); /**/
+            /* Gets list of bot channels * /
+			var userConversationsResponse = await GetUserConversationsAsync(slackClient);/**/
+            
+            /* Gets conversation's history of messages and events * /
+			var conversationsHistoryResponse = await GetConversationsHistoryAsync(slackClient);/**/
 		}
 
 		private static Task<PostMessageResponse> PostMessageWithBlocksAsync(SlackClient slackClient)
@@ -132,7 +144,7 @@ namespace SlackBot.Samples
 
 			var message = new Message
 			{
-				Channel = Channel,
+				Channel = _slackBotSettings.ChannelName,
 				Blocks = blocks,
 				Text = "ala",
 				Attachments = new[]
@@ -169,7 +181,7 @@ namespace SlackBot.Samples
 
 			var message = new Message
 			{
-				Channel = Channel,
+				Channel = _slackBotSettings.ChannelName,
 				Text = firstFile.File.Permalink + " " + secondFile.File.Permalink,
 				Blocks = new BlockBase[]
 				{
@@ -193,7 +205,7 @@ namespace SlackBot.Samples
 			{
 				Comment = "Upload content",
 				Title = "Title",
-				Channels = Channel,
+				Channels = _slackBotSettings.ChannelName,
 				Content = content,
 				Filename = "appsettings.json",
 				FileType = "javascript",
@@ -207,7 +219,7 @@ namespace SlackBot.Samples
 			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
 			var fileMessage = new FileToUpload
 			{
-				Channels = Channel,
+				Channels = _slackBotSettings.ChannelName,
 				Stream = fileStream,
 			};
 
@@ -222,6 +234,28 @@ namespace SlackBot.Samples
 			};
 
 			return slackClient.UserConversationsAsync(userConversations);
+        }
+        
+        private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync(SlackClient slackClient)
+        {
+	        var channelId = await GetChannelIdAsync(slackClient);
+
+	        var conversationsHistory = new ConversationsHistory(channelId, 1000);
+
+	        return await slackClient.ConversationsHistoryAsync(conversationsHistory);
+        }
+        
+        private static async Task<string> GetChannelIdAsync(SlackClient slackClient)
+        {
+	        var userConversations = new UserConversations
+	        {
+		        Types = "public_channel,private_channel,mpim,im"
+	        };
+
+	        var conversationsHistoryResponse = await slackClient.UserConversationsAsync(userConversations);
+	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
+
+	        return channelId;
 		}
 
 		private static IConfiguration GetConfiguration()

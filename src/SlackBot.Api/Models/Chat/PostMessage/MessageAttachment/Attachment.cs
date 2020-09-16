@@ -25,7 +25,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageAttachment
 		public Uri AuthorLink { get; set; }
 
 		[JsonProperty("author_icon")]
-		public Uri AuthorIcon { get; set; }
+		public Uri AuthorIconUrl { get; set; }
 
 		[JsonProperty("title")]
 		public string Title { get; set; }
@@ -49,7 +49,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageAttachment
 		public string Footer { get; set; }
 
 		[JsonProperty("footer_icon")]
-		public Uri FooterIcon { get; set; }
+		public Uri FooterIconUrl { get; set; }
 
 		[JsonProperty("ts")]
 		public long? Timestamp { get; set; }

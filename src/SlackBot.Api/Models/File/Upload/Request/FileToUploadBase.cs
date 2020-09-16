@@ -20,6 +20,6 @@ namespace SlackBot.Api.Models.File.Upload.Request
 		public string Title { get; set; }
 
 		[FormPropertyName("thread_ts")]
-		public string ThreadId { get; set; }
+		public string ThreadTimestamp { get; set; }
 	}
 }

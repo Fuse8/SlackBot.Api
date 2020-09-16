@@ -11,58 +11,58 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		public string Name { get; set; }
 
 		[JsonProperty("is_channel")]
-		public bool IsChannel { get; set; }
+		public bool? IsChannel { get; set; }
 
 		[JsonProperty("is_group")]
-		public bool IsGroup { get; set; }
+		public bool? IsGroup { get; set; }
 
 		[JsonProperty("is_im")]
-		public bool IsDirectMessageChannel { get; set; }
+		public bool? IsDirectMessageChannel { get; set; }
+
+		[JsonProperty("is_mpim")]
+		public bool? IsMultiPersonDirectMessageChannel { get; set; }
 
 		[JsonProperty("created")]
-		public long Created { get; set; }
+		public long? Created { get; set; }
 
 		[JsonProperty("creator")]
 		public string Creator { get; set; }
 
 		[JsonProperty("is_archived")]
-		public bool IsArchived { get; set; }
+		public bool? IsArchived { get; set; }
 
 		[JsonProperty("is_general")]
-		public bool IsGeneral { get; set; }
+		public bool? IsGeneral { get; set; }
 
 		[JsonProperty("unlinked")]
-		public long Unlinked { get; set; }
+		public long? Unlinked { get; set; }
 
 		[JsonProperty("name_normalized")]
 		public string NameNormalized { get; set; }
 
 		[JsonProperty("is_read_only")]
-		public bool IsReadOnly { get; set; }
+		public bool? IsReadOnly { get; set; }
 
 		[JsonProperty("is_shared")]
-		public bool IsShared { get; set; }
+		public bool? IsShared { get; set; }
 
 		[JsonProperty("is_ext_shared")]
-		public bool IsExtShared { get; set; }
+		public bool? IsExtShared { get; set; }
 
 		[JsonProperty("is_org_shared")]
-		public bool IsOrgShared { get; set; }
+		public bool? IsOrgShared { get; set; }
 
 		[JsonProperty("pending_shared")]
-		public object[] PendingShared { get; set; }
+		public object[] PendingShared { get; set; } // TODO Couldn't find a description of this field in the documentation
 
 		[JsonProperty("is_pending_ext_shared")]
-		public bool IsPendingExtShared { get; set; }
+		public bool? IsPendingExtShared { get; set; }
 
 		[JsonProperty("is_member")]
-		public bool IsMember { get; set; }
+		public bool? IsMember { get; set; }
 
 		[JsonProperty("is_private")]
-		public bool IsPrivate { get; set; }
-
-		[JsonProperty("is_mpim")]
-		public bool IsMpim { get; set; }
+		public bool? IsPrivate { get; set; }
 
 		[JsonProperty("last_read")]
 		public string LastRead { get; set; }
@@ -77,7 +77,7 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		public string[] PreviousNames { get; set; }
 
 		[JsonProperty("num_members")]
-		public long NumMembers { get; set; }
+		public long? NumMembers { get; set; }
 
 		[JsonProperty("locale")]
 		public string Locale { get; set; }

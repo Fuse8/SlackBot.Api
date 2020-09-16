@@ -14,7 +14,7 @@ namespace SlackBot.Api.Models.File.Upload.Response
 		public long ReplyCount { get; set; }
 
 		[JsonProperty("ts")]
-		public string ThreadId { get; set; }
+		public string Timestamp { get; set; }
 
 		[JsonProperty("channel_name")]
 		public string ChannelName { get; set; }

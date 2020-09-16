@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SlackBot.Api.Models.GeneralObjects.BotInfo;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Response
 {
@@ -17,6 +18,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Response
 		public string Team { get; set; }
 
 		[JsonProperty("bot_profile")]
-		public BotProfile BotProfile { get; set; }
+		public BotInfo BotProfile { get; set; }
 	}
 }
