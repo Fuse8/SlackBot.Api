@@ -19,7 +19,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.BlockElements
 		public PlainTextObject Placeholder { get; set; }
 
 		[JsonProperty("option_groups")]
-		public OptionGroupObject OptionGroup { get; set; }
+		public OptionGroupObject[] OptionGroup { get; set; }
 
 		[JsonProperty("max_selected_items")]
 		public int? MaxSelectedItems { get; set; }

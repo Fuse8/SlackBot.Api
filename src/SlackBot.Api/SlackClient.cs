@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 using SlackBot.Api.Enums;
 using SlackBot.Api.Exceptions;
@@ -20,14 +18,13 @@ namespace SlackBot.Api
 {
 	public class SlackClient : IDisposable
 	{
-		private static readonly Uri _baseApiUri = new Uri("https://slack.com/api/");
 		private bool _disposed;
 
 		private readonly HttpClient _httpClient;
 
-		public SlackClient(string token)
+		public SlackClient(HttpClient httpClient)
 		{
-			_httpClient = InitHttpClient(token);
+			_httpClient = httpClient;
 		}
 
 		public Task<UploadFileResponse> UploadContentAsync(ContentToUpload contentToUpload)
@@ -100,15 +97,6 @@ namespace SlackBot.Api
 			}
 
 			return slackApiResponse;
-		}
-
-		private HttpClient InitHttpClient(string token)
-		{
-			var httpClientHandler = new HttpClientHandler { SslProtocols = SslProtocols.Tls12 };
-			var httpClient = new HttpClient(httpClientHandler) { BaseAddress = _baseApiUri };
-			httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-			return httpClient;
 		}
 
 		private void Dispose(bool disposing)

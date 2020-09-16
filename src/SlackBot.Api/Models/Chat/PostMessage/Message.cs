@@ -28,7 +28,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 		[JsonProperty("icon_url")]
 		public Uri IconUrl { get; set; }
 
-		[JsonProperty("linkNames")]
+		[JsonProperty("link_names")]
 		public bool? LinkNames { get; set; }
 
 		[JsonProperty("mrkdwn")]
@@ -40,7 +40,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 		[JsonProperty("reply_broadcast")]
 		public bool? ReplyBroadcast { get; set; }
 
-		[JsonProperty("ThreadId")]
+		[JsonProperty("thread_ts")]
 		public string ThreadId { get; set; }
 
 		[JsonProperty("unfurl_links")]

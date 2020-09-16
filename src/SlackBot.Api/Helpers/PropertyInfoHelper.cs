@@ -10,6 +10,6 @@ namespace SlackBot.Api.Helpers
 			=> typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
 		public static string GetJsonPropertyName(this PropertyInfo prop)
-			=> prop.GetCustomAttribute<JsonPropertyAttribute>()?.PropertyName ?? prop.Name.ToLowerInvariant();                                                           
+			=> prop.GetCustomAttribute<JsonPropertyAttribute>()?.PropertyName ?? prop.Name.ToLowerInvariant();
 	}
 }
