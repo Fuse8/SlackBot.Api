@@ -11,7 +11,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.BlockElements
 
 		[JsonProperty("image_url")]
 		public Uri ImageUrl { get; set; }
-		
+
 		[JsonProperty("alt_text")]
 		public string AltText { get; set; }
 	}

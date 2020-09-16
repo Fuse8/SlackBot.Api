@@ -106,7 +106,7 @@ namespace SlackBot.Api.Models.File.Upload.Response
 
 		[JsonProperty("has_rich_preview")]
 		public bool HasRichPreview { get; set; }
-        
+
 		[JsonProperty("thumb_64")]
 		public Uri Thumb64 { get; set; }
 
