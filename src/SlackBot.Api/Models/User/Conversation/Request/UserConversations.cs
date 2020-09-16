@@ -9,13 +9,13 @@ namespace SlackBot.Api.Models.User.Conversation.Request
 
 		[FormPropertyName("exclude_archived")]
 		public bool? ExcludeArchived { get; set; }
-	
+
 		[FormPropertyName("limit")]
 		public long? Limit { get; set; }
-		
+
 		[FormPropertyName("types")]
 		public string Types { get; set; }
-		
+
 		[FormPropertyName("user")]
 		public string User { get; set; }
 	}

@@ -18,11 +18,15 @@ namespace SlackBot.Api.JsonConverters
 		public ObjectWithTypeConverter()
 		{
 			_typeJsonPropertyName = typeof(ObjectWithType).GetProperty(nameof(ObjectWithType.Type)).GetJsonPropertyName();
-			
+
 			var subtypes = GetSubtypes();
 
-			_allObjects = subtypes.Select(objectType => (T) Activator.CreateInstance(objectType)).ToArray();
+			_allObjects = subtypes.Select(objectType => (T)Activator.CreateInstance(objectType)).ToArray();
 		}
+
+		public override bool CanRead => true;
+
+		public override bool CanWrite => false;
 
 		private static Type[] GetSubtypes()
 		{
@@ -33,14 +37,15 @@ namespace SlackBot.Api.JsonConverters
 				.SelectMany(domainAssembly => domainAssembly.GetTypes(), (domainAssembly, assemblyType) => assemblyType)
 				.Where(
 					classType => convertSubtypesOfType.IsAssignableFrom(classType)
-					             && !unknownObjectType.IsAssignableFrom(classType)
-					             && classType != convertSubtypesOfType
-					             && !classType.IsAbstract)
+								&& !unknownObjectType.IsAssignableFrom(classType)
+								&& classType != convertSubtypesOfType
+								&& !classType.IsAbstract)
 				.ToArray();
 			return subtypes;
 		}
 
-		public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer) => throw new NotImplementedException();
+		public override void WriteJson(JsonWriter writer, T value, JsonSerializer serializer)
+			=> throw new NotImplementedException();
 
 		public override T ReadJson(JsonReader reader, Type objectType, T existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
@@ -53,12 +58,12 @@ namespace SlackBot.Api.JsonConverters
 				{
 					try
 					{
-						existingValue = (T) Activator.CreateInstance(typeToParse);
+						existingValue = (T)Activator.CreateInstance(typeToParse);
 						serializer.Populate(objToParse.CreateReader(), existingValue);
 					}
-					catch 
+					catch
 					{
-						existingValue = CreateUnknownObject(serializer, objToParse);	
+						existingValue = CreateUnknownObject(serializer, objToParse);
 					}
 				}
 				else
@@ -70,10 +75,6 @@ namespace SlackBot.Api.JsonConverters
 			return existingValue;
 		}
 
-		public override bool CanRead => true;
-
-		public override bool CanWrite => false;
-
 		private Type GetSubtypeToConvertTo(JObject jObject)
 		{
 			var objectTypeValue = jObject[_typeJsonPropertyName]?.Value<string>();
@@ -82,7 +83,7 @@ namespace SlackBot.Api.JsonConverters
 
 		private static TUnknownType CreateUnknownObject(JsonSerializer serializer, JObject jObject)
 		{
-			var unknownObject = new TUnknownType {Properties = new Dictionary<string, object>()};
+			var unknownObject = new TUnknownType { Properties = new Dictionary<string, object>() };
 			serializer.Populate(jObject.CreateReader(), unknownObject.Properties);
 			return unknownObject;
 		}

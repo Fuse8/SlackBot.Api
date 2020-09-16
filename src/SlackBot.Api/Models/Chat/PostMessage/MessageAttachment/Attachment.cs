@@ -11,7 +11,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageAttachment
 
 		[JsonProperty("color")]
 		public string Color { get; set; }
-		
+
 		[JsonProperty("blocks")]
 		public BlockBase[] Blocks { get; set; }
 

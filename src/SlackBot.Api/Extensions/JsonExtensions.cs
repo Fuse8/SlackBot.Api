@@ -1,6 +1,5 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 using SlackBot.Api.Enums;
 using SlackBot.Api.JsonConverters;
@@ -61,12 +60,12 @@ namespace SlackBot.Api.Extensions
 			};
 
 			settings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
-			
+
 			foreach (var jsonConverter in JsonConverterHelper.GetSpecificClassConverters())
 			{
 				settings.Converters.Add(jsonConverter);
 			}
-			
+
 			return settings;
 		}
 	}

@@ -10,13 +10,13 @@ namespace SlackBot.Tests.PostMessageTests
 {
 	internal class UnknownObjectDeserializationTests
 	{
-		[TestFixture(TypeArgs = new[] {typeof(BlockBase), typeof(UnknownObject)})]
-		[TestFixture(TypeArgs = new[] {typeof(IActionElement), typeof(UnknownObject)})]
-		[TestFixture(TypeArgs = new[] {typeof(IContextElement), typeof(UnknownObject)})]
-		[TestFixture(TypeArgs = new[] {typeof(IInputElement), typeof(UnknownObject)})]
-		[TestFixture(TypeArgs = new[] {typeof(ISectionElement), typeof(UnknownObject)})]
-		[TestFixture(TypeArgs = new[] {typeof(TextObjectBase), typeof(UnknownTextObject)})]
-		class ParseToUnknownObjectTests<TParse, TExpected>
+		[TestFixture(TypeArgs = new[] { typeof(BlockBase), typeof(UnknownObject) })]
+		[TestFixture(TypeArgs = new[] { typeof(IActionElement), typeof(UnknownObject) })]
+		[TestFixture(TypeArgs = new[] { typeof(IContextElement), typeof(UnknownObject) })]
+		[TestFixture(TypeArgs = new[] { typeof(IInputElement), typeof(UnknownObject) })]
+		[TestFixture(TypeArgs = new[] { typeof(ISectionElement), typeof(UnknownObject) })]
+		[TestFixture(TypeArgs = new[] { typeof(TextObjectBase), typeof(UnknownTextObject) })]
+		private class ParseToUnknownObjectTests<TParse, TExpected>
 			where TExpected : IUnknownObjectWithType, TParse
 		{
 			[Test]
@@ -25,23 +25,23 @@ namespace SlackBot.Tests.PostMessageTests
 				var json = @"{""type"":""some_undeclared_type""}";
 				DeserializeAndCheckTypeOfResult<TParse, TExpected>(json);
 			}
-			
+
 			[Test]
 			public void JsonObjectWithoutTypeMustBeParseToUnknownObject()
 			{
 				var json = @"{""msg"":""object_without_type""}";
 				DeserializeAndCheckTypeOfResult<TParse, TExpected>(json);
 			}
-			
+
 			[Test]
 			public void JsonObjectPropertiesMustBeContainedInUnknownObject()
 			{
 				var json = @"{""msg"":""message""}";
-				
+
 				var parsedObject = json.FromJson<TParse>();
 				var unknownObjectWithType = (TExpected)parsedObject;
 				var properties = unknownObjectWithType.Properties;
-				
+
 				Assert.IsTrue(properties.ContainsKey("msg"));
 				Assert.AreEqual(properties["msg"], "message");
 			}
@@ -57,11 +57,11 @@ namespace SlackBot.Tests.PostMessageTests
 		public void JsonObjectWithKnownTypeMustBeParseToThatObject(string typeInJson, Type expectedType)
 		{
 			var json = $@"{{""type"":""{typeInJson}""}}";
-			
+
 			DeserializeAndCheckTypeOfResult<BlockBase>(json, expectedType);
 		}
 
-		private static void DeserializeAndCheckTypeOfResult<TParse, TExpected>(string json) 
+		private static void DeserializeAndCheckTypeOfResult<TParse, TExpected>(string json)
 			=> DeserializeAndCheckTypeOfResult<TParse>(json, typeof(TExpected));
 
 		private static void DeserializeAndCheckTypeOfResult<TParse>(string json, Type expectedType)
