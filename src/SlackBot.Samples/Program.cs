@@ -19,13 +19,16 @@ using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedVariable
+// ReSharper disable InconsistentNaming
+
 namespace SlackBot.Samples
 {
 	public class Program
 	{
 		private const string Channel = "slack-bot-api-test";
-
-		// ReSharper disable once InconsistentNaming
+		
 		public static async Task Main(string[] args)
 		{
 			var configuration = GetConfiguration();
@@ -33,22 +36,22 @@ namespace SlackBot.Samples
 
 			var slackClient = SlackClientFactory.CreateSlackClient(slackBotSettings.Token);
 
-			/* */
+			/* * /
 			var postMessageResponse = await PostMessageWithBlocksAsync(slackClient); /**/
 
-			/* */
+			/* * /
 			var postMessageWithFilesResponse = await PostMessageWithMultipleFilesAsync(slackClient); /**/
 
 			// Upload plain file content 
-			/* */
+			/* * /
 			var uploadContentResponse = await UploadContentAsync(slackClient); /**/
 
 			// Upload file from disk 
-			/* */
+			/* * /
 			var uploadFileResponse = await UploadFileAsync(slackClient); /**/
 
 			// Gets list of bot channels
-			/* */
+			/* * /
 			var userConversationsResponse = await GetUserConversationsAsync(slackClient); /**/
 		}
 

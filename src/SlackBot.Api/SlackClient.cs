@@ -22,9 +22,9 @@ namespace SlackBot.Api
 
 		private readonly HttpClient _httpClient;
 
-        public SlackClient(HttpClient httpClient)
+		public SlackClient(HttpClient httpClient)
 		{
-            _httpClient = httpClient;
+			_httpClient = httpClient;
 		}
 
 		public Task<UploadFileResponse> UploadContentAsync(ContentToUpload contentToUpload)

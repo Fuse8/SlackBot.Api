@@ -13,7 +13,7 @@ namespace SlackBot.Tests.Helpers
 {
 	internal class SlackClientMockHelpers
 	{
-		public static async Task<HttpRequestMessage> GetApiRequest<TRequest, TResponse>(TRequest request, Func<SlackClient, TRequest, Task<TResponse>> apiMethod)
+		public static async Task<HttpRequestMessage> GetApiRequestAsync<TRequest, TResponse>(TRequest request, Func<SlackClient, TRequest, Task<TResponse>> apiMethod)
 		{
 			HttpRequestMessage requestMessage = null;	
 			using (var slackClient = GetSlackClient(s => requestMessage = s))
@@ -45,7 +45,7 @@ namespace SlackBot.Tests.Helpers
 							Content = new StringContent(@"{""ok"":true}")
 						};
 
-						response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");  
+						response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 						return response;
 					});
 

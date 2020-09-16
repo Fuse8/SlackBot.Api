@@ -108,7 +108,6 @@ namespace SlackBot.Tests.PostMessageTests
 				},
 				@"{""type"":""section"",""text"":{""type"":""plain_text""},""block_id"":""BlockId"",""fields"":[],""accessory"":{""type"":""image""}}"
 			},
-			
 		};
 
 		public static object[] ElementCases =
@@ -166,7 +165,7 @@ namespace SlackBot.Tests.PostMessageTests
 		{
 			new object[]
 			{
-				new MrkdwnTextObject
+				new MarkdownTextObject
 				{
 					Text = "Text",
 					Verbatim = true
