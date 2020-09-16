@@ -8,8 +8,8 @@ namespace SlackBot.Api.JsonConverters
 {
 	internal static class JsonConverterHelper
 	{
-		public static IEnumerable<JsonConverter> GetSpecificClassConverters() =>
-			new JsonConverter[]
+		public static IEnumerable<JsonConverter> GetSpecificClassConverters()
+			=> new JsonConverter[]
 			{
 				new ObjectWithTypeConverter<BlockBase, UnknownObject>(),
 				new ObjectWithTypeConverter<TextObjectBase, UnknownTextObject>(),

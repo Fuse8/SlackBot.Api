@@ -4,6 +4,6 @@
 	{
 		DoNotProcess,
 
-		Throw
+		Throw,
 	}
 }

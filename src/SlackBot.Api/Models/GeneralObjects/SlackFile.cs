@@ -107,7 +107,7 @@ namespace SlackBot.Api.Models.GeneralObjects
 
 		[JsonProperty("has_rich_preview")]
 		public bool HasRichPreview { get; set; }
-        
+
 		[JsonProperty("thumb_64")]
 		public Uri Thumb64Url { get; set; }
 

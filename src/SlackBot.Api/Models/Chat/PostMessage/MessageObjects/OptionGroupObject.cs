@@ -7,7 +7,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
 	{
 		[JsonProperty("label")]
 		public PlainTextObject Label { get; set; }
-		
+
 		[JsonProperty("options")]
 		public OptionObject[] Options { get; set; }
 	}

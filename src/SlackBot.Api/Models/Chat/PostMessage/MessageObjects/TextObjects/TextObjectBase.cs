@@ -8,8 +8,5 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects
 	{
 		[JsonProperty("text")]
 		public string Text { get; set; }
-		
-		[JsonProperty("verbatim")]
-		public bool?  Verbatim { get; set; }
 	}
 }

@@ -7,7 +7,7 @@ namespace SlackBot.Api.Models.File.Upload.Response
 	{
 		[JsonProperty("private")]
 		public Dictionary<string, ShareItem[]> Private { get; set; }
-        
+
 		[JsonProperty("public")]
 		public Dictionary<string, ShareItem[]> Public { get; set; }
 	}

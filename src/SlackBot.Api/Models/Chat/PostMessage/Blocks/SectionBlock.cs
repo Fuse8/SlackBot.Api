@@ -8,10 +8,10 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 	public class SectionBlock : BlockBase
 	{
 		protected override string SectionType => "section";
-		
+
 		[JsonProperty("text")]
 		public TextObjectBase Text { get; set; }
-		
+
 		[JsonProperty("fields")]
 		public TextObjectBase[] Fields { get; set; }
 

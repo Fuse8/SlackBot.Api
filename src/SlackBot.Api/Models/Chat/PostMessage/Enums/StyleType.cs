@@ -3,7 +3,7 @@
 	public enum StyleType
 	{
 		Primary,
-		
-		Danger
+
+		Danger,
 	}
 }

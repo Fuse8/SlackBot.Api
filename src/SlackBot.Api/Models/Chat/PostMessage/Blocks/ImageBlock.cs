@@ -16,6 +16,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 		public string AltText { get; set; }
 
 		[JsonProperty("title")]
-		public PlainTextObject Text { get; set; }
+		public PlainTextObject Title { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SlackBot.Api.Models.Chat.PostMessage.Enums;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
@@ -16,5 +17,8 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
 
 		[JsonProperty("deny")]
 		public PlainTextObject Deny { get; set; }
+		
+		[JsonProperty("style")]
+		public StyleType? Style { get; set; }
 	}
 }

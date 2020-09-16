@@ -10,7 +10,7 @@ namespace SlackBot.Api.Models.User.Conversation.Request
 		
 		[FormPropertyName("types")]
 		public string Types { get; set; }
-		
+
 		[FormPropertyName("user")]
 		public string User { get; set; }
 	}

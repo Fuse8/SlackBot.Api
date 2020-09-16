@@ -7,8 +7,8 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 	public class ContextBlock : BlockBase
 	{
 		protected override string SectionType => "context";
-		
+
 		[JsonProperty("elements")]
-		public IContextElement[] Elements { get; set; } 
+		public IContextElement[] Elements { get; set; }
 	}
 }

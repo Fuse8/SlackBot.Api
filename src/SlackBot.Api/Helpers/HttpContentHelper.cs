@@ -14,20 +14,20 @@ namespace SlackBot.Api.Helpers
 		{
 			var json = request.ToJson();
 			var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-            
+
 			return stringContent;
 		}
-		
+
 		public static FormUrlEncodedContent GetFormUrlEncodedContent<TRequest>(TRequest request)
 			where TRequest : class
 		{
 			var dataDictionary = FormPropertyHelper.GetFormProperties(request)
 				.ToDictionary(property => property.PropertyName, propertyInfo => propertyInfo.PropertyValue);
 			var formUrlEncodedContent = new FormUrlEncodedContent(dataDictionary);
-            
+
 			return formUrlEncodedContent;
 		}
-		
+
 		public static HttpContent GetMultipartForm<TRequest>(TRequest request)
 			where TRequest : class
 		{
