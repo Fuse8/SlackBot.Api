@@ -83,12 +83,12 @@ namespace SlackBot.Samples
 								Text = ":cat: Button",
 							},
 							Url = new Uri("https://google.com"),
-							Confirm = new ConfirmObject
+							Confirm = new ConfirmationDialogObject
 							{
 								Title = "Action Block confirmation",
 								Confirm = "Sure",
 								Deny = "Nope",
-								Text = "I wanna open google",
+								Text = (PlainTextObject)"I wanna open google",
 							},
 						},
 

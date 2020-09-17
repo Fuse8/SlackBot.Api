@@ -30,10 +30,10 @@ namespace SlackBot.Tests.PostMessageTests
 					IconUrl = new Uri("http://iconurl"),
 					LinkNames = true,
 					ReplyBroadcast = true,
-					ThreadId = "1234567489.011",
+					ThreadTimestamp = "1234567489.011",
 					UnfurlLinks = true,
 					UnfurlMedia = true,
-					UseMrkdwn = true
+					UseMarkdown = true
 				},
 				@"{""channel"":""channel"",""attachments"":[],""blocks"":[],""parse"":""full"",""text"":""text"",""username"":""username"",""as_user"":true,""icon_emoji"":"":IconEmoji:"",""icon_url"":""http://iconurl"",""link_names"":true,""reply_broadcast"":true,""thread_ts"":""1234567489.011"",""unfurl_links"":true,""unfurl_media"":true,""mrkdwn"":true}"
 			},
@@ -117,7 +117,7 @@ namespace SlackBot.Tests.PostMessageTests
 				new ButtonActionElement
 				{
 					Style = StyleType.Danger,
-					Confirm = new ConfirmObject(),
+					Confirm = new ConfirmationDialogObject(),
 					Text = new PlainTextObject(),
 					Url = new Uri("http://iconurl"),
 					Value = "Value",
@@ -130,7 +130,7 @@ namespace SlackBot.Tests.PostMessageTests
 				new DatepickerActionElement
 				{
 					Placeholder = new PlainTextObject(),
-					Confirm = new ConfirmObject(),
+					Confirm = new ConfirmationDialogObject(),
 					InitialDate = "2020-02-02",
 					ActionId = "ActionId"
 				},
@@ -149,12 +149,12 @@ namespace SlackBot.Tests.PostMessageTests
 			{
 				new MultiSelectActionElement
 				{
-					Confirm = new ConfirmObject(),
+					Confirm = new ConfirmationDialogObject(),
 					Options = new OptionObject[0],
 					Placeholder = new PlainTextObject(),
 					ActionId = "ActionId",
-					InitialOption = new OptionObject[0],
-					OptionGroup = new OptionGroupObject[0],
+					InitialOptions = new OptionObject[0],
+					OptionGroups = new OptionGroupObject[0],
 					MaxSelectedItems = 25
 				},
 				@"{""type"":""multi_static_select"",""placeholder"":{""type"":""plain_text""},""action_id"":""ActionId"",""options"":[],""option_groups"":[],""initial_options"":[],""confirm"":{},""max_selected_items"":25}"
@@ -183,7 +183,7 @@ namespace SlackBot.Tests.PostMessageTests
 			},
 			new object[]
 			{
-				new ConfirmObject
+				new ConfirmationDialogObject
 				{
 					Title = new PlainTextObject(),
 					Text = new PlainTextObject(),

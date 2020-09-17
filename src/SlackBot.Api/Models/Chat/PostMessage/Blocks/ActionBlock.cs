@@ -8,6 +8,10 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 	{
 		protected override string SectionType => "actions";
 
+		/// <summary>
+		/// An array of interactive element objects - "buttons", "select menus", "overflow menus", or "date pickers".
+		/// There is a maximum of 5 elements in each action block.
+		/// </summary>
 		[JsonProperty("elements")]
 		public IActionElement[] Elements { get; set; }
 	}
