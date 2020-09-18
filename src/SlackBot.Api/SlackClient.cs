@@ -2,6 +2,9 @@
 using System.Threading.Tasks;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
+using SlackBot.Api.Models.Chat.ScheduleMessage;
+using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
+using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Upload.Request;
@@ -35,6 +38,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<PostMessageResponse> PostMessageAsync(Message message)
 			=> SendPostJsonStringAsync<Message, PostMessageResponse>("chat.postMessage", message);
+		
+		/// <summary>
+		/// Schedules a message to be sent to a channel.
+		/// </summary>
+		public Task<ScheduleMessageResponse> ScheduleMessageAsync(ScheduledMessage scheduledMessage)
+			=> SendPostJsonStringAsync<ScheduledMessage, ScheduleMessageResponse>("chat.scheduleMessage", scheduledMessage);
 
 		/// <summary>
 		/// Gets conversations list the calling user may access.

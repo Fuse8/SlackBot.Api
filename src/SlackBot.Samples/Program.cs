@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
+using SlackBot.Api.Extensions;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Blocks;
@@ -13,6 +15,9 @@ using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
+using SlackBot.Api.Models.Chat.ScheduleMessage;
+using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
+using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Upload.Request;
@@ -53,6 +58,9 @@ namespace SlackBot.Samples
 
 			/* Uploads some files and sends message with them * /
 			var postMessageWithFilesResponse = await PostMessageWithMultipleFilesAsync(slackClient); /**/
+			
+			/* Schedules message to channel. */
+			var scheduleMessageResponse = await ScheduleMessageAsync(slackClient); /**/
 
 			/* Uploads plain file content * /
 			var uploadContentResponse = await UploadContentAsync(slackClient); /**/
@@ -196,6 +204,22 @@ namespace SlackBot.Samples
 			};
 
 			return await slackClient.PostMessageAsync(message);
+		}
+
+		private static Task<ScheduleMessageResponse> ScheduleMessageAsync(SlackClient slackClient)
+		{
+			const string DateTimeFormat = "dd MMMM yyyy HH:mm:ss tt";
+			var now = DateTime.Now;
+			var nowPlus1Minute =now.AddMinutes(1);
+			
+			var scheduledMessage = new ScheduledMessage
+			{
+				Channel = _slackBotSettings.ChannelName,
+				Text = $"Scheduled message\nNow dateTime - {now.ToString(DateTimeFormat)}\nScheduled dateTime - {nowPlus1Minute.ToString(DateTimeFormat)}",
+				PostAt = UnixTimeHelper.ToUnixTime(nowPlus1Minute)
+			};
+
+			return slackClient.ScheduleMessageAsync(scheduledMessage);
 		}
 
 		private static async Task<UploadFileResponse> UploadContentAsync(SlackClient slackClient)
