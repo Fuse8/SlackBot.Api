@@ -3,7 +3,7 @@ using SlackBot.Api.Models.Chat.PostMessage;
 
 namespace SlackBot.Api.Models.Chat.ScheduleMessage.Request
 {
-	public class ScheduledMessage : Message
+	public class MessageToSchedule : Message
 	{
 		/// <summary>
 		/// Unix EPOCH timestamp of time in future to send the message.

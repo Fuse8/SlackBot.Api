@@ -4,6 +4,8 @@ using SlackBot.Api.Models;
 using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
+using SlackBot.Api.Models.Chat.ScheduledMessagesList.Request;
+using SlackBot.Api.Models.Chat.ScheduledMessagesList.Response;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
@@ -49,8 +51,14 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Schedules a message to be sent to a channel.
 		/// </summary>
-		public Task<ScheduleMessageResponse> ScheduleMessageAsync(ScheduledMessage scheduledMessage)
-			=> SendPostJsonStringAsync<ScheduledMessage, ScheduleMessageResponse>("chat.scheduleMessage", scheduledMessage);
+		public Task<ScheduleMessageResponse> ScheduleMessageAsync(MessageToSchedule messageToSchedule)
+			=> SendPostJsonStringAsync<MessageToSchedule, ScheduleMessageResponse>("chat.scheduleMessage", messageToSchedule);
+		
+		/// <summary>
+		/// Returns a list of scheduled messages.
+		/// </summary>
+		public Task<ScheduledMessagesResponse> GetScheduledMessages(GetScheduledMessagesRequest getScheduledMessagesRequest)
+			=> SendPostFormUrlEncodedAsync<GetScheduledMessagesRequest, ScheduledMessagesResponse>("chat.scheduledMessages.list", getScheduledMessagesRequest);
 
 		/// <summary>
 		/// Gets conversations list the calling user may access.

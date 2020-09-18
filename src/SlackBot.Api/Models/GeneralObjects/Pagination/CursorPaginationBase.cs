@@ -8,10 +8,12 @@ namespace SlackBot.Api.Models.GeneralObjects.Pagination
         {
         }
         
-        protected CursorPaginationBase(long? limit, string cursor = null)
+        protected CursorPaginationBase(long? limit, string cursor, string oldest, string latest)
         {
             Cursor = cursor;
             Limit = limit;
+            Oldest = oldest;
+            Latest = latest;
         }
 
         /// <summary>
@@ -30,5 +32,21 @@ namespace SlackBot.Api.Models.GeneralObjects.Pagination
         /// <example>20</example>
         [FormPropertyName("limit")]
         public long? Limit { get; set; }
+
+        /// <summary>
+        /// A UNIX timestamp of the latest value in the time range.
+        /// <para><strong>Default: now</strong></para>
+        /// </summary>
+        /// <example>1234567890.123456</example>
+        [FormPropertyName("latest")]
+        public string Latest { get; set; }
+		
+        /// <summary>
+        /// A UNIX timestamp of the oldest value in the time range
+        /// <para><strong>Default: 0</strong></para>
+        /// </summary>
+        /// <example>1234567890.123456</example>
+        [FormPropertyName("oldest")]
+        public string Oldest { get; set; }
     }
 }

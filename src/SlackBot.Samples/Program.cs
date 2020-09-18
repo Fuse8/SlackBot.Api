@@ -16,6 +16,8 @@ using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
+using SlackBot.Api.Models.Chat.ScheduledMessagesList.Request;
+using SlackBot.Api.Models.Chat.ScheduledMessagesList.Response;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
@@ -62,6 +64,9 @@ namespace SlackBot.Samples
 			/* Schedules message to channel * /
 			var scheduleMessageResponse = await ScheduleMessageAsync(slackClient); /**/
 			
+			/* Gets list of scheduled messages * /
+			var scheduledMessageListResponse = await GetScheduledMessagesAsync(slackClient); /**/
+			
 			/* Delete scheduled message * /
 			var deleteScheduledMessageResponse = await DeleteScheduledMessageAsync(slackClient); /**/
 
@@ -80,78 +85,7 @@ namespace SlackBot.Samples
 
 		private static Task<PostMessageResponse> PostMessageWithBlocksAsync(SlackClient slackClient)
 		{
-			var blocks = new BlockBase[]
-			{
-				new ActionBlock
-				{
-					Elements = new IActionElement[]
-					{
-						new ButtonActionElement
-						{
-							Text = new PlainTextObject
-							{
-								UseEmoji = true,
-								Text = ":cat: Button",
-							},
-							Url = new Uri("https://google.com"),
-							Confirm = new ConfirmationDialogObject
-							{
-								Title = "Action Block confirmation",
-								Confirm = "Sure",
-								Deny = "Nope",
-								Text = (PlainTextObject)"I wanna open google",
-							},
-						},
-
-						new DatepickerActionElement
-						{
-							Placeholder = "Select date",
-							InitialDate = "2020-02-22",
-						},
-					},
-				},
-				new ContextBlock
-				{
-					Elements = new IContextElement[]
-					{
-						(PlainTextObject)"This is Context Block",
-						new ImageElement
-						{
-							AltText = "Kitty in the Context block",
-							ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-						},
-					},
-				},
-				new DividerBlock(),
-				new HeaderBlock
-				{
-					Text = "This is Header Block",
-				},
-				new ImageBlock
-				{
-					ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-					Title = new PlainTextObject
-					{
-						UseEmoji = true,
-						Text = ":cat:",
-					},
-					AltText = "Kitty",
-				},
-				new SectionBlock
-				{
-					Text = (PlainTextObject)"This is Section Block",
-					Fields = new TextObjectBase[]
-					{
-						(MarkdownTextObject)"*Bold Text*",
-						(MarkdownTextObject)"_Italic Text_",
-					},
-					Accessory = new ImageElement
-					{
-						AltText = "Kitty in the Section block",
-						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-					},
-				},
-			};
+			var blocks = GenerateBlocksForMessage();
 
 			var message = new Message
 			{
@@ -215,7 +149,7 @@ namespace SlackBot.Samples
 			var now = DateTime.Now;
 			var scheduledDateTime =now.AddMinutes(minutesToSchedule);
 			
-			var scheduledMessage = new ScheduledMessage
+			var scheduledMessage = new MessageToSchedule
 			{
 				Channel = _slackBotSettings.ChannelName,
 				Text = $"Scheduled message\nNow dateTime - {now.ToString(DateTimeFormat)}\nScheduled dateTime - {scheduledDateTime.ToString(DateTimeFormat)}",
@@ -223,6 +157,20 @@ namespace SlackBot.Samples
 			};
 
 			return slackClient.ScheduleMessageAsync(scheduledMessage);
+		}
+		
+		private static async Task<ScheduledMessagesResponse> GetScheduledMessagesAsync(SlackClient slackClient)
+		{
+			const int MinutesToSchedule = 2;
+			var scheduleMessage1 = await ScheduleMessageAsync(slackClient, MinutesToSchedule);
+			var scheduleMessage2 = await ScheduleMessageAsync(slackClient, MinutesToSchedule);
+
+			var getScheduledMessagesRequest = new GetScheduledMessagesRequest
+			{
+				ChannelId = scheduleMessage2?.ChannelId
+			};
+
+			return await slackClient.GetScheduledMessages(getScheduledMessagesRequest);
 		}
 		
 		private static async Task<SlackBaseResponse> DeleteScheduledMessageAsync(SlackClient slackClient)
@@ -296,6 +244,83 @@ namespace SlackBot.Samples
 	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
 
 	        return channelId;
+		}
+
+		private static BlockBase[] GenerateBlocksForMessage()
+		{
+			var blocks = new BlockBase[]
+			{
+				new ActionBlock
+				{
+					Elements = new IActionElement[]
+					{
+						new ButtonActionElement
+						{
+							Text = new PlainTextObject
+							{
+								UseEmoji = true,
+								Text = ":cat: Button",
+							},
+							Url = new Uri("https://google.com"),
+							Confirm = new ConfirmationDialogObject
+							{
+								Title = "Action Block confirmation",
+								Confirm = "Sure",
+								Deny = "Nope",
+								Text = (PlainTextObject)"I wanna open google",
+							},
+						},
+
+						new DatepickerActionElement
+						{
+							Placeholder = "Select date",
+							InitialDate = "2020-02-22",
+						},
+					},
+				},
+				new ContextBlock
+				{
+					Elements = new IContextElement[]
+					{
+						(PlainTextObject)"This is Context Block",
+						new ImageElement
+						{
+							AltText = "Kitty in the Context block",
+							ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+						},
+					},
+				},
+				new DividerBlock(),
+				new HeaderBlock
+				{
+					Text = "This is Header Block",
+				},
+				new ImageBlock
+				{
+					ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+					Title = new PlainTextObject
+					{
+						UseEmoji = true,
+						Text = ":cat:",
+					},
+					AltText = "Kitty",
+				},
+				new SectionBlock
+				{
+					Text = (PlainTextObject)"This is Section Block",
+					Fields = new TextObjectBase[]
+					{
+						(MarkdownTextObject)"*Bold Text*",
+						(MarkdownTextObject)"_Italic Text_",
+					},
+					Accessory = new ImageElement
+					{
+						AltText = "Kitty in the Section block",
+						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+					},
+				},
+			};
+			return blocks;
 		}
 
 		private static IConfiguration GetConfiguration()

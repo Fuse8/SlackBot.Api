@@ -20,12 +20,10 @@ namespace SlackBot.Api.Models.Conversation.History.Request
         }
 
         protected ConversationsHistory(string channelId, bool? inclusive, string latest, string oldest, long? limit, string cursor)
-            : base(limit, cursor)
+            : base(limit, cursor, oldest, latest)
         {
             ChannelId = channelId;
             Inclusive = inclusive;
-            Latest = latest;
-            Oldest = oldest;
         }
 
         /// <summary>
@@ -42,21 +40,5 @@ namespace SlackBot.Api.Models.Conversation.History.Request
         /// <example>true</example>
         [FormPropertyName("inclusive")]
         public bool? Inclusive { get; set; }
-
-        /// <summary>
-        /// End of time range of messages to include in results.
-        /// <para><strong>Default: now</strong></para>
-        /// </summary>
-        /// <example>1234567890.123456</example>
-        [FormPropertyName("latest")]
-        public string Latest { get; set; }
-		
-        /// <summary>
-        /// Start of time range of messages to include in results.
-        /// <para><strong>Default: 0</strong></para>
-        /// </summary>
-        /// <example>1234567890.123456</example>
-        [FormPropertyName("oldest")]
-        public string Oldest { get; set; }
     }
 }
