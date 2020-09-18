@@ -9,7 +9,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 		protected override string SectionType => "context";
 
 		/// <summary>
-		/// An array of "image elements" and "text objects". Maximum number of items is 10.
+		/// An array of "image elements" and "text objects". Maximum number of <strong>items is 10</strong>.
 		/// </summary>
 		[JsonProperty("elements")]
 		public IContextElement[] Elements { get; set; }

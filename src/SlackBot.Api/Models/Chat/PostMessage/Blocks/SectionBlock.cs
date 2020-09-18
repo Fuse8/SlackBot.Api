@@ -10,7 +10,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 		protected override string SectionType => "section";
 
 		/// <summary>
-		/// The text for the block, in the form of a <see cref="TextObjectBase"/>. Maximum length for the <see cref="TextObjectBase.Text"/> in this field is 3000 characters.
+		/// The text for the block, in the form of a <see cref="TextObjectBase"/>. Maximum length for the <see cref="TextObjectBase.Text"/> in this field is <strong>3000 characters</strong>.
 		/// This field is not required if a valid <see cref="Fields"/> of fields objects is provided instead.
 		/// </summary>
 		[JsonProperty("text")]
@@ -19,7 +19,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 		/// <summary>
 		/// An array of <see cref="TextObjectBase"/>.
 		/// Any text objects included with <see cref="Fields"/> will be rendered in a compact format that allows for 2 columns of side-by-side text.
-		/// Maximum number of items is 10. Maximum length for the <see cref="TextObjectBase.Text"/> in each item is 2000 characters.
+		/// Maximum number of items is <strong>10. Maximum length for the <see cref="TextObjectBase.Text"/> in each item is 2000 characters</strong>.
 		/// </summary>
 		[JsonProperty("fields")]
 		public TextObjectBase[] Fields { get; set; }

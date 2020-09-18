@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
@@ -15,7 +14,6 @@ using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
-using SlackBot.Api.Models.Chat.ScheduleMessage;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Conversation.History.Request;

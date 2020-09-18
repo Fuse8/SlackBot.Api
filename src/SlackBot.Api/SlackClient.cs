@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
-using SlackBot.Api.Models.Chat.ScheduleMessage;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Conversation.History.Request;

@@ -7,9 +7,9 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements
 	{
 		/// <summary>
 		/// An identifier for this action. You can use this when you receive an "interaction payload" to identify the source of the action.
-		/// Should be unique among all other <see cref="ActionId"/> used elsewhere by your app. Maximum length for this field is 255 characters.
+		/// Should be unique among all other <see cref="ActionId"/> used elsewhere by your app. Maximum length for this field is <strong>255 characters</strong>.
 		/// </summary>
-		[JsonProperty("action_id")] //TODO mark Maximum length as bold
+		[JsonProperty("action_id")]
 		public string ActionId { get; set; }
 
 		/// <summary>

@@ -7,15 +7,15 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
 	{
 		/// <summary>
 		/// A <see cref="PlainTextObject"/> that defines the label shown above this group of options.
-		/// Maximum length for the <see cref="TextObjectBase.Text"/> in this field is 75 characters.
+		/// Maximum length for the <see cref="TextObjectBase.Text"/> in this field is <strong>75 characters</strong>.
 		/// </summary>
 		[JsonProperty("label")]
 		public PlainTextObject Label { get; set; }
 
 		/// <summary>
-		/// An array of <see cref="OptionObject"/> that belong to this specific group. Maximum of 100 items.
+		/// An array of <see cref="OptionObject"/> that belong to this specific group. Maximum of <strong>100 items</strong>.
 		/// </summary>
-		[JsonProperty("options")] //TODO bold count of Maximum
+		[JsonProperty("options")]
 		public OptionObject[] Options { get; set; }
 	}
 }
