@@ -21,7 +21,7 @@ namespace SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request
 
 		/// <summary>
 		/// Pass "true" to delete the message as the authed user with "chat:write:user" scope.
-		/// Bot users in this context are considered authed users. If unused or false, the message will be deleted with "chat:write:bot" scope.
+		/// Bot users in this context are considered authed users. If unused or "false", the message will be deleted with "chat:write:bot" scope.
 		/// <para><strong>Default: false</strong></para>
 		/// </summary>
 		/// <example>true</example>
