@@ -3,7 +3,7 @@ using SlackBot.Api.Models.GeneralObjects.Pagination;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
 {
-    public class ConversationsHistoryResponse : SlackResponseBase
+    public class ConversationsHistoryResponse : SlackBaseResponse
     {
         [JsonProperty("latest")]
         public string Latest { get; set; }

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Extensions;
+using SlackBot.Api.Models;
+using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Blocks;
@@ -57,8 +59,11 @@ namespace SlackBot.Samples
 			/* Uploads some files and sends message with them * /
 			var postMessageWithFilesResponse = await PostMessageWithMultipleFilesAsync(slackClient); /**/
 			
-			/* Schedules message to channel. */
+			/* Schedules message to channel * /
 			var scheduleMessageResponse = await ScheduleMessageAsync(slackClient); /**/
+			
+			/* Delete scheduled message * /
+			var deleteScheduledMessageResponse = await DeleteScheduledMessageAsync(slackClient); /**/
 
 			/* Uploads plain file content * /
 			var uploadContentResponse = await UploadContentAsync(slackClient); /**/
@@ -204,20 +209,33 @@ namespace SlackBot.Samples
 			return await slackClient.PostMessageAsync(message);
 		}
 
-		private static Task<ScheduleMessageResponse> ScheduleMessageAsync(SlackClient slackClient)
+		private static Task<ScheduleMessageResponse> ScheduleMessageAsync(SlackClient slackClient, int minutesToSchedule = 1)
 		{
 			const string DateTimeFormat = "dd MMMM yyyy HH:mm:ss tt";
 			var now = DateTime.Now;
-			var nowPlus1Minute =now.AddMinutes(1);
+			var scheduledDateTime =now.AddMinutes(minutesToSchedule);
 			
 			var scheduledMessage = new ScheduledMessage
 			{
 				Channel = _slackBotSettings.ChannelName,
-				Text = $"Scheduled message\nNow dateTime - {now.ToString(DateTimeFormat)}\nScheduled dateTime - {nowPlus1Minute.ToString(DateTimeFormat)}",
-				PostAt = UnixTimeHelper.ToUnixTime(nowPlus1Minute)
+				Text = $"Scheduled message\nNow dateTime - {now.ToString(DateTimeFormat)}\nScheduled dateTime - {scheduledDateTime.ToString(DateTimeFormat)}",
+				PostAt = UnixTimeHelper.ToUnixTime(scheduledDateTime)
 			};
 
 			return slackClient.ScheduleMessageAsync(scheduledMessage);
+		}
+		
+		private static async Task<SlackBaseResponse> DeleteScheduledMessageAsync(SlackClient slackClient)
+		{
+			var scheduleMessageResponse = await ScheduleMessageAsync(slackClient, 2);
+			
+			var deleteScheduledMessageRequest = new DeleteScheduledMessageRequest
+			{
+				Channel = scheduleMessageResponse.ChannelId,
+				ScheduledMessageId = scheduleMessageResponse.ScheduledMessageId
+			};
+
+			return await slackClient.DeleteScheduledMessageAsync(deleteScheduledMessageRequest);
 		}
 
 		private static async Task<UploadFileResponse> UploadContentAsync(SlackClient slackClient)

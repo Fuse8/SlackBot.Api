@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api.Models
 {
-	public abstract class SlackResponseBase
+	public class SlackBaseResponse
 	{
 		[JsonProperty("ok")]
 		public bool Ok { get; set; }

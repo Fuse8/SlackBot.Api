@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api.Models
 {
-	public class SlackErrorResponse
+	public class SlackErrorResponse : SlackBaseResponse
 	{
 		[JsonProperty("error")]
 		public string Error { get; set; }

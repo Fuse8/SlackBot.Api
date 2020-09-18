@@ -1,5 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using SlackBot.Api.Models;
+using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
@@ -31,6 +33,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UploadFileResponse> UploadFileAsync(FileToUpload fileToUpload)
 			=> SendPostMultipartFormAsync<FileToUpload, UploadFileResponse>("files.upload", fileToUpload);
+
+		/// <summary>
+		/// Deletes a pending scheduled message from the queue.
+		/// </summary>
+		public Task<SlackBaseResponse> DeleteScheduledMessageAsync(DeleteScheduledMessageRequest deleteScheduledMessageRequest)
+			=> SendPostJsonStringAsync<DeleteScheduledMessageRequest, SlackBaseResponse>("chat.deleteScheduledMessage", deleteScheduledMessageRequest);
 
 		/// <summary>
 		/// Sends a message to a channel.

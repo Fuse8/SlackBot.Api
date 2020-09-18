@@ -24,7 +24,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 		public string Text { get; set; }
 
 		/// <summary>
-		/// Pass true to post the message as the authed user, instead of as a bot.
+		/// Pass "true" to post the message as the authed user, instead of as a bot.
 		/// This argument may not be used with newer bot tokens.
 		/// <para><strong>Default: false</strong></para>
 		/// </summary>

@@ -3,7 +3,7 @@ using SlackBot.Api.Models.GeneralObjects.Pagination;
 
 namespace SlackBot.Api.Models.User.Conversation.Response
 {
-	public class ConversationResponse : SlackResponseBase
+	public class ConversationResponse : SlackBaseResponse
 	{
 		[JsonProperty("channels")]
 		public Channel[] Channels { get; set; }
