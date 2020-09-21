@@ -4,6 +4,8 @@ using SlackBot.Api.Models;
 using SlackBot.Api.Models.Chat.Delete.Request;
 using SlackBot.Api.Models.Chat.Delete.Response;
 using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
+using SlackBot.Api.Models.Chat.GetPermalink.Request;
+using SlackBot.Api.Models.Chat.GetPermalink.Response;
 using SlackBot.Api.Models.Chat.PostEphemeral.Request;
 using SlackBot.Api.Models.Chat.PostEphemeral.Response;
 using SlackBot.Api.Models.Chat.PostMessage;
@@ -53,6 +55,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> DeleteScheduledMessageAsync(DeleteScheduledMessageRequest deleteScheduledMessageRequest)
 			=> SendPostJsonStringAsync<DeleteScheduledMessageRequest, SlackBaseResponse>("chat.deleteScheduledMessage", deleteScheduledMessageRequest);
+
+		/// <summary>
+		/// Retrieve a permalink URL for a specific extant message.
+		/// </summary>
+		public Task<GetPermalinkResponse> GetMessagePermalinkAsync(GetPermalinkRequest getPermalinkRequest)
+			=> SendGetAsync<GetPermalinkRequest, GetPermalinkResponse>("chat.getPermalink", getPermalinkRequest);
 
 		/// <summary>
 		/// Sends an ephemeral message to a user in a channel.

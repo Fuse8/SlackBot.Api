@@ -9,6 +9,8 @@ using SlackBot.Api.Models;
 using SlackBot.Api.Models.Chat.Delete.Request;
 using SlackBot.Api.Models.Chat.Delete.Response;
 using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
+using SlackBot.Api.Models.Chat.GetPermalink.Request;
+using SlackBot.Api.Models.Chat.GetPermalink.Response;
 using SlackBot.Api.Models.Chat.PostEphemeral.Request;
 using SlackBot.Api.Models.Chat.PostEphemeral.Response;
 using SlackBot.Api.Models.Chat.PostMessage;
@@ -82,6 +84,9 @@ namespace SlackBot.Samples
 			
 			/* Deletes scheduled message * /
 			var deleteScheduledMessageResponse = await DeleteScheduledMessageAsync(); /**/
+
+			/* Gets message permalink */
+			var getPermalinkResponse = await GetMessagePermalinkAsync(); /**/
 			
 			/* Updates message * /
 			var updateMessageResponse = await UpdateMessageAsync(); /**/
@@ -220,6 +225,15 @@ namespace SlackBot.Samples
 			};
 
 			return await _slackClient.DeleteScheduledMessageAsync(deleteScheduledMessageRequest);
+		}
+		
+		private static async Task<GetPermalinkResponse> GetMessagePermalinkAsync()
+		{
+			var sendMessageResponse = await SendMessageWithBlocksAsync();
+
+			var getPermalinkRequest = new GetPermalinkRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+
+			return await _slackClient.GetMessagePermalinkAsync(getPermalinkRequest);
 		}
 		
 		private static async Task<UpdateMessageResponse> UpdateMessageAsync()
