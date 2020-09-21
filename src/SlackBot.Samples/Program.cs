@@ -9,6 +9,8 @@ using SlackBot.Api.Models;
 using SlackBot.Api.Models.Chat.Delete.Request;
 using SlackBot.Api.Models.Chat.Delete.Response;
 using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
+using SlackBot.Api.Models.Chat.PostEphemeral.Request;
+using SlackBot.Api.Models.Chat.PostEphemeral.Response;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Blocks;
@@ -61,10 +63,13 @@ namespace SlackBot.Samples
 		{
 
 			/* Sends message with some blocks * /
-			var postMessageResponse = await PostMessageWithBlocksAsync(); /**/
+			var postMessageResponse = await SendMessageWithBlocksAsync(); /**/
 
 			/* Uploads some files and sends message with them * /
-			var postMessageWithFilesResponse = await PostMessageWithMultipleFilesAsync(); /**/
+			var postMessageWithFilesResponse = await SendMessageWithMultipleFilesAsync(); /**/
+
+			/* Sends ephemeral message * /
+			var postMessageWithFilesResponse = await SendEphemeralMessageAsync(); /**/
 
 			/* Deletes message * /
 			var deletedMessageResponse = await DeleteMessageAsync(); /**/
@@ -102,7 +107,7 @@ namespace SlackBot.Samples
 			{
 				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Blocks = blocks,
-				Text = "ala",
+				Text = "SendMessageWithBlocksAsync method",
 				Attachments = new[]
 				{
 					new Attachment
@@ -145,13 +150,20 @@ namespace SlackBot.Samples
 					{
 						Elements = new IContextElement[]
 						{
-							(PlainTextObject)"Some text",
+							(PlainTextObject)"SendMessageWithMultipleFilesAsync method",
 						},
 					},
 				},
 			};
 
 			return await _slackClient.SendMessageAsync(message);
+		}
+
+		private static Task<SendEphemeralMessageResponse> SendEphemeralMessageAsync()
+		{
+			var ephemeralMessage = new EphemeralMessage(_slackBotSettings.ChannelName, _slackBotSettings.UserId, "SendEphemeralMessageAsync method");
+
+			return _slackClient.SendEphemeralMessageAsync(ephemeralMessage);
 		}
 		
 		private static async Task<DeletedMessageResponse> DeleteMessageAsync()

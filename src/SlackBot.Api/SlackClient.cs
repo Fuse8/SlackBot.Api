@@ -4,6 +4,8 @@ using SlackBot.Api.Models;
 using SlackBot.Api.Models.Chat.Delete.Request;
 using SlackBot.Api.Models.Chat.Delete.Response;
 using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
+using SlackBot.Api.Models.Chat.PostEphemeral.Request;
+using SlackBot.Api.Models.Chat.PostEphemeral.Response;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.Response;
 using SlackBot.Api.Models.Chat.ScheduledMessagesList.Request;
@@ -51,6 +53,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> DeleteScheduledMessageAsync(DeleteScheduledMessageRequest deleteScheduledMessageRequest)
 			=> SendPostJsonStringAsync<DeleteScheduledMessageRequest, SlackBaseResponse>("chat.deleteScheduledMessage", deleteScheduledMessageRequest);
+
+		/// <summary>
+		/// Sends an ephemeral message to a user in a channel.
+		/// </summary>
+		public Task<SendEphemeralMessageResponse> SendEphemeralMessageAsync(EphemeralMessage ephemeralMessage)
+			=> SendPostJsonStringAsync<EphemeralMessage, SendEphemeralMessageResponse>("chat.postEphemeral", ephemeralMessage);
 
 		/// <summary>
 		/// Sends a message to a channel.
