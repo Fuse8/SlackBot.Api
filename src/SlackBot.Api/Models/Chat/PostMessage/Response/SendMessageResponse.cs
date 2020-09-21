@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api.Models.Chat.PostMessage.Response
 {
-	public class PostMessageResponse : PostMessageResponseBase
+	public class SendMessageResponse : PostMessageResponseBase
 	{
 		[JsonProperty("ts")]
 		public string Timestamp { get; set; }

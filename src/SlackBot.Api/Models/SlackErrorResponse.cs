@@ -9,5 +9,8 @@ namespace SlackBot.Api.Models
 
 		[JsonProperty("warning")]
 		public string Warning { get; set; }
+
+		[JsonProperty("response_metadata")]
+		public object Metadata { get; set; }
 	}
 }

@@ -10,6 +10,8 @@ using SlackBot.Api.Models.Chat.ScheduledMessagesList.Request;
 using SlackBot.Api.Models.Chat.ScheduledMessagesList.Response;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
+using SlackBot.Api.Models.Chat.Update.Request;
+using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Upload.Request;
@@ -53,8 +55,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Sends a message to a channel.
 		/// </summary>
-		public Task<PostMessageResponse> SendMessageAsync(Message message)
-			=> SendPostJsonStringAsync<Message, PostMessageResponse>("chat.postMessage", message);
+		public Task<SendMessageResponse> SendMessageAsync(Message message)
+			=> SendPostJsonStringAsync<Message, SendMessageResponse>("chat.postMessage", message);
 		
 		/// <summary>
 		/// Schedules a message to be sent to a channel.
@@ -67,6 +69,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<ScheduledMessagesResponse> GetScheduledMessages(GetScheduledMessagesRequest getScheduledMessagesRequest)
 			=> SendPostFormUrlEncodedAsync<GetScheduledMessagesRequest, ScheduledMessagesResponse>("chat.scheduledMessages.list", getScheduledMessagesRequest);
+		
+		/// <summary>
+		/// Updates a message.
+		/// </summary>
+		public Task<UpdateMessageResponse> UpdateMessage(MessageToUpdate messageToUpdate)
+			=> SendPostJsonStringAsync<MessageToUpdate, UpdateMessageResponse>("chat.update", messageToUpdate);
 
 		/// <summary>
 		/// Gets conversations list the calling user may access.

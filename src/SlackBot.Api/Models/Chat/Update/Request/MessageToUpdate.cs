@@ -3,41 +3,39 @@ using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 
-namespace SlackBot.Api.Models.Chat.PostMessage
+namespace SlackBot.Api.Models.Chat.Update.Request
 {
-	public class Message
+	public class MessageToUpdate
 	{
-		public Message()
+		public MessageToUpdate()
 		{
 		}
 
-		public Message(string channelIdOrName, string text = null, Attachment[] attachments = null, BlockBase[] blocks = null)
+		public MessageToUpdate(string channelId, string messageTimestamp, string text = null, Attachment[] attachments = null, BlockBase[] blocks = null)
 		{
-			ChannelIdOrName = channelIdOrName;
+			ChannelId = channelId;
+			MessageTimestamp = messageTimestamp;
 			Text = text;
 			Attachments = attachments;
 			Blocks = blocks;
 		}
 
 		/// <summary>
-		/// Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name.
+		/// Channel containing the message to be updated.
 		/// </summary>
 		/// <example>C1234567890</example>
 		[JsonProperty("channel")]
-		public string ChannelIdOrName { get; set; }
+		public string ChannelId { get; set; }
 
 		/// <summary>
-		/// If you are using <see cref="Blocks"/>, this is used as a fallback string to display in notifications.
-		/// If you aren't, this is the main body text of the message. It can be formatted as plain text, or with mrkdwn.
-		/// The <see cref="Text"/> field is not enforced as required when using <see cref="Blocks"/> or <see cref="Attachments"/>
+		/// Timestamp of the message to be updated.
 		/// </summary>
-		/// <example>Hello world</example>
-		[JsonProperty("text")]
-		public string Text { get; set; }
+		/// <example>1405894322.002768</example>
+		[JsonProperty("ts")]
+		public string MessageTimestamp { get; set; }
 
 		/// <summary>
-		/// Pass "true" to post the message as the authed user, instead of as a bot.
-		/// This argument may not be used with newer bot tokens.
+		/// Pass "true" to update the message as the authed user. Bot users in this context are considered authed users.
 		/// <para><strong>Default: false</strong></para>
 		/// </summary>
 		/// <example>true</example>
@@ -45,7 +43,9 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 		public bool? AsUser { get; set; }
 
 		/// <summary>
-		/// A JSON-based array of structured attachments, presented as a URL-encoded string.
+		/// A JSON-based array of structured attachments, presented as a URL-encoded string. This field is required when not presenting <see cref="Text"/>.
+		/// If you don't include this field, the message's previous <see cref="Attachments"/> will be retained.
+		/// To remove previous <see cref="Attachments"/>, include an empty array for this field.
 		/// </summary>
 		/// <example>[{"pretext": "pre-hello", "text": "text-world"}]</example>
 		[JsonProperty("attachments")]
@@ -53,10 +53,37 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 
 		/// <summary>
 		/// A JSON-based array of structured blocks, presented as a URL-encoded string.
+		/// If you don't include this field, the message's previous <see cref="Blocks"/> will be retained.
+		/// To remove previous <see cref="Blocks"/>, include an empty array for this field.
 		/// </summary>
 		/// <example>[{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}]</example>
 		[JsonProperty("blocks")]
 		public BlockBase[] Blocks { get; set; }
+
+		/// <summary>
+		/// Find and link channel names and usernames.
+		/// If you do not specify a value for this field, the original value set for the message will be overwritten with the default, "none".
+		/// <para><strong>Default: none</strong></para>
+		/// </summary>
+		/// <example>true</example>
+		[JsonProperty("link_names")]
+		public bool? LinkNames { get; set; }
+
+		/// <summary>
+		/// Change how messages are treated. Defaults to "client", unlike "chat.postMessage". Accepts either "none" or "full".
+		/// If you do not specify a value for this field, the original value set for the message will be overwritten with the default, "client".
+		/// <para><strong>Default: client</strong></para>
+		/// </summary>
+		/// <example>full</example>
+		[JsonProperty("parse")]
+		public string Parse { get; set; }
+
+		/// <summary>
+		/// New text for the message, using the default formatting rules. It's not required when presenting <see cref="Blocks"/> or <see cref="Attachments"/>.
+		/// </summary>
+		/// <example>Hello world</example>
+		[JsonProperty("text")]
+		public string Text { get; set; }
 
 		/// <summary>
 		/// Emoji to use as the icon for this message. Overrides <see cref="IconUrl"/>.
@@ -75,29 +102,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage
 		/// <example>http://lorempixel.com/48/48</example>
 		[JsonProperty("icon_url")]
 		public Uri IconUrl { get; set; }
-
-		/// <summary>
-		/// Find and link channel names and usernames.
-		/// </summary>
-		/// <example>true</example>
-		[JsonProperty("link_names")]
-		public bool? LinkNames { get; set; }
-
-		/// <summary>
-		/// Disable Slack markup parsing by setting to "false".
-		/// <para><strong>Default: true</strong></para>
-		/// </summary>
-		/// <example>false</example>
-		[JsonProperty("mrkdwn")]
-		public bool? UseMarkdown { get; set; }
-
-		/// <summary>
-		/// Change how messages are treated.
-		/// <para><strong>Default: none</strong></para>
-		/// </summary>
-		/// <example>full</example>
-		[JsonProperty("parse")]
-		public string Parse { get; set; }
 
 		/// <summary>
 		/// Used in conjunction with <see cref="ThreadTimestamp"/> and indicates whether reply should be made visible to everyone in the channel or conversation.

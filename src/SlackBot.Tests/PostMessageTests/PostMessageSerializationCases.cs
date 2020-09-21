@@ -19,7 +19,7 @@ namespace SlackBot.Tests.PostMessageTests
 			{
 				new Message
 				{
-					Channel = "channel",
+					ChannelIdOrName = "channel",
 					Attachments = new Attachment[0],
 					Blocks = new BlockBase[0],
 					Parse = "full",

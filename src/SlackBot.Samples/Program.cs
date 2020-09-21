@@ -22,6 +22,8 @@ using SlackBot.Api.Models.Chat.ScheduledMessagesList.Request;
 using SlackBot.Api.Models.Chat.ScheduledMessagesList.Response;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
+using SlackBot.Api.Models.Chat.Update.Request;
+using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Upload.Request;
@@ -75,6 +77,9 @@ namespace SlackBot.Samples
 			
 			/* Deletes scheduled message * /
 			var deleteScheduledMessageResponse = await DeleteScheduledMessageAsync(); /**/
+			
+			/* Updates message * /
+			var updateMessageResponse = await UpdateMessageAsync(); /**/
 
 			/* Uploads plain file content * /
 			var uploadContentResponse = await UploadContentAsync(); /**/
@@ -89,13 +94,13 @@ namespace SlackBot.Samples
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
 		}
 
-		private static Task<PostMessageResponse> SendMessageWithBlocksAsync()
+		private static Task<SendMessageResponse> SendMessageWithBlocksAsync()
 		{
 			var blocks = GenerateBlocksForMessage();
 
 			var message = new Message
 			{
-				Channel = _slackBotSettings.ChannelName,
+				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Blocks = blocks,
 				Text = "ala",
 				Attachments = new[]
@@ -111,7 +116,7 @@ namespace SlackBot.Samples
 			return _slackClient.SendMessageAsync(message);
 		}
 
-		private static async Task<PostMessageResponse> SendMessageWithMultipleFilesAsync()
+		private static async Task<SendMessageResponse> SendMessageWithMultipleFilesAsync()
 		{
 			var content = await File.ReadAllTextAsync("./appsettings.json");
 
@@ -132,7 +137,7 @@ namespace SlackBot.Samples
 
 			var message = new Message
 			{
-				Channel = _slackBotSettings.ChannelName,
+				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Text = firstFile.File.Permalink + " " + secondFile.File.Permalink,
 				Blocks = new BlockBase[]
 				{
@@ -170,7 +175,7 @@ namespace SlackBot.Samples
 			
 			var scheduledMessage = new MessageToSchedule
 			{
-				Channel = _slackBotSettings.ChannelName,
+				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Text = $"Scheduled message\nNow dateTime - {now.ToString(DateTimeFormat)}\nScheduled dateTime - {scheduledDateTime.ToString(DateTimeFormat)}",
 				PostAt = UnixTimeHelper.ToUnixTime(scheduledDateTime)
 			};
@@ -203,6 +208,16 @@ namespace SlackBot.Samples
 			};
 
 			return await _slackClient.DeleteScheduledMessageAsync(deleteScheduledMessageRequest);
+		}
+		
+		private static async Task<UpdateMessageResponse> UpdateMessageAsync()
+		{
+			var message = new Message(_slackBotSettings.ChannelName, "Not updated text");
+			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
+
+			var messageToUpdate = new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText");
+			
+			return await _slackClient.UpdateMessage(messageToUpdate);
 		}
 
 		private static async Task<UploadFileResponse> UploadContentAsync()
