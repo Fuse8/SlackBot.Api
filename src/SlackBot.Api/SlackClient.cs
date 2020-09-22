@@ -20,6 +20,7 @@ using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -40,6 +41,14 @@ namespace SlackBot.Api
 		public Task<BotInfoResponse> GetBotInfo(BotInfoRequest botInfoRequest)
 			=> SendGetAsync<BotInfoRequest, BotInfoResponse>("bots.info", botInfoRequest);
 
+		#region File
+		
+		/// <summary>
+		/// Deletes a file.
+		/// </summary>
+		public Task<SlackBaseResponse> DeleteFileAsync(FileToDelete fileToDelete)
+			=> SendPostFormUrlEncodedAsync<FileToDelete, SlackBaseResponse>("files.delete", fileToDelete);
+
 		/// <summary>
 		/// Creates content as a file and uploads it.
 		/// </summary>
@@ -51,6 +60,10 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UploadFileResponse> UploadFileAsync(FileToUpload fileToUpload)
 			=> SendPostMultipartFormAsync<FileToUpload, UploadFileResponse>("files.upload", fileToUpload);
+		
+		#endregion
+		
+		#region Chat
 
 		/// <summary>
 		/// Deletes a message.
@@ -99,6 +112,8 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UpdateMessageResponse> UpdateMessage(MessageToUpdate messageToUpdate)
 			=> SendPostJsonStringAsync<MessageToUpdate, UpdateMessageResponse>("chat.update", messageToUpdate);
+		
+		#endregion
 
 		/// <summary>
 		/// Gets conversations list the calling user may access.

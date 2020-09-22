@@ -32,6 +32,7 @@ using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -101,6 +102,9 @@ namespace SlackBot.Samples
  
 			/* Uploads file from disk * /
 			var uploadFileResponse = await UploadFileAsync(); /**/
+ 
+			/* Deletes file * /
+			var deleteFileResponse = await DeleteFileAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -266,7 +270,7 @@ namespace SlackBot.Samples
 			var content = await File.ReadAllTextAsync("./appsettings.json");
 			var contentMessage = new ContentToUpload
 			{
-				Comment = "Upload content",
+				Comment = "UploadContentAsync method",
 				Title = "Title",
 				Channels = _slackBotSettings.ChannelName,
 				Content = content,
@@ -284,9 +288,19 @@ namespace SlackBot.Samples
 			{
 				Channels = _slackBotSettings.ChannelName,
 				Stream = fileStream,
+				Comment = "UploadFileAsync method"
 			};
 
 			return await _slackClient.UploadFileAsync(fileMessage);
+		}
+
+		private static async Task<SlackBaseResponse> DeleteFileAsync()
+		{
+			var uploadFileResponse = await UploadFileAsync();
+			
+			var fileToDelete = new FileToDelete(uploadFileResponse.File.Id);
+
+			return await _slackClient.DeleteFileAsync(fileToDelete);
 		}
 
 		private static Task<ConversationResponse> GetUserConversationsAsync()
