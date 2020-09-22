@@ -1,6 +1,8 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using SlackBot.Api.Models;
+using SlackBot.Api.Models.Bot.Info.Request;
+using SlackBot.Api.Models.Bot.Info.Response;
 using SlackBot.Api.Models.Chat.Delete.Request;
 using SlackBot.Api.Models.Chat.Delete.Response;
 using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
@@ -31,6 +33,12 @@ namespace SlackBot.Api
             : base(httpClient)
 		{
 		}
+
+		/// <summary>
+		/// Gets information about a bot user.
+		/// </summary>
+		public Task<BotInfoResponse> GetBotInfo(BotInfoRequest botInfoRequest)
+			=> SendGetAsync<BotInfoRequest, BotInfoResponse>("bots.info", botInfoRequest);
 
 		/// <summary>
 		/// Creates content as a file and uploads it.

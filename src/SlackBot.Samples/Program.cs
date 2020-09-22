@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Extensions;
 using SlackBot.Api.Models;
+using SlackBot.Api.Models.Bot.Info.Request;
+using SlackBot.Api.Models.Bot.Info.Response;
 using SlackBot.Api.Models.Chat.Delete.Request;
 using SlackBot.Api.Models.Chat.Delete.Response;
 using SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request;
@@ -85,11 +87,14 @@ namespace SlackBot.Samples
 			/* Deletes scheduled message * /
 			var deleteScheduledMessageResponse = await DeleteScheduledMessageAsync(); /**/
 
-			/* Gets message permalink */
+			/* Gets message permalink * /
 			var getPermalinkResponse = await GetMessagePermalinkAsync(); /**/
 			
 			/* Updates message * /
 			var updateMessageResponse = await UpdateMessageAsync(); /**/
+			
+			/* Gets bot info * /
+			var botInfoResponse = await GetBotInfoAsync(); /**/
 
 			/* Uploads plain file content * /
 			var uploadContentResponse = await UploadContentAsync(); /**/
@@ -244,6 +249,16 @@ namespace SlackBot.Samples
 			var messageToUpdate = new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText");
 			
 			return await _slackClient.UpdateMessage(messageToUpdate);
+		}
+		
+		private static async Task<BotInfoResponse> GetBotInfoAsync()
+		{
+			var message = new Message(_slackBotSettings.ChannelName, "GetBotInfo method");
+			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
+
+			var botInfoRequest = new BotInfoRequest(sendMessageResponse.Message.BotId);
+			
+			return await _slackClient.GetBotInfo(botInfoRequest);
 		}
 
 		private static async Task<UploadFileResponse> UploadContentAsync()
