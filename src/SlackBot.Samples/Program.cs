@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
@@ -35,6 +36,8 @@ using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Info.Request;
 using SlackBot.Api.Models.File.Info.Response;
+using SlackBot.Api.Models.File.List.Request;
+using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -110,6 +113,9 @@ namespace SlackBot.Samples
  
 			/* Gets file info * /
 			var fileInfoResponse = await GetFileInfoAsync(); /**/
+ 
+			/* Gets file list * /
+			var fileListResponse = await GetFileListAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -315,6 +321,24 @@ namespace SlackBot.Samples
 			var fileInfoRequest = new FileInfoRequest(uploadFileResponse.File.Id);
 
 			return await _slackClient.GetFileInfoAsync(fileInfoRequest);
+		}
+
+		private static async Task<FileListResponse> GetFileListAsync()
+		{
+			var uploadFileResponse = await UploadFileAsync();
+			var uploadContentResponse = await UploadContentAsync();
+
+			// Because of slack cache... Files upload instantly, but they attach to group delayed
+			await Task.Delay(30000);
+			
+			var firstFile = uploadFileResponse.File;
+			var fileListRequest = new FileListRequest
+			{
+				ChannelId = firstFile.ChannelIds.FirstOrDefault() ?? firstFile.GroupIds.FirstOrDefault(),
+				TimestampFrom = firstFile.CreatedTimestamp.ToString(),
+			};
+
+			return await _slackClient.GetFileListAsync(fileListRequest);
 		}
 
 		private static Task<UserConversationsResponse> GetUserConversationsAsync()

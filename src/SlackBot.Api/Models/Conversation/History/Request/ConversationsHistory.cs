@@ -1,5 +1,5 @@
 ﻿using SlackBot.Api.Attributes;
-using SlackBot.Api.Models.GeneralObjects.Pagination;
+using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.Conversation.History.Request
 {

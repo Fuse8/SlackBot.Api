@@ -23,6 +23,8 @@ using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Info.Request;
 using SlackBot.Api.Models.File.Info.Response;
+using SlackBot.Api.Models.File.List.Request;
+using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -56,6 +58,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<FileInfoResponse> GetFileInfoAsync(FileInfoRequest fileInfoRequest)
 			=> SendGetAsync<FileInfoRequest, FileInfoResponse>("files.info", fileInfoRequest);
+		
+		/// <summary>
+		/// List for a team, in a channel, or from a user with applied filters.
+		/// </summary>
+		public Task<FileListResponse> GetFileListAsync(FileListRequest fileListRequest)
+			=> SendGetAsync<FileListRequest, FileListResponse>("files.list", fileListRequest);
 
 		/// <summary>
 		/// Creates content as a file and uploads it.

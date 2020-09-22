@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.GeneralObjects.Pagination;
+using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.Chat.ScheduledMessagesList.Response
 {

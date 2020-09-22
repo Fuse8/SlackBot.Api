@@ -10,7 +10,10 @@ namespace SlackBot.Api.Models.GeneralObjects
 		public string Id { get; set; }
 
 		[JsonProperty("created")]
-		public long Created { get; set; }
+		public long CreatedTimestamp { get; set; }
+
+		[JsonProperty("timestamp")]
+		public long Timestamp { get; set; }
 
 		[JsonProperty("name")]
 		public string Name { get; set; }
@@ -97,13 +100,13 @@ namespace SlackBot.Api.Models.GeneralObjects
 		public Shares Shares { get; set; }
 
 		[JsonProperty("channels")]
-		public string[] Channels { get; set; }
+		public string[] ChannelIds { get; set; }
 
 		[JsonProperty("groups")]
-		public string[] Groups { get; set; }
+		public string[] GroupIds { get; set; }
 
 		[JsonProperty("ims")]
-		public string[] DirectMessageChannels { get; set; }
+		public string[] DirectMessageChannelIds { get; set; }
 
 		[JsonProperty("has_rich_preview")]
 		public bool HasRichPreview { get; set; }

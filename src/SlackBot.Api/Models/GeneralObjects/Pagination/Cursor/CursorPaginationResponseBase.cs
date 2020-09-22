@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.GeneralObjects.Pagination
+namespace SlackBot.Api.Models.GeneralObjects.Pagination.Cursor
 {
 	public abstract class CursorPaginationResponseBase : SlackBaseResponse
 	{

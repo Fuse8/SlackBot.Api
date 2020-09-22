@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Models.GeneralObjects.Pagination
+namespace SlackBot.Api.Models.GeneralObjects.Pagination.Cursor
 {
     public abstract class CursorPaginationBase
     {
