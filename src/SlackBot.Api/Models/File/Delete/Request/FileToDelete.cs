@@ -1,6 +1,4 @@
-﻿using SlackBot.Api.Attributes;
-
-namespace SlackBot.Api.Models.File.Delete.Request
+﻿namespace SlackBot.Api.Models.File.Delete.Request
 {
 	public class FileToDelete : FileByIdRequestBase
 	{

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
@@ -40,6 +39,7 @@ using SlackBot.Api.Models.File.List.Request;
 using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
+using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
@@ -116,6 +116,9 @@ namespace SlackBot.Samples
  
 			/* Gets file list * /
 			var fileListResponse = await GetFileListAsync(); /**/
+ 
+			/* Pins message * /
+			var pinMessageResponse = await PinMessageAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -273,7 +276,7 @@ namespace SlackBot.Samples
 
 			var botInfoRequest = new BotInfoRequest(sendMessageResponse.Message.BotId);
 			
-			return await _slackClient.GetBotInfo(botInfoRequest);
+			return await _slackClient.GetBotInfoAsync(botInfoRequest);
 		}
 
 		private static async Task<UploadFileResponse> UploadContentAsync()
@@ -339,6 +342,15 @@ namespace SlackBot.Samples
 			};
 
 			return await _slackClient.GetFileListAsync(fileListRequest);
+		}
+
+		private static async Task<SlackBaseResponse> PinMessageAsync()
+		{
+			var sendMessageResponse = await SendMessageWithBlocksAsync();
+			
+			var messageToPin = new MessageToPin(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+
+			return await _slackClient.PinMessageAsync(messageToPin);
 		}
 
 		private static Task<UserConversationsResponse> GetUserConversationsAsync()

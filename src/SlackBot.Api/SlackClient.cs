@@ -27,6 +27,7 @@ using SlackBot.Api.Models.File.List.Request;
 using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
+using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 
@@ -42,7 +43,7 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Gets information about a bot user.
 		/// </summary>
-		public Task<BotInfoResponse> GetBotInfo(BotInfoRequest botInfoRequest)
+		public Task<BotInfoResponse> GetBotInfoAsync(BotInfoRequest botInfoRequest)
 			=> SendGetAsync<BotInfoRequest, BotInfoResponse>("bots.info", botInfoRequest);
 
 		#region File
@@ -129,6 +130,16 @@ namespace SlackBot.Api
 		public Task<UpdateMessageResponse> UpdateMessage(MessageToUpdate messageToUpdate)
 			=> SendPostJsonStringAsync<MessageToUpdate, UpdateMessageResponse>("chat.update", messageToUpdate);
 		
+		#endregion
+
+		#region Pin
+
+		/// <summary>
+		/// Pins an item to a channel.
+		/// </summary>
+		public Task<SlackBaseResponse> PinMessageAsync(MessageToPin messageToPin)
+			=> SendPostFormUrlEncodedAsync<MessageToPin, SlackBaseResponse>("pins.add", messageToPin);
+
 		#endregion
 
 		/// <summary>
