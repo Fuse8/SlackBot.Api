@@ -40,6 +40,7 @@ using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.Pin.Add.Request;
+using SlackBot.Api.Models.Pin.Remove.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
@@ -119,6 +120,9 @@ namespace SlackBot.Samples
  
 			/* Pins message * /
 			var pinMessageResponse = await PinMessageAsync(); /**/
+ 
+			/* Remove pinned item * /
+			var removePinResponse = await RemovePinAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -346,11 +350,28 @@ namespace SlackBot.Samples
 
 		private static async Task<SlackBaseResponse> PinMessageAsync()
 		{
-			var sendMessageResponse = await SendMessageWithBlocksAsync();
-			
-			var messageToPin = new MessageToPin(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var (pinResponse, _) = await PinMessageInternalAsync();
 
-			return await _slackClient.PinMessageAsync(messageToPin);
+			return pinResponse;
+		}
+
+		private static async Task<SlackBaseResponse> RemovePinAsync()
+		{
+			var (_, sendMessageResponse) = await PinMessageInternalAsync();
+			
+			var removePinRequest = new RemovePinRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+
+			return await _slackClient.RemovePinAsync(removePinRequest);
+		}
+
+		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
+		{
+			var sendMessageResponse = await SendMessageWithBlocksAsync();
+
+			var messageToPin = new MessageToPin(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var pinMessageResponse = await _slackClient.PinMessageAsync(messageToPin);
+
+			return (pinMessageResponse, sendMessageResponse);
 		}
 
 		private static Task<UserConversationsResponse> GetUserConversationsAsync()

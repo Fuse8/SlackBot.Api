@@ -28,6 +28,7 @@ using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.Pin.Add.Request;
+using SlackBot.Api.Models.Pin.Remove.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 
@@ -139,6 +140,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> PinMessageAsync(MessageToPin messageToPin)
 			=> SendPostFormUrlEncodedAsync<MessageToPin, SlackBaseResponse>("pins.add", messageToPin);
+
+		/// <summary>
+		/// Un-pins an item from a channel.
+		/// </summary>
+		public Task<SlackBaseResponse> RemovePinAsync(RemovePinRequest removePinRequest)
+			=> SendPostFormUrlEncodedAsync<RemovePinRequest, SlackBaseResponse>("pins.remove", removePinRequest);
 
 		#endregion
 
