@@ -3,7 +3,7 @@ using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 
 namespace SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request
 {
-	public class DeleteScheduledMessageRequest
+	public class ScheduledMessageToDelete
 	{
 		/// <summary>
 		/// The channel the scheduled_message is posting to

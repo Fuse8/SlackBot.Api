@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.Chat.GetPermalink.Response
 {
-	public class GetPermalinkResponse : SlackBaseResponse
+	public class MessagePermalinkResponse : SlackBaseResponse
 	{
 		[JsonProperty("channel")]
 		public string ChannelId { get; set; }

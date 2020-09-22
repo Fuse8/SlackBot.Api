@@ -21,6 +21,8 @@ using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Delete.Request;
+using SlackBot.Api.Models.File.Info.Request;
+using SlackBot.Api.Models.File.Info.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -48,6 +50,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> DeleteFileAsync(FileToDelete fileToDelete)
 			=> SendPostFormUrlEncodedAsync<FileToDelete, SlackBaseResponse>("files.delete", fileToDelete);
+		
+		/// <summary>
+		/// Gets information about a file.
+		/// </summary>
+		public Task<FileInfoResponse> GetFileInfoAsync(FileInfoRequest fileInfoRequest)
+			=> SendGetAsync<FileInfoRequest, FileInfoResponse>("files.info", fileInfoRequest);
 
 		/// <summary>
 		/// Creates content as a file and uploads it.
@@ -74,14 +82,14 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Deletes a pending scheduled message from the queue.
 		/// </summary>
-		public Task<SlackBaseResponse> DeleteScheduledMessageAsync(DeleteScheduledMessageRequest deleteScheduledMessageRequest)
-			=> SendPostJsonStringAsync<DeleteScheduledMessageRequest, SlackBaseResponse>("chat.deleteScheduledMessage", deleteScheduledMessageRequest);
+		public Task<SlackBaseResponse> DeleteScheduledMessageAsync(ScheduledMessageToDelete scheduledMessageToDelete)
+			=> SendPostJsonStringAsync<ScheduledMessageToDelete, SlackBaseResponse>("chat.deleteScheduledMessage", scheduledMessageToDelete);
 
 		/// <summary>
 		/// Retrieve a permalink URL for a specific extant message.
 		/// </summary>
-		public Task<GetPermalinkResponse> GetMessagePermalinkAsync(GetPermalinkRequest getPermalinkRequest)
-			=> SendGetAsync<GetPermalinkRequest, GetPermalinkResponse>("chat.getPermalink", getPermalinkRequest);
+		public Task<MessagePermalinkResponse> GetMessagePermalinkAsync(MessagePermalinkRequest messagePermalinkRequest)
+			=> SendGetAsync<MessagePermalinkRequest, MessagePermalinkResponse>("chat.getPermalink", messagePermalinkRequest);
 
 		/// <summary>
 		/// Sends an ephemeral message to a user in a channel.
@@ -104,8 +112,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Returns a list of scheduled messages.
 		/// </summary>
-		public Task<ScheduledMessagesResponse> GetScheduledMessages(GetScheduledMessagesRequest getScheduledMessagesRequest)
-			=> SendPostFormUrlEncodedAsync<GetScheduledMessagesRequest, ScheduledMessagesResponse>("chat.scheduledMessages.list", getScheduledMessagesRequest);
+		public Task<ScheduledMessageListResponse> GetScheduledMessages(ScheduledMessageListRequest scheduledMessageListRequest)
+			=> SendPostFormUrlEncodedAsync<ScheduledMessageListRequest, ScheduledMessageListResponse>("chat.scheduledMessages.list", scheduledMessageListRequest);
 		
 		/// <summary>
 		/// Updates a message.
@@ -118,8 +126,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Gets conversations list the calling user may access.
 		/// </summary>
-		public Task<ConversationResponse> UserConversationsAsync(UserConversations message)
-			=> SendGetAsync<UserConversations, ConversationResponse>("users.conversations", message);
+		public Task<UserConversationsResponse> UserConversationsAsync(UserConversations message)
+			=> SendGetAsync<UserConversations, UserConversationsResponse>("users.conversations", message);
         
 		/// <summary>
 		/// Fetches a conversation's history of messages and events.

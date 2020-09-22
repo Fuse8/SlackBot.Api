@@ -33,6 +33,8 @@ using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.File.Delete.Request;
+using SlackBot.Api.Models.File.Info.Request;
+using SlackBot.Api.Models.File.Info.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
@@ -89,7 +91,7 @@ namespace SlackBot.Samples
 			var deleteScheduledMessageResponse = await DeleteScheduledMessageAsync(); /**/
 
 			/* Gets message permalink * /
-			var getPermalinkResponse = await GetMessagePermalinkAsync(); /**/
+			var messagePermalinkResponse = await GetMessagePermalinkAsync(); /**/
 			
 			/* Updates message * /
 			var updateMessageResponse = await UpdateMessageAsync(); /**/
@@ -105,6 +107,9 @@ namespace SlackBot.Samples
  
 			/* Deletes file * /
 			var deleteFileResponse = await DeleteFileAsync(); /**/
+ 
+			/* Gets file info * /
+			var fileInfoResponse = await GetFileInfoAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -209,40 +214,40 @@ namespace SlackBot.Samples
 			return _slackClient.ScheduleMessageAsync(scheduledMessage);
 		}
 		
-		private static async Task<ScheduledMessagesResponse> GetScheduledMessagesAsync()
+		private static async Task<ScheduledMessageListResponse> GetScheduledMessagesAsync()
 		{
 			const int MinutesToSchedule = 2;
 			var scheduleMessage1 = await ScheduleMessageAsync(MinutesToSchedule);
 			var scheduleMessage2 = await ScheduleMessageAsync(MinutesToSchedule);
 
-			var getScheduledMessagesRequest = new GetScheduledMessagesRequest
+			var scheduledMessageListRequest = new ScheduledMessageListRequest
 			{
 				ChannelId = scheduleMessage2?.ChannelId
 			};
 
-			return await _slackClient.GetScheduledMessages(getScheduledMessagesRequest);
+			return await _slackClient.GetScheduledMessages(scheduledMessageListRequest);
 		}
 		
 		private static async Task<SlackBaseResponse> DeleteScheduledMessageAsync()
 		{
 			var scheduleMessageResponse = await ScheduleMessageAsync(2);
 			
-			var deleteScheduledMessageRequest = new DeleteScheduledMessageRequest
+			var scheduledMessageToDelete = new ScheduledMessageToDelete
 			{
 				Channel = scheduleMessageResponse.ChannelId,
 				ScheduledMessageId = scheduleMessageResponse.ScheduledMessageId
 			};
 
-			return await _slackClient.DeleteScheduledMessageAsync(deleteScheduledMessageRequest);
+			return await _slackClient.DeleteScheduledMessageAsync(scheduledMessageToDelete);
 		}
 		
-		private static async Task<GetPermalinkResponse> GetMessagePermalinkAsync()
+		private static async Task<MessagePermalinkResponse> GetMessagePermalinkAsync()
 		{
 			var sendMessageResponse = await SendMessageWithBlocksAsync();
 
-			var getPermalinkRequest = new GetPermalinkRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var messagePermalinkRequest = new MessagePermalinkRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
 
-			return await _slackClient.GetMessagePermalinkAsync(getPermalinkRequest);
+			return await _slackClient.GetMessagePermalinkAsync(messagePermalinkRequest);
 		}
 		
 		private static async Task<UpdateMessageResponse> UpdateMessageAsync()
@@ -303,7 +308,16 @@ namespace SlackBot.Samples
 			return await _slackClient.DeleteFileAsync(fileToDelete);
 		}
 
-		private static Task<ConversationResponse> GetUserConversationsAsync()
+		private static async Task<FileInfoResponse> GetFileInfoAsync()
+		{
+			var uploadFileResponse = await UploadFileAsync();
+			
+			var fileInfoRequest = new FileInfoRequest(uploadFileResponse.File.Id);
+
+			return await _slackClient.GetFileInfoAsync(fileInfoRequest);
+		}
+
+		private static Task<UserConversationsResponse> GetUserConversationsAsync()
 		{
 			var userConversations = new UserConversations
 			{
