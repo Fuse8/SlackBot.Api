@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api.Models.GeneralObjects.Pagination.Classic
 {
-	public class PagePaginationData
+	public class ClassicPaginationData
 	{
 		[JsonProperty("count")]
 		public long Count { get; set; }

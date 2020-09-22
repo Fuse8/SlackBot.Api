@@ -2,9 +2,9 @@
 
 namespace SlackBot.Api.Models.GeneralObjects.Pagination.Classic
 {
-	public abstract class PagePaginationResponseBase : SlackBaseResponse
+	public abstract class ClassicPaginationResponseBase : SlackBaseResponse
 	{
 		[JsonProperty("paging")]
-		public PagePaginationData Paging { get; set; }
+		public ClassicPaginationData Paging { get; set; }
 	}
 }

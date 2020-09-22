@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api.Models.GeneralObjects.Pagination.Classic
 {
-	public abstract class PagePaginationBase
+	public abstract class ClassicPaginationBase
 	{
-		protected PagePaginationBase()
+		protected ClassicPaginationBase()
 		{
 		}
 
-		protected PagePaginationBase(long? count, long? page)
+		protected ClassicPaginationBase(long? count, long? page)
 		{
 			Count = count;
 			Page = page;

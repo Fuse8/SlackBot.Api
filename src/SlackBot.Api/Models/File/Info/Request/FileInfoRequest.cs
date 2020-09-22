@@ -3,23 +3,16 @@ using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.File.Info.Request
 {
-	public class FileInfoRequest
+	public class FileInfoRequest : FileByIdRequestBase
 	{
 		public FileInfoRequest()
 		{
 		}
 
 		public FileInfoRequest(string fileId)
+			: base(fileId)
 		{
-			FileId = fileId;
 		}
-
-		/// <summary>
-		/// Specify a file by providing its ID.
-		/// </summary>
-		/// <example>F2147483862</example>
-		[FormPropertyName("file")]
-		public string FileId { get; set; }
 		
 		/// <summary>
 		/// Number of items to return per page.

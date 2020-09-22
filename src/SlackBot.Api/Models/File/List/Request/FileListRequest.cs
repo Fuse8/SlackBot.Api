@@ -3,7 +3,7 @@ using SlackBot.Api.Models.GeneralObjects.Pagination.Classic;
 
 namespace SlackBot.Api.Models.File.List.Request
 {
-	public class FileListRequest : PagePaginationBase
+	public class FileListRequest : ClassicPaginationBase
 	{
 		public FileListRequest()
 		{
