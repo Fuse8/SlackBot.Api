@@ -43,6 +43,7 @@ using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
 using SlackBot.Api.Models.Pin.Remove.Request;
+using SlackBot.Api.Models.Reaction.Add.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
@@ -126,8 +127,11 @@ namespace SlackBot.Samples
 			/* Get pinned items * /
 			var pinListResponse = await GetPinListAsync(); /**/
  
-			/* Remove pinned item * /
+			/* Removes pinned item * /
 			var removePinResponse = await RemovePinAsync(); /**/
+ 
+			/* Adds reaction * /
+			var addReactionResponse = await AddReactionAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -205,7 +209,7 @@ namespace SlackBot.Samples
 		
 		private static async Task<DeletedMessageResponse> DeleteMessageAsync()
 		{
-			var sendMessageResponse = await SendMessageWithBlocksAsync();
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(DeleteMessageAsync));
 
 			var messageToDelete = new MessageToDelete
 			{
@@ -261,7 +265,7 @@ namespace SlackBot.Samples
 		
 		private static async Task<MessagePermalinkResponse> GetMessagePermalinkAsync()
 		{
-			var sendMessageResponse = await SendMessageWithBlocksAsync();
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(GetMessagePermalinkAsync));
 
 			var messagePermalinkRequest = new MessagePermalinkRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
 
@@ -375,17 +379,26 @@ namespace SlackBot.Samples
 		{
 			var (_, sendMessageResponse) = await PinMessageInternalAsync();
 			
-			var removePinRequest = new RemovePinRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var removePinRequest = new PinItemToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
 
 			return await _slackClient.RemovePinAsync(removePinRequest);
 		}
 
+		private static async Task<SlackBaseResponse> AddReactionAsync()
+		{
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(AddReactionAsync));
+			
+			var reaction = new Reaction(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "+1");
+
+			return await _slackClient.AddReactionAsync(reaction);
+		}
+
 		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
 		{
-			var sendMessageResponse = await SendMessageWithBlocksAsync();
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(PinMessageInternalAsync));
 
-			var messageToPin = new MessageToPin(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
-			var pinMessageResponse = await _slackClient.PinMessageAsync(messageToPin);
+			var pinItem = new PinItem(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var pinMessageResponse = await _slackClient.PinMessageAsync(pinItem);
 
 			return (pinMessageResponse, sendMessageResponse);
 		}
@@ -409,6 +422,17 @@ namespace SlackBot.Samples
 	        return await _slackClient.ConversationsHistoryAsync(conversationsHistory);
         }
         
+		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod)
+		{
+			var message = new Message
+			{
+				ChannelIdOrName = _slackBotSettings.ChannelName,
+				Text = $"{nameOfMethod} method",
+			};
+
+			return _slackClient.SendMessageAsync(message);
+		}
+		
         private static async Task<string> GetChannelIdAsync()
         {
 	        var userConversations = new UserConversations

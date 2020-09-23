@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api.Models.Pin.Remove.Request
 {
-	public class RemovePinRequest
+	public class PinItemToRemove
 	{
-		public RemovePinRequest()
+		public PinItemToRemove()
 		{
 		}
 
-		public RemovePinRequest(string channelId, string messageTimestamp)
+		public PinItemToRemove(string channelId, string messageTimestamp)
 		{
 			ChannelId = channelId;
 			MessageTimestamp = messageTimestamp;

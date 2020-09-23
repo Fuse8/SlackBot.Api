@@ -31,6 +31,7 @@ using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
 using SlackBot.Api.Models.Pin.Remove.Request;
+using SlackBot.Api.Models.Reaction.Add.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 
@@ -140,8 +141,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Pins an item to a channel.
 		/// </summary>
-		public Task<SlackBaseResponse> PinMessageAsync(MessageToPin messageToPin)
-			=> SendPostFormUrlEncodedAsync<MessageToPin, SlackBaseResponse>("pins.add", messageToPin);
+		public Task<SlackBaseResponse> PinMessageAsync(PinItem pinItem)
+			=> SendPostFormUrlEncodedAsync<PinItem, SlackBaseResponse>("pins.add", pinItem);
 
 		/// <summary>
 		/// Lists items pinned to a channel.
@@ -152,8 +153,18 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Un-pins an item from a channel.
 		/// </summary>
-		public Task<SlackBaseResponse> RemovePinAsync(RemovePinRequest removePinRequest)
-			=> SendPostFormUrlEncodedAsync<RemovePinRequest, SlackBaseResponse>("pins.remove", removePinRequest);
+		public Task<SlackBaseResponse> RemovePinAsync(PinItemToRemove pinItemToRemove)
+			=> SendPostFormUrlEncodedAsync<PinItemToRemove, SlackBaseResponse>("pins.remove", pinItemToRemove);
+
+		#endregion
+
+		#region Reaction
+
+		/// <summary>
+		/// Adds a reaction to an item.
+		/// </summary>
+		public Task<SlackBaseResponse> AddReactionAsync(Reaction reaction)
+			=> SendPostFormUrlEncodedAsync<Reaction, SlackBaseResponse>("reactions.add", reaction);
 
 		#endregion
 

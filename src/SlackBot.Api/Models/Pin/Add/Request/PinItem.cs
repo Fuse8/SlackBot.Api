@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api.Models.Pin.Add.Request
 {
-	public class MessageToPin
+	public class PinItem
 	{
-		public MessageToPin()
+		public PinItem()
 		{
 		}
 
-		public MessageToPin(string channelId, string messageTimestamp)
+		public PinItem(string channelId, string messageTimestamp)
 		{
 			ChannelId = channelId;
 			MessageTimestamp = messageTimestamp;
