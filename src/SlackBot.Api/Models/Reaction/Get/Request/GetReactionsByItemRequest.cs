@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api.Models.Reaction.Get.Request
 {
-	public class GetReactionsRequest
+	public class GetReactionsByItemRequest
 	{
-		public GetReactionsRequest()
+		public GetReactionsByItemRequest()
 		{
 		}
 
-		public GetReactionsRequest(string channelId, string messageTimestamp)
+		public GetReactionsByItemRequest(string channelId, string messageTimestamp)
 		{
 			ChannelId = channelId;
 			MessageTimestamp = messageTimestamp;

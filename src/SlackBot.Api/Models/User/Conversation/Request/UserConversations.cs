@@ -3,7 +3,7 @@ using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.User.Conversation.Request
 {
-	public class UserConversations : CursorPaginationBase
+	public class UserConversations : CursorPaginationWithTimestampBase
 	{
 		/// <summary>
 		/// Set to "true" to exclude archived channels from the list

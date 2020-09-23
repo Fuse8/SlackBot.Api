@@ -3,8 +3,17 @@ using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.Chat.ScheduledMessagesList.Request
 {
-	public class ScheduledMessageListRequest : CursorPaginationBase
+	public class ScheduledMessageListRequest : CursorPaginationWithTimestampBase
 	{
+		public ScheduledMessageListRequest()
+		{
+		}
+
+		public ScheduledMessageListRequest(string channelId)
+		{
+			ChannelId = channelId;
+		}
+
 		/// <summary>
 		/// The channel of the scheduled messages
 		/// </summary>

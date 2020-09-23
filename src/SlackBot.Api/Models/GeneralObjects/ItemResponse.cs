@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.Message;
 
-namespace SlackBot.Api.Models.Reaction.Get.Response
+namespace SlackBot.Api.Models.GeneralObjects
 {
-	public class GetReactionsResponse : SlackBaseResponse
+	public class ItemResponse
 	{
 		[JsonProperty("type")]
 		public string Type { get; set; }

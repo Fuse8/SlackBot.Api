@@ -34,6 +34,8 @@ using SlackBot.Api.Models.Pin.Remove.Request;
 using SlackBot.Api.Models.Reaction.Add.Request;
 using SlackBot.Api.Models.Reaction.Get.Request;
 using SlackBot.Api.Models.Reaction.Get.Response;
+using SlackBot.Api.Models.Reaction.List.Request;
+using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 
@@ -171,8 +173,14 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Gets reactions for an item.
 		/// </summary>
-		public Task<GetReactionsResponse> GetReactionsAsync(GetReactionsRequest getReactionsRequest)
-			=> SendGetAsync<GetReactionsRequest, GetReactionsResponse>("reactions.get", getReactionsRequest);
+		public Task<GetReactionsByItemResponse> GetReactionsByItemAsync(GetReactionsByItemRequest getReactionsByItemRequest)
+			=> SendGetAsync<GetReactionsByItemRequest, GetReactionsByItemResponse>("reactions.get", getReactionsByItemRequest);
+
+		/// <summary>
+		/// Lists reactions made by a user.
+		/// </summary>
+		public Task<GetReactionsByUserResponse> GetReactionsByUserAsync(GetReactionsByUserRequest getReactionsByUserRequest)
+			=> SendGetAsync<GetReactionsByUserRequest, GetReactionsByUserResponse>("reactions.list", getReactionsByUserRequest);
 
 		#endregion
 

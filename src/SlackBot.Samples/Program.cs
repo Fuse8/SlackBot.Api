@@ -46,6 +46,8 @@ using SlackBot.Api.Models.Pin.Remove.Request;
 using SlackBot.Api.Models.Reaction.Add.Request;
 using SlackBot.Api.Models.Reaction.Get.Request;
 using SlackBot.Api.Models.Reaction.Get.Response;
+using SlackBot.Api.Models.Reaction.List.Request;
+using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
@@ -135,8 +137,11 @@ namespace SlackBot.Samples
 			/* Adds reaction * /
 			var addReactionResponse = await AddReactionAsync(); /**/
  
-			/* Gets reactions * /
-			var getReactionsResponse = await GetReactionsAsync(); /**/
+			/* Gets reactions by item* /
+			var getReactionsByItemResponse = await GetReactionsByItemAsync(); /**/
+ 
+			/* Gets reactions by user* /
+			var getReactionsByUserResponse = await GetReactionsByUserAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -396,14 +401,24 @@ namespace SlackBot.Samples
 			return addReactionResponse;
 		}
 		
-		private static async Task<SlackBaseResponse> GetReactionsAsync()
+		private static async Task<GetReactionsByItemResponse> GetReactionsByItemAsync()
 		{
 			var (_, sendMessageResponse) = await AddReactionInternalAsync();
 			await AddReactionToMessageAsync(sendMessageResponse, "smile");
 			
-			var getReactionsRequest = new GetReactionsRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var getReactionsByItemRequest = new GetReactionsByItemRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
 
-			return await _slackClient.GetReactionsAsync(getReactionsRequest);
+			return await _slackClient.GetReactionsByItemAsync(getReactionsByItemRequest);
+		}
+		
+		private static async Task<GetReactionsByUserResponse> GetReactionsByUserAsync()
+		{
+			var (_, sendMessageResponse) = await AddReactionInternalAsync();
+			await AddReactionToMessageAsync(sendMessageResponse, "smile");
+			
+			var getReactionsByUserRequest = new GetReactionsByUserRequest();
+
+			return await _slackClient.GetReactionsByUserAsync(getReactionsByUserRequest);
 		}
 
 		private static Task<UserConversationsResponse> GetUserConversationsAsync()
@@ -438,12 +453,7 @@ namespace SlackBot.Samples
 		
         private static async Task<string> GetChannelIdAsync()
         {
-	        var userConversations = new UserConversations
-	        {
-		        Types = "public_channel,private_channel,mpim,im"
-	        };
-
-	        var conversationsHistoryResponse = await _slackClient.UserConversationsAsync(userConversations);
+			var conversationsHistoryResponse = await GetUserConversationsAsync();
 	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
 
 	        return channelId;

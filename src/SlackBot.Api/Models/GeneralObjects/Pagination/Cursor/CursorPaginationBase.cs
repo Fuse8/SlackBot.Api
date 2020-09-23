@@ -8,45 +8,28 @@ namespace SlackBot.Api.Models.GeneralObjects.Pagination.Cursor
         {
         }
         
-        protected CursorPaginationBase(long? limit, string cursor, string oldest, string latest)
+        protected CursorPaginationBase(string cursor, long? limit)
         {
             Cursor = cursor;
             Limit = limit;
-            Oldest = oldest;
-            Latest = latest;
         }
-
+		
         /// <summary>
-        /// Paginate through collections of data by setting the cursor parameter to a next_cursor attribute returned by a previous request's response_metadata.
-        /// Default value fetches the first "page" of the collection.
+        /// Parameter for pagination. File comments are paginated for a single file.
+        /// Set <see cref="Cursor"/> equal to the <see cref="CursorPaginationMetadata.NextCursor"/> attribute returned by the previous request's <see cref="CursorPaginationMetadata"/>.
+        /// This parameter is optional, but pagination is mandatory: the default value simply fetches the first "page" of the collection of comments.
+        /// See pagination for more details.
         /// </summary>
         /// <example>dXNlcjpVMDYxTkZUVDI=</example>
         [FormPropertyName("cursor")]
         public string Cursor { get; set; }
 	
         /// <summary>
-        /// The maximum number of items to return.
-        /// Fewer than the requested number of items may be returned, even if the end of the users list hasn't been reached.
-        /// <para><strong>Default: 100</strong></para>
+        /// The maximum number of items to return. Fewer than the requested number of items may be returned, even if the end of the list hasn't been reached.
+        /// <para><strong>Default: 0</strong></para>
         /// </summary>
         /// <example>20</example>
         [FormPropertyName("limit")]
         public long? Limit { get; set; }
-
-        /// <summary>
-        /// A UNIX timestamp of the latest value in the time range.
-        /// <para><strong>Default: now</strong></para>
-        /// </summary>
-        /// <example>1234567890.123456</example>
-        [FormPropertyName("latest")]
-        public string Latest { get; set; }
-		
-        /// <summary>
-        /// A UNIX timestamp of the oldest value in the time range
-        /// <para><strong>Default: 0</strong></para>
-        /// </summary>
-        /// <example>1234567890.123456</example>
-        [FormPropertyName("oldest")]
-        public string Oldest { get; set; }
     }
 }

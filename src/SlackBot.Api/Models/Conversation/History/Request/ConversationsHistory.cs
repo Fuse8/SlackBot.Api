@@ -3,24 +3,24 @@ using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.Conversation.History.Request
 {
-    public class ConversationsHistory : CursorPaginationBase
+    public class ConversationsHistory : CursorPaginationWithTimestampBase
     {
         public ConversationsHistory()
         {
         }
         
         public ConversationsHistory(string channelId, long? limit = null, string cursor = null)
-            : this(channelId, null, null, null, limit, cursor)
+            : this(channelId, null, null, null, cursor, limit)
         {
         }
 
         public ConversationsHistory(string channelId, string latest, bool? inclusive = true, long? limit = 1)
-            : this(channelId, inclusive, latest, null, limit, null)
+            : this(channelId, inclusive, latest, null, null, limit)
         {
         }
 
-        protected ConversationsHistory(string channelId, bool? inclusive, string latest, string oldest, long? limit, string cursor)
-            : base(limit, cursor, oldest, latest)
+        protected ConversationsHistory(string channelId, bool? inclusive, string latest, string oldest, string cursor, long? limit)
+            : base(cursor, limit, oldest, latest)
         {
             ChannelId = channelId;
             Inclusive = inclusive;

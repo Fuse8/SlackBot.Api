@@ -1,14 +1,23 @@
-﻿namespace SlackBot.Api.Models.File.Delete.Request
+﻿using SlackBot.Api.Attributes;
+
+namespace SlackBot.Api.Models.File.Delete.Request
 {
-	public class FileToDelete : FileByIdRequestBase
+	public class FileToDelete
 	{
 		public FileToDelete()
 		{
 		}
 
 		public FileToDelete(string fileId)
-			: base(fileId)
 		{
+			FileId = fileId;
 		}
+
+		/// <summary>
+		/// Specify a file by providing its ID.
+		/// </summary>
+		/// <example>F2147483862</example>
+		[FormPropertyName("file")]
+		public string FileId { get; set; }
 	}
 }
