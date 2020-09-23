@@ -44,6 +44,8 @@ using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
 using SlackBot.Api.Models.Pin.Remove.Request;
 using SlackBot.Api.Models.Reaction.Add.Request;
+using SlackBot.Api.Models.Reaction.Get.Request;
+using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
@@ -132,6 +134,9 @@ namespace SlackBot.Samples
  
 			/* Adds reaction * /
 			var addReactionResponse = await AddReactionAsync(); /**/
+ 
+			/* Gets reactions * /
+			var getReactionsResponse = await GetReactionsAsync(); /**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -386,21 +391,19 @@ namespace SlackBot.Samples
 
 		private static async Task<SlackBaseResponse> AddReactionAsync()
 		{
-			var sendMessageResponse = await SendSimpleMessageAsync(nameof(AddReactionAsync));
-			
-			var reaction = new Reaction(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "+1");
+			var (addReactionResponse, _) = await AddReactionInternalAsync();
 
-			return await _slackClient.AddReactionAsync(reaction);
+			return addReactionResponse;
 		}
-
-		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
+		
+		private static async Task<SlackBaseResponse> GetReactionsAsync()
 		{
-			var sendMessageResponse = await SendSimpleMessageAsync(nameof(PinMessageInternalAsync));
+			var (_, sendMessageResponse) = await AddReactionInternalAsync();
+			await AddReactionToMessageAsync(sendMessageResponse, "smile");
+			
+			var getReactionsRequest = new GetReactionsRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
 
-			var pinItem = new PinItem(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
-			var pinMessageResponse = await _slackClient.PinMessageAsync(pinItem);
-
-			return (pinMessageResponse, sendMessageResponse);
+			return await _slackClient.GetReactionsAsync(getReactionsRequest);
 		}
 
 		private static Task<UserConversationsResponse> GetUserConversationsAsync()
@@ -444,6 +447,33 @@ namespace SlackBot.Samples
 	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
 
 	        return channelId;
+		}
+
+		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
+		{
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(PinMessageInternalAsync));
+
+			var pinItem = new PinItem(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var pinMessageResponse = await _slackClient.PinMessageAsync(pinItem);
+
+			return (pinMessageResponse, sendMessageResponse);
+		}
+
+		private static async Task<(SlackBaseResponse AddReactionResponse, SendMessageResponse SendMessageResponse)> AddReactionInternalAsync(
+			string emojiName = "+1")
+		{
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(AddReactionAsync));
+
+			var addReactionResponse = await AddReactionToMessageAsync(sendMessageResponse, emojiName);
+
+			return (addReactionResponse, sendMessageResponse);
+		}
+
+		private static Task<SlackBaseResponse> AddReactionToMessageAsync(SendMessageResponse sendMessageResponse, string emojiName)
+		{
+			var reaction = new Reaction(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, emojiName);
+			
+			return _slackClient.AddReactionAsync(reaction);
 		}
 
 		private static BlockBase[] GenerateBlocksForMessage()

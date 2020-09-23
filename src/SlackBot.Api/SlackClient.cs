@@ -32,6 +32,8 @@ using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
 using SlackBot.Api.Models.Pin.Remove.Request;
 using SlackBot.Api.Models.Reaction.Add.Request;
+using SlackBot.Api.Models.Reaction.Get.Request;
+using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 
@@ -165,6 +167,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> AddReactionAsync(Reaction reaction)
 			=> SendPostFormUrlEncodedAsync<Reaction, SlackBaseResponse>("reactions.add", reaction);
+
+		/// <summary>
+		/// Gets reactions for an item.
+		/// </summary>
+		public Task<GetReactionsResponse> GetReactionsAsync(GetReactionsRequest getReactionsRequest)
+			=> SendGetAsync<GetReactionsRequest, GetReactionsResponse>("reactions.get", getReactionsRequest);
 
 		#endregion
 
