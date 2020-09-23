@@ -41,6 +41,8 @@ using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Api.Models.User.GetPresence.Request;
 using SlackBot.Api.Models.User.GetPresence.Response;
+using SlackBot.Api.Models.User.Info.Request;
+using SlackBot.Api.Models.User.Info.Response;
 
 namespace SlackBot.Api
 {
@@ -206,6 +208,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UserPresenceResponse> UserPresenceAsync(UserPresenceRequest userPresenceRequest)
 			=> SendGetAsync<UserPresenceRequest, UserPresenceResponse>("users.getPresence", userPresenceRequest);
+
+		/// <summary>
+		/// Gets information about a user.
+		/// </summary>
+		public Task<UserInfoResponse> UserInfoAsync(UserToGetInfo userToGetInfo)
+			=> SendGetAsync<UserToGetInfo, UserInfoResponse>("users.info", userToGetInfo);
 		
 		#endregion
         
