@@ -36,6 +36,7 @@ using SlackBot.Api.Models.Reaction.Get.Request;
 using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
+using SlackBot.Api.Models.Reaction.Remove.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 
@@ -181,6 +182,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<GetReactionsByUserResponse> GetReactionsByUserAsync(GetReactionsByUserRequest getReactionsByUserRequest)
 			=> SendGetAsync<GetReactionsByUserRequest, GetReactionsByUserResponse>("reactions.list", getReactionsByUserRequest);
+
+		/// <summary>
+		/// Removes a reaction from an item.
+		/// </summary>
+		public Task<SlackBaseResponse> RemoveReactionAsync(ReactionToRemove reactionToRemove)
+			=> SendPostFormUrlEncodedAsync<ReactionToRemove, SlackBaseResponse>("reactions.remove", reactionToRemove);
 
 		#endregion
 

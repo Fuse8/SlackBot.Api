@@ -48,6 +48,7 @@ using SlackBot.Api.Models.Reaction.Get.Request;
 using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
+using SlackBot.Api.Models.Reaction.Remove.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Samples.Configurations;
@@ -142,6 +143,9 @@ namespace SlackBot.Samples
  
 			/* Gets reactions by user* /
 			var getReactionsByUserResponse = await GetReactionsByUserAsync(); /**/
+
+            /* Removes reaction * /
+			var removeReactionResponse = await RemoveReactionAsync();/**/
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
@@ -419,6 +423,16 @@ namespace SlackBot.Samples
 			var getReactionsByUserRequest = new GetReactionsByUserRequest();
 
 			return await _slackClient.GetReactionsByUserAsync(getReactionsByUserRequest);
+		}
+		
+		private static async Task<SlackBaseResponse> RemoveReactionAsync()
+		{
+			const string EmojiName = "grin";
+			var (_, sendMessageResponse) = await AddReactionInternalAsync(EmojiName);
+			
+			var reactionToRemove = new ReactionToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, EmojiName);
+
+			return await _slackClient.RemoveReactionAsync(reactionToRemove);
 		}
 
 		private static Task<UserConversationsResponse> GetUserConversationsAsync()
