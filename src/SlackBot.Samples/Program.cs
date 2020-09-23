@@ -51,6 +51,8 @@ using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
+using SlackBot.Api.Models.User.GetPresence.Request;
+using SlackBot.Api.Models.User.GetPresence.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
@@ -149,6 +151,9 @@ namespace SlackBot.Samples
 
             /* Gets list of bot channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
+
+            /* Gets user presence information * /
+			var userPresenceResponse = await GetUserPresenceAsync();/**/
             
             /* Gets conversation's history of messages and events * /
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
@@ -443,6 +448,13 @@ namespace SlackBot.Samples
 			};
 
 			return _slackClient.UserConversationsAsync(userConversations);
+        }
+
+		private static Task<UserPresenceResponse> GetUserPresenceAsync()
+		{
+			var userPresenceRequest = new UserPresenceRequest("U4ZSA7NAX");
+
+			return _slackClient.UserPresenceAsync(userPresenceRequest);
         }
         
         private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()

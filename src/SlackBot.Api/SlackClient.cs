@@ -39,6 +39,8 @@ using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
+using SlackBot.Api.Models.User.GetPresence.Request;
+using SlackBot.Api.Models.User.GetPresence.Response;
 
 namespace SlackBot.Api
 {
@@ -191,11 +193,21 @@ namespace SlackBot.Api
 
 		#endregion
 
+		#region User
+
 		/// <summary>
 		/// Gets conversations list the calling user may access.
 		/// </summary>
-		public Task<UserConversationsResponse> UserConversationsAsync(UserConversations message)
-			=> SendGetAsync<UserConversations, UserConversationsResponse>("users.conversations", message);
+		public Task<UserConversationsResponse> UserConversationsAsync(UserConversations userConversations)
+			=> SendGetAsync<UserConversations, UserConversationsResponse>("users.conversations", userConversations);
+
+		/// <summary>
+		/// Gets user presence information.
+		/// </summary>
+		public Task<UserPresenceResponse> UserPresenceAsync(UserPresenceRequest userPresenceRequest)
+			=> SendGetAsync<UserPresenceRequest, UserPresenceResponse>("users.getPresence", userPresenceRequest);
+		
+		#endregion
         
 		/// <summary>
 		/// Fetches a conversation's history of messages and events.
