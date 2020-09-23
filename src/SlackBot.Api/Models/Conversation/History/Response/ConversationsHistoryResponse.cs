@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SlackBot.Api.Models.GeneralObjects.Message;
 using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.Conversation.History.Response
@@ -9,7 +10,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public string Latest { get; set; }
         
         [JsonProperty("messages")]
-        public ConversationMessageResponse[] Messages { get; set; }
+        public MessageResponse[] Messages { get; set; }
         
         [JsonProperty("has_more")]
         public bool HasMore { get; set; }

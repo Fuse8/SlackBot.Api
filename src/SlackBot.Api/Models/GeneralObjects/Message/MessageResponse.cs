@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
-using SlackBot.Api.Models.GeneralObjects;
-using SlackBot.Api.Models.GeneralObjects.BotInfo;
 
-namespace SlackBot.Api.Models.Conversation.History.Response
+namespace SlackBot.Api.Models.GeneralObjects.Message
 {
-    public class ConversationMessageResponse
+    public class MessageResponse
     {
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -57,7 +56,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public string BotId { get; set; }
 
         [JsonProperty("bot_profile")]
-        public BotInfo BotInfo { get; set; }
+        public BotInfo.BotInfo BotInfo { get; set; }
         
         [JsonProperty("files")]
         public List<SlackFile> Files { get; set; }
@@ -85,6 +84,9 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         
         [JsonProperty("client_msg_id")]
         public string ClientMessageIdGuid { get; set; }
+
+        [JsonProperty("permalink")]
+        public Uri Permalink { get; set; }
         
         #region "bot_message" type
 
@@ -148,7 +150,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         #region "message_changed" and "message_replied" type
         
         [JsonProperty("message")]
-        public ConversationMessageResponse UpdatedMessage { get; set; }
+        public MessageResponse UpdatedMessage { get; set; }
 
         #endregion
         
@@ -186,7 +188,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         #region "thread_broadcast" type
         
         [JsonProperty("root")]
-        public ConversationMessageResponse RootMessage { get; set; }
+        public MessageResponse RootMessage { get; set; }
 
         #endregion
     }

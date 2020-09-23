@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.Conversation.History.Response
+namespace SlackBot.Api.Models.GeneralObjects.Message
 {
     public class PinnedInfo
     {

@@ -40,6 +40,8 @@ using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
 using SlackBot.Api.Models.Pin.Add.Request;
+using SlackBot.Api.Models.Pin.List.Request;
+using SlackBot.Api.Models.Pin.List.Response;
 using SlackBot.Api.Models.Pin.Remove.Request;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
@@ -120,6 +122,9 @@ namespace SlackBot.Samples
  
 			/* Pins message * /
 			var pinMessageResponse = await PinMessageAsync(); /**/
+ 
+			/* Get pinned items * /
+			var pinListResponse = await GetPinListAsync(); /**/
  
 			/* Remove pinned item * /
 			var removePinResponse = await RemovePinAsync(); /**/
@@ -283,6 +288,7 @@ namespace SlackBot.Samples
 			return await _slackClient.GetBotInfoAsync(botInfoRequest);
 		}
 
+		// ReSharper disable once UnusedMethodReturnValue.Local
 		private static async Task<UploadFileResponse> UploadContentAsync()
 		{
 			var content = await File.ReadAllTextAsync("./appsettings.json");
@@ -333,7 +339,7 @@ namespace SlackBot.Samples
 		private static async Task<FileListResponse> GetFileListAsync()
 		{
 			var uploadFileResponse = await UploadFileAsync();
-			var uploadContentResponse = await UploadContentAsync();
+			await UploadContentAsync();
 
 			// Because of slack cache... Files upload instantly, but they attach to group delayed
 			await Task.Delay(30000);
@@ -353,6 +359,16 @@ namespace SlackBot.Samples
 			var (pinResponse, _) = await PinMessageInternalAsync();
 
 			return pinResponse;
+		}
+		
+		private static async Task<PinListResponse> GetPinListAsync()
+		{
+			var (_, sendMessageResponse) = await PinMessageInternalAsync();
+			await PinMessageInternalAsync();
+
+			var pinListRequest = new PinListRequest(sendMessageResponse.ChannelId);
+
+			return await _slackClient.GetPinListAsync(pinListRequest);
 		}
 
 		private static async Task<SlackBaseResponse> RemovePinAsync()
