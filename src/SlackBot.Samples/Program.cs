@@ -30,8 +30,10 @@ using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
+using SlackBot.Api.Models.Conversation.Archive.Request;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Info.Request;
@@ -147,6 +149,19 @@ namespace SlackBot.Samples
 			
 			#endregion
 
+			#region Conversation methods
+            
+            /* Archives conversation * /
+			var archiveConversationResponse = await ArchiveConversationAsync();/**/
+            
+            /* Gets conversation's history of messages and events * /
+			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
+            
+            /* Unarchives conversation * /
+			var unarchiveConversationResponse = await UnarchiveConversationAsync();/**/
+
+			#endregion
+
 			#region Pin methods
 			
 			/* Pins message * /
@@ -200,9 +215,6 @@ namespace SlackBot.Samples
 			var setUserPresenceResponse = await SetUserPresenceAsync();/**/
 			
 			#endregion
-            
-            /* Gets conversation's history of messages and events * /
-			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
 		}
 
 		#region Bot
@@ -458,6 +470,39 @@ namespace SlackBot.Samples
 		
 		#endregion
 
+		#region Conversation
+
+		private static async Task<SlackBaseResponse> ArchiveConversationAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+	        return await _slackClient.ArchiveConversationAsync(new ConversationToArchive(channelId));
+        }
+
+		private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+	        return await _slackClient.ConversationsHistoryAsync(new ConversationsHistory(channelId, 1000));
+        }
+
+		private static async Task<SlackBaseResponse> UnarchiveConversationAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+	        return await _slackClient.UnarchiveConversationAsync(new ConversationToUnarchive(channelId));
+        }
+		
+        private static async Task<string> GetChannelIdAsync()
+        {
+			var conversationsHistoryResponse = await GetUserConversationsAsync();
+	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
+
+	        return channelId;
+		}
+		
+		#endregion
+
 		#region Pin
 
 		private static async Task<SlackBaseResponse> PinMessageAsync()
@@ -582,27 +627,6 @@ namespace SlackBot.Samples
 
 		private static Task<SlackBaseResponse> SetUserPresenceAsync()
 			=> _slackClient.SetUserPresenceAsync(new SetUserPresenceRequest("auto"));
-		
-		#endregion
-
-		#region Conversation
-
-		private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
-        {
-	        var channelId = await GetChannelIdAsync();
-
-	        var conversationsHistory = new ConversationsHistory(channelId, 1000);
-
-	        return await _slackClient.ConversationsHistoryAsync(conversationsHistory);
-        }
-		
-        private static async Task<string> GetChannelIdAsync()
-        {
-			var conversationsHistoryResponse = await GetUserConversationsAsync();
-	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
-
-	        return channelId;
-		}
 		
 		#endregion
 

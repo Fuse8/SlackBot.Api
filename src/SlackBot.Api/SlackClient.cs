@@ -18,8 +18,10 @@ using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
+using SlackBot.Api.Models.Conversation.Archive.Request;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Info.Request;
@@ -165,6 +167,28 @@ namespace SlackBot.Api
 			=> SendPostJsonStringAsync<MessageToUpdate, UpdateMessageResponse>("chat.update", messageToUpdate);
 		
 		#endregion
+        
+		#region Conversation
+		
+		/// <summary>
+		/// Archives a conversation.
+		/// </summary>
+        public Task<SlackBaseResponse> ArchiveConversationAsync(ConversationToArchive conversationToArchive) 
+            => SendPostFormUrlEncodedAsync<ConversationToArchive, SlackBaseResponse>("conversations.archive", conversationToArchive);
+		
+		/// <summary>
+		/// Fetches a conversation's history of messages and events.
+		/// </summary>
+        public Task<ConversationsHistoryResponse> ConversationsHistoryAsync(ConversationsHistory conversationsHistory) 
+            => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
+		
+		/// <summary>
+		/// Reverses conversation archival.
+		/// </summary>
+        public Task<SlackBaseResponse> UnarchiveConversationAsync(ConversationToUnarchive conversationToUnarchive) 
+            => SendPostFormUrlEncodedAsync<ConversationToUnarchive, SlackBaseResponse>("conversations.unarchive", conversationToUnarchive);
+		
+		#endregion
 
 		#region Pin
 
@@ -263,16 +287,6 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> SetUserPresenceAsync(SetUserPresenceRequest setUserPresenceRequest)
 			=> SendPostFormUrlEncodedAsync<SetUserPresenceRequest, SlackBaseResponse>("users.setPresence", setUserPresenceRequest);
-		
-		#endregion
-        
-		#region Conversation
-		
-		/// <summary>
-		/// Fetches a conversation's history of messages and events.
-		/// </summary>
-        public Task<ConversationsHistoryResponse> ConversationsHistoryAsync(ConversationsHistory conversationsHistory) 
-            => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
 		
 		#endregion
 	}
