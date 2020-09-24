@@ -5,6 +5,16 @@ namespace SlackBot.Api.Models.User.Conversation.Request
 {
 	public class UserConversations : CursorPaginationWithTimestampBase
 	{
+		public UserConversations()
+		{
+		}
+
+		public UserConversations(string types, string userId = null)
+		{
+			Types = types;
+			UserId = userId;
+		}
+
 		/// <summary>
 		/// Set to "true" to exclude archived channels from the list
 		/// <para><strong>Default: false</strong></para>
@@ -26,6 +36,6 @@ namespace SlackBot.Api.Models.User.Conversation.Request
 		/// </summary>
 		/// <example>W0B2345D</example>
 		[FormPropertyName("user")]
-		public string User { get; set; }
+		public string UserId { get; set; }
 	}
 }

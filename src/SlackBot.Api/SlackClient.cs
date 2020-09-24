@@ -43,6 +43,8 @@ using SlackBot.Api.Models.User.GetPresence.Request;
 using SlackBot.Api.Models.User.GetPresence.Response;
 using SlackBot.Api.Models.User.Info.Request;
 using SlackBot.Api.Models.User.Info.Response;
+using SlackBot.Api.Models.User.List.Request;
+using SlackBot.Api.Models.User.List.Response;
 
 namespace SlackBot.Api
 {
@@ -53,11 +55,15 @@ namespace SlackBot.Api
 		{
 		}
 
+		#region Bot
+		
 		/// <summary>
 		/// Gets information about a bot user.
 		/// </summary>
 		public Task<BotInfoResponse> GetBotInfoAsync(BotInfoRequest botInfoRequest)
 			=> SendGetAsync<BotInfoRequest, BotInfoResponse>("bots.info", botInfoRequest);
+		
+		#endregion
 
 		#region File
 		
@@ -134,13 +140,13 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Returns a list of scheduled messages.
 		/// </summary>
-		public Task<ScheduledMessageListResponse> GetScheduledMessages(ScheduledMessageListRequest scheduledMessageListRequest)
+		public Task<ScheduledMessageListResponse> GetScheduledMessagesAsync(ScheduledMessageListRequest scheduledMessageListRequest)
 			=> SendPostFormUrlEncodedAsync<ScheduledMessageListRequest, ScheduledMessageListResponse>("chat.scheduledMessages.list", scheduledMessageListRequest);
 		
 		/// <summary>
 		/// Updates a message.
 		/// </summary>
-		public Task<UpdateMessageResponse> UpdateMessage(MessageToUpdate messageToUpdate)
+		public Task<UpdateMessageResponse> UpdateMessageAsync(MessageToUpdate messageToUpdate)
 			=> SendPostJsonStringAsync<MessageToUpdate, UpdateMessageResponse>("chat.update", messageToUpdate);
 		
 		#endregion
@@ -214,13 +220,23 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UserInfoResponse> UserInfoAsync(UserToGetInfo userToGetInfo)
 			=> SendGetAsync<UserToGetInfo, UserInfoResponse>("users.info", userToGetInfo);
+
+		/// <summary>
+		/// Lists all users in a Slack team.
+		/// </summary>
+		public Task<UserListResponse> UserListAsync(UserListRequest userListRequest)
+			=> SendGetAsync<UserListRequest, UserListResponse>("users.list", userListRequest);
 		
 		#endregion
         
+		#region Conversation
+		
 		/// <summary>
 		/// Fetches a conversation's history of messages and events.
 		/// </summary>
         public Task<ConversationsHistoryResponse> ConversationsHistoryAsync(ConversationsHistory conversationsHistory) 
             => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
+		
+		#endregion
 	}
 }

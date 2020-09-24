@@ -35,19 +35,19 @@ namespace SlackBot.Api.Models.GeneralObjects.User
 		public UserProfile Profile { get; set; } 
 
 		[JsonProperty("is_admin")]
-		public bool IsAdmin { get; set; } 
+		public bool? IsAdmin { get; set; } 
 
 		[JsonProperty("is_owner")]
-		public bool IsOwner { get; set; } 
+		public bool? IsOwner { get; set; } 
 
 		[JsonProperty("is_primary_owner")]
-		public bool IsPrimaryOwner { get; set; } 
+		public bool? IsPrimaryOwner { get; set; } 
 
 		[JsonProperty("is_restricted")]
-		public bool IsRestricted { get; set; } 
+		public bool? IsRestricted { get; set; } 
 
 		[JsonProperty("is_ultra_restricted")]
-		public bool IsUltraRestricted { get; set; } 
+		public bool? IsUltraRestricted { get; set; } 
 
 		[JsonProperty("is_bot")]
 		public bool IsBot { get; set; } 

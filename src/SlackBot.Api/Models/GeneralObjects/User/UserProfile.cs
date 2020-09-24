@@ -39,7 +39,10 @@ namespace SlackBot.Api.Models.GeneralObjects.User
 		public long StatusExpirationTimestamp { get; set; } 
 
 		[JsonProperty("avatar_hash")]
-		public string AvatarHash { get; set; } 
+		public string AvatarHash { get; set; }  
+
+		[JsonProperty("always_active")]
+		public bool? IsAlwaysActive { get; set; } 
 
 		[JsonProperty("first_name")]
 		public string FirstName { get; set; } 

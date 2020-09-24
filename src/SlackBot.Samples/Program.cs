@@ -55,6 +55,8 @@ using SlackBot.Api.Models.User.GetPresence.Request;
 using SlackBot.Api.Models.User.GetPresence.Response;
 using SlackBot.Api.Models.User.Info.Request;
 using SlackBot.Api.Models.User.Info.Response;
+using SlackBot.Api.Models.User.List.Request;
+using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
@@ -84,7 +86,30 @@ namespace SlackBot.Samples
 		// ReSharper disable once InconsistentNaming
 		public static async Task Main(string[] args)
 		{
+			/* Gets bot info * /
+			var botInfoResponse = await GetBotInfoAsync(); /**/
 
+			#region File methods
+
+			/* Uploads plain file content * /
+			var uploadContentResponse = await UploadContentAsync(); /**/
+ 
+			/* Uploads file from disk * /
+			var uploadFileResponse = await UploadFileAsync(); /**/
+ 
+			/* Deletes file * /
+			var deleteFileResponse = await DeleteFileAsync(); /**/
+ 
+			/* Gets file info * /
+			var fileInfoResponse = await GetFileInfoAsync(); /**/
+ 
+			/* Gets file list * /
+			var fileListResponse = await GetFileListAsync(); /**/
+			
+			#endregion
+
+			#region Chat methods
+			
 			/* Sends message with some blocks * /
 			var postMessageResponse = await SendMessageWithBlocksAsync(); /**/
 
@@ -112,24 +137,10 @@ namespace SlackBot.Samples
 			/* Updates message * /
 			var updateMessageResponse = await UpdateMessageAsync(); /**/
 			
-			/* Gets bot info * /
-			var botInfoResponse = await GetBotInfoAsync(); /**/
+			#endregion
 
-			/* Uploads plain file content * /
-			var uploadContentResponse = await UploadContentAsync(); /**/
- 
-			/* Uploads file from disk * /
-			var uploadFileResponse = await UploadFileAsync(); /**/
- 
-			/* Deletes file * /
-			var deleteFileResponse = await DeleteFileAsync(); /**/
- 
-			/* Gets file info * /
-			var fileInfoResponse = await GetFileInfoAsync(); /**/
- 
-			/* Gets file list * /
-			var fileListResponse = await GetFileListAsync(); /**/
- 
+			#region Pin methods
+			
 			/* Pins message * /
 			var pinMessageResponse = await PinMessageAsync(); /**/
  
@@ -138,7 +149,11 @@ namespace SlackBot.Samples
  
 			/* Removes pinned item * /
 			var removePinResponse = await RemovePinAsync(); /**/
- 
+			
+			#endregion
+
+			#region Reaction methods
+
 			/* Adds reaction * /
 			var addReactionResponse = await AddReactionAsync(); /**/
  
@@ -150,19 +165,114 @@ namespace SlackBot.Samples
 
             /* Removes reaction * /
 			var removeReactionResponse = await RemoveReactionAsync();/**/
+			
+			#endregion
 
-            /* Gets list of bot channels * /
+			#region User methods
+
+            /* Gets list of user channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
 
-            /* Gets user presence information * /
+			/* Gets user presence information * /
 			var userPresenceResponse = await GetUserPresenceAsync();/**/
 
             /* Gets information about user * /
 			var userInfoResponse = await GetUserInfoAsync();/**/
+
+            /* Gets list of all users * /
+			var userListResponse = await GetUserListAsync();/**/
+			
+			#endregion
             
             /* Gets conversation's history of messages and events * /
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
 		}
+
+		#region Bot
+
+		private static async Task<BotInfoResponse> GetBotInfoAsync()
+		{
+			var message = new Message(_slackBotSettings.ChannelName, $"{nameof(GetBotInfoAsync)} method");
+			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
+
+			var botInfoRequest = new BotInfoRequest(sendMessageResponse.Message.BotId);
+			
+			return await _slackClient.GetBotInfoAsync(botInfoRequest);
+		}
+		
+		#endregion
+
+		#region File
+		
+		// ReSharper disable once UnusedMethodReturnValue.Local
+		private static async Task<UploadFileResponse> UploadContentAsync()
+		{
+			var content = await File.ReadAllTextAsync("./appsettings.json");
+			var contentMessage = new ContentToUpload
+			{
+				Comment = $"{nameof(UploadContentAsync)} method",
+				Title = "Title",
+				Channels = _slackBotSettings.ChannelName,
+				Content = content,
+				Filename = "appsettings.json",
+				FileType = "javascript",
+			};
+
+			return await _slackClient.UploadContentAsync(contentMessage);
+		}
+
+		private static async Task<UploadFileResponse> UploadFileAsync()
+		{
+			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
+			var fileMessage = new FileToUpload
+			{
+				Channels = _slackBotSettings.ChannelName,
+				Stream = fileStream,
+				Comment = $"{nameof(UploadFileAsync)} method"
+			};
+
+			return await _slackClient.UploadFileAsync(fileMessage);
+		}
+
+		private static async Task<SlackBaseResponse> DeleteFileAsync()
+		{
+			var uploadFileResponse = await UploadFileAsync();
+			
+			var fileToDelete = new FileToDelete(uploadFileResponse.File.Id);
+
+			return await _slackClient.DeleteFileAsync(fileToDelete);
+		}
+
+		private static async Task<FileInfoResponse> GetFileInfoAsync()
+		{
+			var uploadFileResponse = await UploadFileAsync();
+			
+			var fileInfoRequest = new FileInfoRequest(uploadFileResponse.File.Id);
+
+			return await _slackClient.GetFileInfoAsync(fileInfoRequest);
+		}
+
+		private static async Task<FileListResponse> GetFileListAsync()
+		{
+			var uploadFileResponse = await UploadFileAsync();
+			await UploadContentAsync();
+
+			// Because of slack cache... Files upload instantly, but they attach to group delayed
+			await Task.Delay(30000);
+			
+			var firstFile = uploadFileResponse.File;
+			var fileListRequest = new FileListRequest
+			{
+				ChannelId = firstFile.ChannelIds.FirstOrDefault() ?? firstFile.GroupIds.FirstOrDefault(),
+				TimestampFrom = firstFile.CreatedTimestamp.ToString(),
+			};
+
+			return await _slackClient.GetFileListAsync(fileListRequest);
+		}
+		
+		#endregion
+
+		#region Chat
 
 		private static Task<SendMessageResponse> SendMessageWithBlocksAsync()
 		{
@@ -172,7 +282,7 @@ namespace SlackBot.Samples
 			{
 				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Blocks = blocks,
-				Text = "SendMessageWithBlocksAsync method",
+				Text = $"{nameof(SendMessageWithBlocksAsync)} method",
 				Attachments = new[]
 				{
 					new Attachment
@@ -215,7 +325,7 @@ namespace SlackBot.Samples
 					{
 						Elements = new IContextElement[]
 						{
-							(PlainTextObject)"SendMessageWithMultipleFilesAsync method",
+							(PlainTextObject)$"{nameof(SendMessageWithMultipleFilesAsync)} method",
 						},
 					},
 				},
@@ -226,7 +336,12 @@ namespace SlackBot.Samples
 
 		private static Task<SendEphemeralMessageResponse> SendEphemeralMessageAsync()
 		{
-			var ephemeralMessage = new EphemeralMessage(_slackBotSettings.ChannelName, _slackBotSettings.UserId, "SendEphemeralMessageAsync method");
+			var ephemeralMessage = new EphemeralMessage
+			{
+				ChannelIdOrName = _slackBotSettings.ChannelName,
+				UserId = _slackBotSettings.UserId,
+				Text = $"{nameof(SendEphemeralMessageAsync)} method"
+			};
 
 			return _slackClient.SendEphemeralMessageAsync(ephemeralMessage);
 		}
@@ -271,7 +386,7 @@ namespace SlackBot.Samples
 				ChannelId = scheduleMessage2?.ChannelId
 			};
 
-			return await _slackClient.GetScheduledMessages(scheduledMessageListRequest);
+			return await _slackClient.GetScheduledMessagesAsync(scheduledMessageListRequest);
 		}
 		
 		private static async Task<SlackBaseResponse> DeleteScheduledMessageAsync()
@@ -303,84 +418,23 @@ namespace SlackBot.Samples
 
 			var messageToUpdate = new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText");
 			
-			return await _slackClient.UpdateMessage(messageToUpdate);
+			return await _slackClient.UpdateMessageAsync(messageToUpdate);
+		}
+        
+		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod)
+		{
+			var message = new Message
+			{
+				ChannelIdOrName = _slackBotSettings.ChannelName,
+				Text = $"{nameOfMethod} method",
+			};
+
+			return _slackClient.SendMessageAsync(message);
 		}
 		
-		private static async Task<BotInfoResponse> GetBotInfoAsync()
-		{
-			var message = new Message(_slackBotSettings.ChannelName, "GetBotInfo method");
-			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
+		#endregion
 
-			var botInfoRequest = new BotInfoRequest(sendMessageResponse.Message.BotId);
-			
-			return await _slackClient.GetBotInfoAsync(botInfoRequest);
-		}
-
-		// ReSharper disable once UnusedMethodReturnValue.Local
-		private static async Task<UploadFileResponse> UploadContentAsync()
-		{
-			var content = await File.ReadAllTextAsync("./appsettings.json");
-			var contentMessage = new ContentToUpload
-			{
-				Comment = "UploadContentAsync method",
-				Title = "Title",
-				Channels = _slackBotSettings.ChannelName,
-				Content = content,
-				Filename = "appsettings.json",
-				FileType = "javascript",
-			};
-
-			return await _slackClient.UploadContentAsync(contentMessage);
-		}
-
-		private static async Task<UploadFileResponse> UploadFileAsync()
-		{
-			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
-			var fileMessage = new FileToUpload
-			{
-				Channels = _slackBotSettings.ChannelName,
-				Stream = fileStream,
-				Comment = "UploadFileAsync method"
-			};
-
-			return await _slackClient.UploadFileAsync(fileMessage);
-		}
-
-		private static async Task<SlackBaseResponse> DeleteFileAsync()
-		{
-			var uploadFileResponse = await UploadFileAsync();
-			
-			var fileToDelete = new FileToDelete(uploadFileResponse.File.Id);
-
-			return await _slackClient.DeleteFileAsync(fileToDelete);
-		}
-
-		private static async Task<FileInfoResponse> GetFileInfoAsync()
-		{
-			var uploadFileResponse = await UploadFileAsync();
-			
-			var fileInfoRequest = new FileInfoRequest(uploadFileResponse.File.Id);
-
-			return await _slackClient.GetFileInfoAsync(fileInfoRequest);
-		}
-
-		private static async Task<FileListResponse> GetFileListAsync()
-		{
-			var uploadFileResponse = await UploadFileAsync();
-			await UploadContentAsync();
-
-			// Because of slack cache... Files upload instantly, but they attach to group delayed
-			await Task.Delay(30000);
-			
-			var firstFile = uploadFileResponse.File;
-			var fileListRequest = new FileListRequest
-			{
-				ChannelId = firstFile.ChannelIds.FirstOrDefault() ?? firstFile.GroupIds.FirstOrDefault(),
-				TimestampFrom = firstFile.CreatedTimestamp.ToString(),
-			};
-
-			return await _slackClient.GetFileListAsync(fileListRequest);
-		}
+		#region Pin
 
 		private static async Task<SlackBaseResponse> PinMessageAsync()
 		{
@@ -407,6 +461,20 @@ namespace SlackBot.Samples
 
 			return await _slackClient.RemovePinAsync(removePinRequest);
 		}
+
+		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
+		{
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(PinMessageInternalAsync));
+
+			var pinItem = new PinItem(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var pinMessageResponse = await _slackClient.PinMessageAsync(pinItem);
+
+			return (pinMessageResponse, sendMessageResponse);
+		}
+		
+		#endregion
+
+		#region Reaction
 
 		private static async Task<SlackBaseResponse> AddReactionAsync()
 		{
@@ -445,68 +513,6 @@ namespace SlackBot.Samples
 			return await _slackClient.RemoveReactionAsync(reactionToRemove);
 		}
 
-		private static Task<UserConversationsResponse> GetUserConversationsAsync()
-		{
-			var userConversations = new UserConversations
-			{
-				Types = "public_channel,private_channel,mpim,im",
-			};
-
-			return _slackClient.UserConversationsAsync(userConversations);
-        }
-
-		private static Task<UserPresenceResponse> GetUserPresenceAsync()
-		{
-			var userPresenceRequest = new UserPresenceRequest(_slackBotSettings.UserId);
-
-			return _slackClient.UserPresenceAsync(userPresenceRequest);
-        }
-
-		private static Task<UserInfoResponse> GetUserInfoAsync()
-		{
-			var userToGetInfo = new UserToGetInfo(_slackBotSettings.UserId);
-
-			return _slackClient.UserInfoAsync(userToGetInfo);
-        }
-        
-        private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
-        {
-	        var channelId = await GetChannelIdAsync();
-
-	        var conversationsHistory = new ConversationsHistory(channelId, 1000);
-
-	        return await _slackClient.ConversationsHistoryAsync(conversationsHistory);
-        }
-        
-		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod)
-		{
-			var message = new Message
-			{
-				ChannelIdOrName = _slackBotSettings.ChannelName,
-				Text = $"{nameOfMethod} method",
-			};
-
-			return _slackClient.SendMessageAsync(message);
-		}
-		
-        private static async Task<string> GetChannelIdAsync()
-        {
-			var conversationsHistoryResponse = await GetUserConversationsAsync();
-	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
-
-	        return channelId;
-		}
-
-		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
-		{
-			var sendMessageResponse = await SendSimpleMessageAsync(nameof(PinMessageInternalAsync));
-
-			var pinItem = new PinItem(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
-			var pinMessageResponse = await _slackClient.PinMessageAsync(pinItem);
-
-			return (pinMessageResponse, sendMessageResponse);
-		}
-
 		private static async Task<(SlackBaseResponse AddReactionResponse, SendMessageResponse SendMessageResponse)> AddReactionInternalAsync(
 			string emojiName = "+1")
 		{
@@ -523,6 +529,45 @@ namespace SlackBot.Samples
 			
 			return _slackClient.AddReactionAsync(reaction);
 		}
+		
+		#endregion
+
+		#region User
+
+		private static Task<UserConversationsResponse> GetUserConversationsAsync()
+			=> _slackClient.UserConversationsAsync(new UserConversations("public_channel,private_channel,mpim,im"));
+
+		private static Task<UserPresenceResponse> GetUserPresenceAsync()
+			=> _slackClient.UserPresenceAsync(new UserPresenceRequest(_slackBotSettings.UserId));
+
+		private static Task<UserInfoResponse> GetUserInfoAsync()
+			=> _slackClient.UserInfoAsync(new UserToGetInfo(_slackBotSettings.UserId));
+
+		private static Task<UserListResponse> GetUserListAsync()
+			=> _slackClient.UserListAsync(new UserListRequest());
+		
+		#endregion
+
+		#region Conversation
+
+		private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+	        var conversationsHistory = new ConversationsHistory(channelId, 1000);
+
+	        return await _slackClient.ConversationsHistoryAsync(conversationsHistory);
+        }
+		
+        private static async Task<string> GetChannelIdAsync()
+        {
+			var conversationsHistoryResponse = await GetUserConversationsAsync();
+	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
+
+	        return channelId;
+		}
+		
+		#endregion
 
 		private static BlockBase[] GenerateBlocksForMessage()
 		{
