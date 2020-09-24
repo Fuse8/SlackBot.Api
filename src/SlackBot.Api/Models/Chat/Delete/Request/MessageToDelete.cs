@@ -4,6 +4,16 @@ namespace SlackBot.Api.Models.Chat.Delete.Request
 {
 	public class MessageToDelete
 	{
+		public MessageToDelete()
+		{
+		}
+
+		public MessageToDelete(string channelId, string messageTimestamp)
+		{
+			ChannelId = channelId;
+			MessageTimestamp = messageTimestamp;
+		}
+
 		/// <summary>
 		/// Channel containing the message to be deleted.
 		/// </summary>

@@ -5,6 +5,16 @@ namespace SlackBot.Api.Models.Chat.DeleteScheduledMessage.Request
 {
 	public class ScheduledMessageToDelete
 	{
+		public ScheduledMessageToDelete()
+		{
+		}
+
+		public ScheduledMessageToDelete(string channel, string scheduledMessageId)
+		{
+			Channel = channel;
+			ScheduledMessageId = scheduledMessageId;
+		}
+
 		/// <summary>
 		/// The channel the scheduled_message is posting to
 		/// </summary>

@@ -223,10 +223,8 @@ namespace SlackBot.Samples
 		{
 			var message = new Message(_slackBotSettings.ChannelName, $"{nameof(GetBotInfoAsync)} method");
 			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
-
-			var botInfoRequest = new BotInfoRequest(sendMessageResponse.Message.BotId);
 			
-			return await _slackClient.GetBotInfoAsync(botInfoRequest);
+			return await _slackClient.GetBotInfoAsync(new BotInfoRequest(sendMessageResponse.Message.BotId));
 		}
 		
 		#endregion
@@ -274,18 +272,14 @@ namespace SlackBot.Samples
 		{
 			var uploadFileResponse = await UploadFileAsync();
 			
-			var fileToDelete = new FileToDelete(uploadFileResponse.File.Id);
-
-			return await _slackClient.DeleteFileAsync(fileToDelete);
+			return await _slackClient.DeleteFileAsync(new FileToDelete(uploadFileResponse.File.Id));
 		}
 
 		private static async Task<FileInfoResponse> GetFileInfoAsync()
 		{
 			var uploadFileResponse = await UploadFileAsync();
 			
-			var fileInfoRequest = new FileInfoRequest(uploadFileResponse.File.Id);
-
-			return await _slackClient.GetFileInfoAsync(fileInfoRequest);
+			return await _slackClient.GetFileInfoAsync(new FileInfoRequest(uploadFileResponse.File.Id));
 		}
 
 		private static async Task<FileListResponse> GetFileListAsync()
@@ -386,13 +380,7 @@ namespace SlackBot.Samples
 		{
 			var sendMessageResponse = await SendSimpleMessageAsync(nameof(DeleteMessageAsync));
 
-			var messageToDelete = new MessageToDelete
-			{
-				ChannelId = sendMessageResponse.ChannelId,
-				MessageTimestamp = sendMessageResponse.Timestamp
-			};
-
-			return await _slackClient.DeleteMessageAsync(messageToDelete);
+			return await _slackClient.DeleteMessageAsync(new MessageToDelete(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
 		}
 
 		private static Task<ScheduleMessageResponse> ScheduleMessageAsync(int minutesToSchedule = 1)
@@ -417,44 +405,29 @@ namespace SlackBot.Samples
 			var scheduleMessage1 = await ScheduleMessageAsync(MinutesToSchedule);
 			var scheduleMessage2 = await ScheduleMessageAsync(MinutesToSchedule);
 
-			var scheduledMessageListRequest = new ScheduledMessageListRequest
-			{
-				ChannelId = scheduleMessage2?.ChannelId
-			};
-
-			return await _slackClient.GetScheduledMessagesAsync(scheduledMessageListRequest);
+			return await _slackClient.GetScheduledMessagesAsync(new ScheduledMessageListRequest(scheduleMessage2?.ChannelId));
 		}
 		
 		private static async Task<SlackBaseResponse> DeleteScheduledMessageAsync()
 		{
 			var scheduleMessageResponse = await ScheduleMessageAsync(2);
-			
-			var scheduledMessageToDelete = new ScheduledMessageToDelete
-			{
-				Channel = scheduleMessageResponse.ChannelId,
-				ScheduledMessageId = scheduleMessageResponse.ScheduledMessageId
-			};
 
-			return await _slackClient.DeleteScheduledMessageAsync(scheduledMessageToDelete);
+			return await _slackClient.DeleteScheduledMessageAsync(new ScheduledMessageToDelete(scheduleMessageResponse.ChannelId, scheduleMessageResponse.ScheduledMessageId));
 		}
 		
 		private static async Task<MessagePermalinkResponse> GetMessagePermalinkAsync()
 		{
 			var sendMessageResponse = await SendSimpleMessageAsync(nameof(GetMessagePermalinkAsync));
 
-			var messagePermalinkRequest = new MessagePermalinkRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
-
-			return await _slackClient.GetMessagePermalinkAsync(messagePermalinkRequest);
+			return await _slackClient.GetMessagePermalinkAsync(new MessagePermalinkRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
 		}
 		
 		private static async Task<UpdateMessageResponse> UpdateMessageAsync()
 		{
 			var message = new Message(_slackBotSettings.ChannelName, "Not updated text");
 			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
-
-			var messageToUpdate = new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText");
 			
-			return await _slackClient.UpdateMessageAsync(messageToUpdate);
+			return await _slackClient.UpdateMessageAsync(new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText"));
 		}
         
 		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod)
@@ -517,18 +490,14 @@ namespace SlackBot.Samples
 			var (_, sendMessageResponse) = await PinMessageInternalAsync();
 			await PinMessageInternalAsync();
 
-			var pinListRequest = new PinListRequest(sendMessageResponse.ChannelId);
-
-			return await _slackClient.GetPinListAsync(pinListRequest);
+			return await _slackClient.GetPinListAsync(new PinListRequest(sendMessageResponse.ChannelId));
 		}
 
 		private static async Task<SlackBaseResponse> RemovePinAsync()
 		{
 			var (_, sendMessageResponse) = await PinMessageInternalAsync();
 			
-			var removePinRequest = new PinItemToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
-
-			return await _slackClient.RemovePinAsync(removePinRequest);
+			return await _slackClient.RemovePinAsync(new PinItemToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
 		}
 
 		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
@@ -556,20 +525,16 @@ namespace SlackBot.Samples
 		{
 			var (_, sendMessageResponse) = await AddReactionInternalAsync();
 			await AddReactionToMessageAsync(sendMessageResponse, "smile");
-			
-			var reactionsByItemRequest = new ReactionsByItemRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
 
-			return await _slackClient.GetReactionsByItemAsync(reactionsByItemRequest);
+			return await _slackClient.GetReactionsByItemAsync(new ReactionsByItemRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
 		}
 		
 		private static async Task<ReactionsByUserResponse> GetReactionsByUserAsync()
 		{
 			var (_, sendMessageResponse) = await AddReactionInternalAsync();
 			await AddReactionToMessageAsync(sendMessageResponse, "smile");
-			
-			var reactionsByUserRequest = new ReactionsByUserRequest();
 
-			return await _slackClient.GetReactionsByUserAsync(reactionsByUserRequest);
+			return await _slackClient.GetReactionsByUserAsync(new ReactionsByUserRequest());
 		}
 		
 		private static async Task<SlackBaseResponse> RemoveReactionAsync()
@@ -577,9 +542,7 @@ namespace SlackBot.Samples
 			const string EmojiName = "grin";
 			var (_, sendMessageResponse) = await AddReactionInternalAsync(EmojiName);
 			
-			var reactionToRemove = new ReactionToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, EmojiName);
-
-			return await _slackClient.RemoveReactionAsync(reactionToRemove);
+			return await _slackClient.RemoveReactionAsync(new ReactionToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, EmojiName));
 		}
 
 		private static async Task<(SlackBaseResponse AddReactionResponse, SendMessageResponse SendMessageResponse)> AddReactionInternalAsync(
@@ -593,12 +556,8 @@ namespace SlackBot.Samples
 		}
 
 		private static Task<SlackBaseResponse> AddReactionToMessageAsync(SendMessageResponse sendMessageResponse, string emojiName)
-		{
-			var reaction = new Reaction(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, emojiName);
-			
-			return _slackClient.AddReactionAsync(reaction);
-		}
-		
+			=> _slackClient.AddReactionAsync(new Reaction(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, emojiName));
+
 		#endregion
 
 		#region TeamProfile
