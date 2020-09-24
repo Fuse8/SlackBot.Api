@@ -49,14 +49,15 @@ using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
+using SlackBot.Api.Models.User;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Api.Models.User.GetPresence.Request;
 using SlackBot.Api.Models.User.GetPresence.Response;
 using SlackBot.Api.Models.User.Info.Request;
-using SlackBot.Api.Models.User.Info.Response;
 using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
+using SlackBot.Api.Models.User.LookupByEmail.Request;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
@@ -181,6 +182,9 @@ namespace SlackBot.Samples
 
             /* Gets list of all users * /
 			var userListResponse = await GetUserListAsync();/**/
+
+            /* Gets user by email * /
+			var userByEmailResponse = await GetUserByEmailAsync();/**/
 			
 			#endregion
             
@@ -540,11 +544,14 @@ namespace SlackBot.Samples
 		private static Task<UserPresenceResponse> GetUserPresenceAsync()
 			=> _slackClient.UserPresenceAsync(new UserPresenceRequest(_slackBotSettings.UserId));
 
-		private static Task<UserInfoResponse> GetUserInfoAsync()
+		private static Task<UserResponse> GetUserInfoAsync()
 			=> _slackClient.UserInfoAsync(new UserToGetInfo(_slackBotSettings.UserId));
 
 		private static Task<UserListResponse> GetUserListAsync()
 			=> _slackClient.UserListAsync(new UserListRequest());
+
+		private static Task<UserResponse> GetUserByEmailAsync()
+			=> _slackClient.UserByEmailAsync(new UserByEmailRequest(_slackBotSettings.UserEmail));
 		
 		#endregion
 

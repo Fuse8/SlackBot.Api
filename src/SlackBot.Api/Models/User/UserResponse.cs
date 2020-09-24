@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using SlackBot.Api.Models.GeneralObjects.User;
 
-namespace SlackBot.Api.Models.User.Info.Response
+namespace SlackBot.Api.Models.User
 {
-	public class UserInfoResponse : SlackBaseResponse
+	public class UserResponse : SlackBaseResponse
 	{
 		[JsonProperty("user")]
 		public SlackUser User { get; set; }

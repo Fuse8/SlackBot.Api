@@ -37,14 +37,15 @@ using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
+using SlackBot.Api.Models.User;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Api.Models.User.GetPresence.Request;
 using SlackBot.Api.Models.User.GetPresence.Response;
 using SlackBot.Api.Models.User.Info.Request;
-using SlackBot.Api.Models.User.Info.Response;
 using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
+using SlackBot.Api.Models.User.LookupByEmail.Request;
 
 namespace SlackBot.Api
 {
@@ -218,14 +219,20 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Gets information about a user.
 		/// </summary>
-		public Task<UserInfoResponse> UserInfoAsync(UserToGetInfo userToGetInfo)
-			=> SendGetAsync<UserToGetInfo, UserInfoResponse>("users.info", userToGetInfo);
+		public Task<UserResponse> UserInfoAsync(UserToGetInfo userToGetInfo)
+			=> SendGetAsync<UserToGetInfo, UserResponse>("users.info", userToGetInfo);
 
 		/// <summary>
 		/// Lists all users in a Slack team.
 		/// </summary>
 		public Task<UserListResponse> UserListAsync(UserListRequest userListRequest)
 			=> SendGetAsync<UserListRequest, UserListResponse>("users.list", userListRequest);
+
+		/// <summary>
+		/// Find a user with an email address.
+		/// </summary>
+		public Task<UserResponse> UserByEmailAsync(UserByEmailRequest userByEmailRequest)
+			=> SendGetAsync<UserByEmailRequest, UserResponse>("users.lookupByEmail", userByEmailRequest);
 		
 		#endregion
         
