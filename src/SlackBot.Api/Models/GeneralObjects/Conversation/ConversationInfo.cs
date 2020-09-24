@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using SlackBot.Api.Models.GeneralObjects.Message;
 
-namespace SlackBot.Api.Models.User.Conversation.Response
+namespace SlackBot.Api.Models.GeneralObjects.Conversation
 {
-	public class Channel
+	public class ConversationInfo
 	{
 		[JsonProperty("id")]
 		public string Id { get; set; }
@@ -23,10 +24,10 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		public bool? IsMultiPersonDirectMessageChannel { get; set; }
 
 		[JsonProperty("created")]
-		public long? Created { get; set; }
+		public long? CreatedTimestamp { get; set; }
 
 		[JsonProperty("creator")]
-		public string Creator { get; set; }
+		public string CreatorId { get; set; }
 
 		[JsonProperty("is_archived")]
 		public bool? IsArchived { get; set; }
@@ -46,14 +47,26 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		[JsonProperty("is_shared")]
 		public bool? IsShared { get; set; }
 
+		[JsonProperty("parent_conversation")]
+		public object ParentConversation { get; set; } // TODO Couldn't find a description of this field in the documentation
+
 		[JsonProperty("is_ext_shared")]
 		public bool? IsExtShared { get; set; }
 
 		[JsonProperty("is_org_shared")]
-		public bool? IsOrgShared { get; set; }
+		public bool? IsOrgShared { get; set; } 
+
+		[JsonProperty("user")]
+		public string UserId { get; set; }
+
+		[JsonProperty("shared_team_ids")]
+		public string[] SharedTeamIds { get; set; }
 
 		[JsonProperty("pending_shared")]
 		public object[] PendingShared { get; set; } // TODO Couldn't find a description of this field in the documentation
+
+		[JsonProperty("pending_connected_team_ids")]
+		public string[] PendingConnectedTeamIds { get; set; }
 
 		[JsonProperty("is_pending_ext_shared")]
 		public bool? IsPendingExtShared { get; set; }
@@ -65,7 +78,19 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		public bool? IsPrivate { get; set; }
 
 		[JsonProperty("last_read")]
-		public string LastRead { get; set; }
+		public string LastReadTimestamp { get; set; }
+
+		[JsonProperty("latest")]
+		public MessageResponse LatestMessage { get; set; }
+
+		[JsonProperty("unread_count")]
+		public long? UnreadCount { get; set; } 
+
+		[JsonProperty("unread_count_display")]
+		public long? UnreadCountDisplay { get; set; } 
+
+		[JsonProperty("is_open")]
+		public bool? IsOpened { get; set; }
 
 		[JsonProperty("topic")]
 		public Purpose Topic { get; set; }
@@ -81,5 +106,8 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 
 		[JsonProperty("locale")]
 		public string Locale { get; set; }
+
+		[JsonProperty("priority")]
+		public long? Priority { get; set; }
 	}
 }

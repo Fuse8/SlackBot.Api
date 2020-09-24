@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.User.Conversation.Response
+namespace SlackBot.Api.Models.GeneralObjects.Conversation
 {
 	public class Purpose
 	{
@@ -11,6 +11,6 @@ namespace SlackBot.Api.Models.User.Conversation.Response
 		public string Creator { get; set; }
 
 		[JsonProperty("last_set")]
-		public long LastSet { get; set; }
+		public long LastSetTimestamp { get; set; }
 	}
 }

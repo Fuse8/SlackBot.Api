@@ -19,8 +19,12 @@ using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.Archive.Request;
+using SlackBot.Api.Models.Conversation.Close.Request;
+using SlackBot.Api.Models.Conversation.Close.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Open.Request;
+using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
@@ -177,10 +181,22 @@ namespace SlackBot.Api
             => SendPostFormUrlEncodedAsync("conversations.archive", conversationToArchive);
 		
 		/// <summary>
+		/// Closes a direct message or multi-person direct message.
+		/// </summary>
+        public Task<ClosedConversationResponse> CloseConversationAsync(ConversationToClose conversationToClose) 
+            => SendPostFormUrlEncodedAsync<ConversationToClose, ClosedConversationResponse>("conversations.close", conversationToClose);
+		
+		/// <summary>
 		/// Fetches a conversation's history of messages and events.
 		/// </summary>
         public Task<ConversationsHistoryResponse> ConversationsHistoryAsync(ConversationsHistory conversationsHistory) 
             => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
+		
+		/// <summary>
+		/// Opens or resumes a direct message or multi-person direct message.
+		/// </summary>
+        public Task<OpenedConversationResponse> OpenConversationsAsync(ConversationToOpen conversationToOpen) 
+            => SendPostFormUrlEncodedAsync<ConversationToOpen, OpenedConversationResponse>("conversations.open", conversationToOpen);
 		
 		/// <summary>
 		/// Reverses conversation archival.

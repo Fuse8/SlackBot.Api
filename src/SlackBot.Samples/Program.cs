@@ -31,8 +31,12 @@ using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.Archive.Request;
+using SlackBot.Api.Models.Conversation.Close.Request;
+using SlackBot.Api.Models.Conversation.Close.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Open.Request;
+using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
@@ -67,11 +71,11 @@ using SlackBot.Api.Models.User.SetPresence.Request;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
-
 #region disable formatting rules
 	
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
+// ReSharper disable UnusedMethodReturnValue.Local
 #pragma warning disable 1998
 
 #endregion
@@ -154,8 +158,14 @@ namespace SlackBot.Samples
             /* Archives conversation * /
 			var archiveConversationResponse = await ArchiveConversationAsync();/**/
             
+            /* Archives conversation * /
+			var closeConversationResponse = await CloseConversationAsync();/**/
+            
             /* Gets conversation's history of messages and events * /
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
+            
+            /* Opens conversation * /
+			var openConversationResponse = await OpenConversationAsync();/**/
             
             /* Unarchives conversation * /
 			var unarchiveConversationResponse = await UnarchiveConversationAsync();/**/
@@ -238,7 +248,6 @@ namespace SlackBot.Samples
 
 		#region File
 		
-		// ReSharper disable once UnusedMethodReturnValue.Local
 		private static async Task<UploadFileResponse> UploadContentAsync()
 		{
 			var content = await File.ReadAllTextAsync("./appsettings.json");
@@ -430,11 +439,11 @@ namespace SlackBot.Samples
 			return await _slackClient.UpdateMessageAsync(new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText"));
 		}
         
-		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod)
+		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod, string channelId = null)
 		{
 			var message = new Message
 			{
-				ChannelIdOrName = _slackBotSettings.ChannelName,
+				ChannelIdOrName = channelId ?? _slackBotSettings.ChannelName,
 				Text = $"{nameOfMethod} method",
 			};
 
@@ -445,12 +454,19 @@ namespace SlackBot.Samples
 
 		#region Conversation
 
-		private static async Task<SlackBaseResponse> ArchiveConversationAsync()
+		private static async Task<SlackBaseResponse> ArchiveConversationAsync(string conversationId = null)
         {
-	        var channelId = await GetChannelIdAsync();
+	        var channelId = conversationId ?? await GetChannelIdAsync();
 
 	        return await _slackClient.ArchiveConversationAsync(new ConversationToArchive(channelId));
         }
+
+		private static async Task<ClosedConversationResponse> CloseConversationAsync()
+		{
+			var openConversationResponse = await OpenConversationAsync();
+			
+			return await _slackClient.CloseConversationAsync(new ConversationToClose(openConversationResponse.Channel.Id));
+		}
 
 		private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
         {
@@ -459,11 +475,22 @@ namespace SlackBot.Samples
 	        return await _slackClient.ConversationsHistoryAsync(new ConversationsHistory(channelId, 1000));
         }
 
+		private static async Task<OpenedConversationResponse> OpenConversationAsync()
+        {
+			var openedConversationResponse = await _slackClient.OpenConversationsAsync(new ConversationToOpen(_slackBotSettings.UserId, true));
+			
+			await SendSimpleMessageAsync(nameof(OpenConversationAsync), openedConversationResponse.Channel.Id);
+
+			return openedConversationResponse;
+		}
+
 		private static async Task<SlackBaseResponse> UnarchiveConversationAsync()
         {
 	        var channelId = await GetChannelIdAsync();
 
-	        return await _slackClient.UnarchiveConversationAsync(new ConversationToUnarchive(channelId));
+			await ArchiveConversationAsync(channelId);
+
+			return await _slackClient.UnarchiveConversationAsync(new ConversationToUnarchive(channelId));
         }
 		
         private static async Task<string> GetChannelIdAsync()
