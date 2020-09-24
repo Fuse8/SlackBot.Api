@@ -4,7 +4,7 @@ using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.Reaction.List.Response
 {
-	public class GetReactionsByUserResponse : CursorPaginationResponseBase
+	public class ReactionsByUserResponse : CursorPaginationResponseBase
 	{
 		[JsonProperty("items")]
 		public ItemResponse[] Items { get; set; }

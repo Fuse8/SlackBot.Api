@@ -3,13 +3,13 @@ using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Models.Reaction.Get.Request
 {
-	public class GetReactionsByItemRequest : ItemActionRequestBase
+	public class ReactionsByItemRequest : ItemActionRequestBase
 	{
-		public GetReactionsByItemRequest()
+		public ReactionsByItemRequest()
 		{
 		}
 
-		public GetReactionsByItemRequest(string channelId, string messageTimestamp)
+		public ReactionsByItemRequest(string channelId, string messageTimestamp)
 			: base(channelId, messageTimestamp)
 		{
 		}

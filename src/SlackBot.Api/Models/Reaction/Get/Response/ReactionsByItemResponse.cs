@@ -4,7 +4,7 @@ using SlackBot.Api.Models.GeneralObjects.Message;
 
 namespace SlackBot.Api.Models.Reaction.Get.Response
 {
-	public class GetReactionsByItemResponse : SlackBaseResponse
+	public class ReactionsByItemResponse : SlackBaseResponse
 	{
 		[JsonProperty("type")]
 		public string Type { get; set; }

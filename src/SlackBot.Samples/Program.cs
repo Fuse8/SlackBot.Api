@@ -49,6 +49,8 @@ using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
+using SlackBot.Api.Models.TeamProfile.Get.Request;
+using SlackBot.Api.Models.TeamProfile.Get.Response;
 using SlackBot.Api.Models.User;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
@@ -160,15 +162,18 @@ namespace SlackBot.Samples
 			var addReactionResponse = await AddReactionAsync(); /**/
  
 			/* Gets reactions by item* /
-			var getReactionsByItemResponse = await GetReactionsByItemAsync(); /**/
+			var reactionsByItemResponse = await GetReactionsByItemAsync(); /**/
  
 			/* Gets reactions by user* /
-			var getReactionsByUserResponse = await GetReactionsByUserAsync(); /**/
+			var reactionsByUserResponse = await GetReactionsByUserAsync(); /**/
 
             /* Removes reaction * /
 			var removeReactionResponse = await RemoveReactionAsync();/**/
 			
 			#endregion
+            
+			/* Gets team profile * /
+			var teamProfileResponse = await GetTeamProfileAsync();/**/
 
 			#region User methods
 
@@ -491,24 +496,24 @@ namespace SlackBot.Samples
 			return addReactionResponse;
 		}
 		
-		private static async Task<GetReactionsByItemResponse> GetReactionsByItemAsync()
+		private static async Task<ReactionsByItemResponse> GetReactionsByItemAsync()
 		{
 			var (_, sendMessageResponse) = await AddReactionInternalAsync();
 			await AddReactionToMessageAsync(sendMessageResponse, "smile");
 			
-			var getReactionsByItemRequest = new GetReactionsByItemRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var reactionsByItemRequest = new ReactionsByItemRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
 
-			return await _slackClient.GetReactionsByItemAsync(getReactionsByItemRequest);
+			return await _slackClient.GetReactionsByItemAsync(reactionsByItemRequest);
 		}
 		
-		private static async Task<GetReactionsByUserResponse> GetReactionsByUserAsync()
+		private static async Task<ReactionsByUserResponse> GetReactionsByUserAsync()
 		{
 			var (_, sendMessageResponse) = await AddReactionInternalAsync();
 			await AddReactionToMessageAsync(sendMessageResponse, "smile");
 			
-			var getReactionsByUserRequest = new GetReactionsByUserRequest();
+			var reactionsByUserRequest = new ReactionsByUserRequest();
 
-			return await _slackClient.GetReactionsByUserAsync(getReactionsByUserRequest);
+			return await _slackClient.GetReactionsByUserAsync(reactionsByUserRequest);
 		}
 		
 		private static async Task<SlackBaseResponse> RemoveReactionAsync()
@@ -538,6 +543,13 @@ namespace SlackBot.Samples
 			return _slackClient.AddReactionAsync(reaction);
 		}
 		
+		#endregion
+
+		#region TeamProfile
+		
+		private static async Task<TeamProfileResponse> GetTeamProfileAsync()
+			=> await _slackClient.TeamProfileAsync(new TeamProfileRequest(TeamFieldVisibilityType.Visible));
+
 		#endregion
 
 		#region User

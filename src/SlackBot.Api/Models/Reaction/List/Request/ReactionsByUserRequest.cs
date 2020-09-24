@@ -3,13 +3,13 @@ using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.Reaction.List.Request
 {
-	public class GetReactionsByUserRequest : CursorPaginationBase
+	public class ReactionsByUserRequest : CursorPaginationBase
 	{
-		public GetReactionsByUserRequest()
+		public ReactionsByUserRequest()
 		{
 		}
 
-		public GetReactionsByUserRequest(string cursor, long? limit = null, string userId = null)
+		public ReactionsByUserRequest(string cursor, long? limit = null, string userId = null)
 			: base(cursor, limit)
 		{
 			UserId = userId;

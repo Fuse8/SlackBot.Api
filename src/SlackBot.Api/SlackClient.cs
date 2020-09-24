@@ -37,6 +37,8 @@ using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
+using SlackBot.Api.Models.TeamProfile.Get.Request;
+using SlackBot.Api.Models.TeamProfile.Get.Response;
 using SlackBot.Api.Models.User;
 using SlackBot.Api.Models.User.Conversation.Request;
 using SlackBot.Api.Models.User.Conversation.Response;
@@ -186,20 +188,30 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Gets reactions for an item.
 		/// </summary>
-		public Task<GetReactionsByItemResponse> GetReactionsByItemAsync(GetReactionsByItemRequest getReactionsByItemRequest)
-			=> SendGetAsync<GetReactionsByItemRequest, GetReactionsByItemResponse>("reactions.get", getReactionsByItemRequest);
+		public Task<ReactionsByItemResponse> GetReactionsByItemAsync(ReactionsByItemRequest reactionsByItemRequest)
+			=> SendGetAsync<ReactionsByItemRequest, ReactionsByItemResponse>("reactions.get", reactionsByItemRequest);
 
 		/// <summary>
 		/// Lists reactions made by a user.
 		/// </summary>
-		public Task<GetReactionsByUserResponse> GetReactionsByUserAsync(GetReactionsByUserRequest getReactionsByUserRequest)
-			=> SendGetAsync<GetReactionsByUserRequest, GetReactionsByUserResponse>("reactions.list", getReactionsByUserRequest);
+		public Task<ReactionsByUserResponse> GetReactionsByUserAsync(ReactionsByUserRequest reactionsByUserRequest)
+			=> SendGetAsync<ReactionsByUserRequest, ReactionsByUserResponse>("reactions.list", reactionsByUserRequest);
 
 		/// <summary>
 		/// Removes a reaction from an item.
 		/// </summary>
 		public Task<SlackBaseResponse> RemoveReactionAsync(ReactionToRemove reactionToRemove)
 			=> SendPostFormUrlEncodedAsync<ReactionToRemove, SlackBaseResponse>("reactions.remove", reactionToRemove);
+
+		#endregion
+
+		#region TeamProfile
+
+		/// <summary>
+		/// Retrieve a team's profile.
+		/// </summary>
+		public Task<TeamProfileResponse> TeamProfileAsync(TeamProfileRequest teamProfileRequest)
+			=> SendGetAsync<TeamProfileRequest, TeamProfileResponse>("team.profile.get", teamProfileRequest);
 
 		#endregion
 
