@@ -58,6 +58,7 @@ using SlackBot.Api.Models.User.Info.Request;
 using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Api.Models.User.LookupByEmail.Request;
+using SlackBot.Api.Models.User.SetPresence.Request;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
@@ -185,6 +186,9 @@ namespace SlackBot.Samples
 
             /* Gets user by email * /
 			var userByEmailResponse = await GetUserByEmailAsync();/**/
+
+            /* Sets user presence * /
+			var setUserPresenceResponse = await SetUserPresenceAsync();/**/
 			
 			#endregion
             
@@ -552,6 +556,9 @@ namespace SlackBot.Samples
 
 		private static Task<UserResponse> GetUserByEmailAsync()
 			=> _slackClient.UserByEmailAsync(new UserByEmailRequest(_slackBotSettings.UserEmail));
+
+		private static Task<SlackBaseResponse> SetUserPresenceAsync()
+			=> _slackClient.SetUserPresenceAsync(new SetUserPresenceRequest("auto"));
 		
 		#endregion
 

@@ -46,6 +46,7 @@ using SlackBot.Api.Models.User.Info.Request;
 using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Api.Models.User.LookupByEmail.Request;
+using SlackBot.Api.Models.User.SetPresence.Request;
 
 namespace SlackBot.Api
 {
@@ -233,6 +234,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UserResponse> UserByEmailAsync(UserByEmailRequest userByEmailRequest)
 			=> SendGetAsync<UserByEmailRequest, UserResponse>("users.lookupByEmail", userByEmailRequest);
+
+		/// <summary>
+		/// Manually sets user presence.
+		/// </summary>
+		public Task<SlackBaseResponse> SetUserPresenceAsync(SetUserPresenceRequest setUserPresenceRequest)
+			=> SendPostFormUrlEncodedAsync<SetUserPresenceRequest, SlackBaseResponse>("users.setPresence", setUserPresenceRequest);
 		
 		#endregion
         
