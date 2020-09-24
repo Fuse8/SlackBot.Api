@@ -91,7 +91,7 @@ namespace SlackBot.Samples
 		}
 
 		// ReSharper disable once InconsistentNaming
-		public static async Task Main(string[] args)
+		public static async Task Main()
 		{
 			/* Gets bot info * /
 			var botInfoResponse = await GetBotInfoAsync(); /**/

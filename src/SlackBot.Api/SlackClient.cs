@@ -88,7 +88,7 @@ namespace SlackBot.Api
 		/// Deletes a file.
 		/// </summary>
 		public Task<SlackBaseResponse> DeleteFileAsync(FileToDelete fileToDelete)
-			=> SendPostFormUrlEncodedAsync<FileToDelete, SlackBaseResponse>("files.delete", fileToDelete);
+			=> SendPostFormUrlEncodedAsync("files.delete", fileToDelete);
 		
 		/// <summary>
 		/// Gets information about a file.
@@ -128,7 +128,7 @@ namespace SlackBot.Api
 		/// Deletes a pending scheduled message from the queue.
 		/// </summary>
 		public Task<SlackBaseResponse> DeleteScheduledMessageAsync(ScheduledMessageToDelete scheduledMessageToDelete)
-			=> SendPostJsonStringAsync<ScheduledMessageToDelete, SlackBaseResponse>("chat.deleteScheduledMessage", scheduledMessageToDelete);
+			=> SendPostJsonStringAsync("chat.deleteScheduledMessage", scheduledMessageToDelete);
 
 		/// <summary>
 		/// Retrieve a permalink URL for a specific extant message.
@@ -174,7 +174,7 @@ namespace SlackBot.Api
 		/// Archives a conversation.
 		/// </summary>
         public Task<SlackBaseResponse> ArchiveConversationAsync(ConversationToArchive conversationToArchive) 
-            => SendPostFormUrlEncodedAsync<ConversationToArchive, SlackBaseResponse>("conversations.archive", conversationToArchive);
+            => SendPostFormUrlEncodedAsync("conversations.archive", conversationToArchive);
 		
 		/// <summary>
 		/// Fetches a conversation's history of messages and events.
@@ -186,7 +186,7 @@ namespace SlackBot.Api
 		/// Reverses conversation archival.
 		/// </summary>
         public Task<SlackBaseResponse> UnarchiveConversationAsync(ConversationToUnarchive conversationToUnarchive) 
-            => SendPostFormUrlEncodedAsync<ConversationToUnarchive, SlackBaseResponse>("conversations.unarchive", conversationToUnarchive);
+            => SendPostFormUrlEncodedAsync("conversations.unarchive", conversationToUnarchive);
 		
 		#endregion
 
@@ -196,7 +196,7 @@ namespace SlackBot.Api
 		/// Pins an item to a channel.
 		/// </summary>
 		public Task<SlackBaseResponse> PinMessageAsync(PinItem pinItem)
-			=> SendPostFormUrlEncodedAsync<PinItem, SlackBaseResponse>("pins.add", pinItem);
+			=> SendPostFormUrlEncodedAsync("pins.add", pinItem);
 
 		/// <summary>
 		/// Lists items pinned to a channel.
@@ -208,7 +208,7 @@ namespace SlackBot.Api
 		/// Un-pins an item from a channel.
 		/// </summary>
 		public Task<SlackBaseResponse> RemovePinAsync(PinItemToRemove pinItemToRemove)
-			=> SendPostFormUrlEncodedAsync<PinItemToRemove, SlackBaseResponse>("pins.remove", pinItemToRemove);
+			=> SendPostFormUrlEncodedAsync("pins.remove", pinItemToRemove);
 
 		#endregion
 
@@ -218,7 +218,7 @@ namespace SlackBot.Api
 		/// Adds a reaction to an item.
 		/// </summary>
 		public Task<SlackBaseResponse> AddReactionAsync(Reaction reaction)
-			=> SendPostFormUrlEncodedAsync<Reaction, SlackBaseResponse>("reactions.add", reaction);
+			=> SendPostFormUrlEncodedAsync("reactions.add", reaction);
 
 		/// <summary>
 		/// Gets reactions for an item.
@@ -236,7 +236,7 @@ namespace SlackBot.Api
 		/// Removes a reaction from an item.
 		/// </summary>
 		public Task<SlackBaseResponse> RemoveReactionAsync(ReactionToRemove reactionToRemove)
-			=> SendPostFormUrlEncodedAsync<ReactionToRemove, SlackBaseResponse>("reactions.remove", reactionToRemove);
+			=> SendPostFormUrlEncodedAsync("reactions.remove", reactionToRemove);
 
 		#endregion
 
@@ -286,7 +286,7 @@ namespace SlackBot.Api
 		/// Manually sets user presence.
 		/// </summary>
 		public Task<SlackBaseResponse> SetUserPresenceAsync(SetUserPresenceRequest setUserPresenceRequest)
-			=> SendPostFormUrlEncodedAsync<SetUserPresenceRequest, SlackBaseResponse>("users.setPresence", setUserPresenceRequest);
+			=> SendPostFormUrlEncodedAsync("users.setPresence", setUserPresenceRequest);
 		
 		#endregion
 	}

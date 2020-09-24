@@ -26,10 +26,18 @@ namespace SlackBot.Api
             GC.SuppressFinalize(this);
         }
 
+        protected Task<SlackBaseResponse> SendPostJsonStringAsync<TRequest>(string path, TRequest request)
+            where TRequest : class
+            => SendPostJsonStringAsync<TRequest, SlackBaseResponse>(path, request);
+
         protected Task<TResponse> SendPostJsonStringAsync<TRequest, TResponse>(string path, TRequest request)
             where TRequest : class 
             where TResponse : SlackBaseResponse 
             => SendPostAsync<TRequest, TResponse>(path, request, HttpContentHelper.GetJsonStringContent);
+        
+        protected Task<SlackBaseResponse> SendPostFormUrlEncodedAsync<TRequest>(string path, TRequest request)
+            where TRequest : class
+            => SendPostFormUrlEncodedAsync<TRequest, SlackBaseResponse>(path, request); 
         
         protected Task<TResponse> SendPostFormUrlEncodedAsync<TRequest, TResponse>(string path, TRequest request)
             where TRequest : class 
