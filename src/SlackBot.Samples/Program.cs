@@ -32,6 +32,7 @@ using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Info.Request;
 using SlackBot.Api.Models.File.Info.Response;
@@ -92,6 +93,9 @@ namespace SlackBot.Samples
 		{
 			/* Gets bot info * /
 			var botInfoResponse = await GetBotInfoAsync(); /**/
+			
+			/* Gets custom emoji list for team * /
+			var emojiListResponse = await GetEmojiListAsync(); /**/
 
 			#region File methods
 
@@ -213,6 +217,13 @@ namespace SlackBot.Samples
 			return await _slackClient.GetBotInfoAsync(botInfoRequest);
 		}
 		
+		#endregion
+
+		#region Emoji
+
+		private static async Task<EmojiListResponse> GetEmojiListAsync()
+			=> await _slackClient.EmojiListAsync();
+
 		#endregion
 
 		#region File

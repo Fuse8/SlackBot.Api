@@ -20,6 +20,7 @@ using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
 using SlackBot.Api.Models.File.Info.Request;
 using SlackBot.Api.Models.File.Info.Response;
@@ -69,6 +70,16 @@ namespace SlackBot.Api
 		
 		#endregion
 
+		#region Emoji
+		
+		/// <summary>
+		/// Lists custom emoji for a team.
+		/// </summary>
+		public Task<EmojiListResponse> EmojiListAsync()
+			=> SendGetAsync<EmojiListResponse>("emoji.list");
+
+		#endregion
+		
 		#region File
 		
 		/// <summary>

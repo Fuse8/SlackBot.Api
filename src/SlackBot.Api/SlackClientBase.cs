@@ -41,14 +41,20 @@ namespace SlackBot.Api
             where TResponse : SlackBaseResponse 
             => SendPostAsync<TRequest, TResponse>(path, request, HttpContentHelper.GetMultipartForm);
         
-        protected async Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
+        protected Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
             where TResponse : SlackBaseResponse
             where TRequest : class
         {
             var queryParamsDictionary = FormPropertyHelper.GetFormProperties(request).ToDictionary(p => p.PropertyName, p => p.PropertyValue);
             var url = CustomUrlHelper.CreateQueryString(path, queryParamsDictionary);
             
-            var response = await _httpClient.GetAsync(url); 
+            return SendGetAsync<TResponse>(url);
+        }
+        
+        protected async Task<TResponse> SendGetAsync<TResponse>(string path)
+            where TResponse : SlackBaseResponse
+        {
+            var response = await _httpClient.GetAsync(path); 
             var slackApiResponse = await ParseResponseAsync<TResponse>(response);
             
             return slackApiResponse;
