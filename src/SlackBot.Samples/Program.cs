@@ -50,6 +50,7 @@ using SlackBot.Api.Models.Conversation.Members.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Rename.Request;
+using SlackBot.Api.Models.Conversation.SetPurpose.Request;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
@@ -208,6 +209,9 @@ namespace SlackBot.Samples
             
             /* Renames conversation * /
 			var renameConversationResponse = await RenameConversationAsync();/**/
+            
+            /* Sets conversation purpose * /
+			var setConversationPurposeResponse = await SetConversationPurposeAsync();/**/
             
             /* Unarchives conversation * /
 			var unarchiveConversationResponse = await UnarchiveConversationAsync();/**/
@@ -590,6 +594,13 @@ namespace SlackBot.Samples
 			await _slackClient.RenameConversationAsync(new ConversationToRename(channelId, channelName));
 
 			return renameConversationResponse;
+		}
+
+		private static async Task<ConversationResponse> SetConversationPurposeAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.SetConversationPurposeAsync(new ConversationPurposeRequest(channelId, "new purpose"));
 		}
 
 		private static async Task<SlackBaseResponse> UnarchiveConversationAsync()

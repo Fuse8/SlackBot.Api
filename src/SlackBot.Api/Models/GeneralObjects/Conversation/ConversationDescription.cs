@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api.Models.GeneralObjects.Conversation
 {
-	public class Purpose
+	public class ConversationDescription
 	{
 		[JsonProperty("value")]
 		public string Value { get; set; }

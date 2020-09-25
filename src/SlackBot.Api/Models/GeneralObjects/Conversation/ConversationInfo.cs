@@ -93,10 +93,10 @@ namespace SlackBot.Api.Models.GeneralObjects.Conversation
 		public bool? IsOpened { get; set; }
 
 		[JsonProperty("topic")]
-		public Purpose Topic { get; set; }
+		public ConversationDescription Topic { get; set; }
 
 		[JsonProperty("purpose")]
-		public Purpose Purpose { get; set; }
+		public ConversationDescription Purpose { get; set; }
 
 		[JsonProperty("previous_names")]
 		public string[] PreviousNames { get; set; }

@@ -38,6 +38,7 @@ using SlackBot.Api.Models.Conversation.Members.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Rename.Request;
+using SlackBot.Api.Models.Conversation.SetPurpose.Request;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
@@ -264,6 +265,12 @@ namespace SlackBot.Api
 		/// </summary>
         public Task<ConversationResponse> RenameConversationAsync(ConversationToRename conversationToRename) 
             => SendPostFormUrlEncodedAsync<ConversationToRename, ConversationResponse>("conversations.rename", conversationToRename);
+		
+		/// <summary>
+		/// Sets the purpose for a conversation.
+		/// </summary>
+        public Task<ConversationResponse> SetConversationPurposeAsync(ConversationPurposeRequest conversationPurposeRequest) 
+            => SendPostFormUrlEncodedAsync<ConversationPurposeRequest, ConversationResponse>("conversations.setPurpose", conversationPurposeRequest);
 		
 		/// <summary>
 		/// Reverses conversation archival.
