@@ -37,6 +37,7 @@ using SlackBot.Api.Models.Conversation.Members.Request;
 using SlackBot.Api.Models.Conversation.Members.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
+using SlackBot.Api.Models.Conversation.Rename.Request;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
@@ -255,8 +256,14 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Opens or resumes a direct message or multi-person direct message.
 		/// </summary>
-        public Task<OpenedConversationResponse> OpenConversationsAsync(ConversationToOpen conversationToOpen) 
+        public Task<OpenedConversationResponse> OpenConversationAsync(ConversationToOpen conversationToOpen) 
             => SendPostFormUrlEncodedAsync<ConversationToOpen, OpenedConversationResponse>("conversations.open", conversationToOpen);
+		
+		/// <summary>
+		/// Renames a conversation.
+		/// </summary>
+        public Task<ConversationResponse> RenameConversationAsync(ConversationToRename conversationToRename) 
+            => SendPostFormUrlEncodedAsync<ConversationToRename, ConversationResponse>("conversations.rename", conversationToRename);
 		
 		/// <summary>
 		/// Reverses conversation archival.

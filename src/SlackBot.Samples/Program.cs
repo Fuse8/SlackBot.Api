@@ -49,6 +49,7 @@ using SlackBot.Api.Models.Conversation.Members.Request;
 using SlackBot.Api.Models.Conversation.Members.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
+using SlackBot.Api.Models.Conversation.Rename.Request;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
@@ -204,6 +205,9 @@ namespace SlackBot.Samples
             
             /* Opens conversation * /
 			var openConversationResponse = await OpenConversationAsync();/**/
+            
+            /* Renames conversation * /
+			var renameConversationResponse = await RenameConversationAsync();/**/
             
             /* Unarchives conversation * /
 			var unarchiveConversationResponse = await UnarchiveConversationAsync();/**/
@@ -536,14 +540,14 @@ namespace SlackBot.Samples
 
 		private static async Task<ConversationResponse> JoinToConversationAsync()
         {
-			var channelId = await TryCreateChannelAsync();
+			var (channelId, _) = await TryCreateChannelAsync();
 
 			return await _slackClient.JoinToConversationAsync(new ConversationToJoin(channelId));
         }
 
 		private static async Task<SlackBaseResponse> KickFromConversationAsync()
         {
-			var channelId = await TryCreateChannelAsync();
+			var (channelId, _) = await TryCreateChannelAsync();
 			
 			var userId = _slackBotSettings.UserId;
 			await TryInviteToConversationAsync(channelId, userId);
@@ -570,11 +574,22 @@ namespace SlackBot.Samples
 
 		private static async Task<OpenedConversationResponse> OpenConversationAsync()
         {
-			var openedConversationResponse = await _slackClient.OpenConversationsAsync(new ConversationToOpen(_slackBotSettings.UserId, true));
+			var openedConversationResponse = await _slackClient.OpenConversationAsync(new ConversationToOpen(_slackBotSettings.UserId, true));
 			
 			await SendSimpleMessageAsync(nameof(OpenConversationAsync), openedConversationResponse.Channel.Id);
 
 			return openedConversationResponse;
+		}
+
+		private static async Task<ConversationResponse> RenameConversationAsync()
+		{
+			var (channelId, channelName) = await TryCreateChannelAsync();
+
+			var renameConversationResponse = await _slackClient.RenameConversationAsync(new ConversationToRename(channelId, $"{channelName}-new-name"));
+			
+			await _slackClient.RenameConversationAsync(new ConversationToRename(channelId, channelName));
+
+			return renameConversationResponse;
 		}
 
 		private static async Task<SlackBaseResponse> UnarchiveConversationAsync()
@@ -586,21 +601,22 @@ namespace SlackBot.Samples
 			return await _slackClient.UnarchiveConversationAsync(new ConversationToUnarchive(channelId));
         }
 
-		private static async Task<string> TryCreateChannelAsync()
+		private static async Task<(string ChannelId, string ChannelName)> TryCreateChannelAsync()
 		{
 			string channelId;
+			const string ChannelName = NewChannelName;
 
 			try
 			{
-				var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(NewChannelName));
+				var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(ChannelName));
 				channelId = createChannelResponse.Channel.Id;
 			}
 			catch (SlackApiResponseException e) when (e.Error == "name_taken")
 			{
-				channelId = await GetChannelIdAsync(NewChannelName);
+				channelId = await GetChannelIdAsync(ChannelName);
 			}
 
-			return channelId;
+			return (channelId, ChannelName);
 		}
 
 		private static async Task<(ConversationResponse CreateChannelResponse, ConversationResponse InviteToConversationResponse)> CreateChannelAndInviteAsync()
