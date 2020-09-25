@@ -29,6 +29,7 @@ using SlackBot.Api.Models.Conversation.Info.Request;
 using SlackBot.Api.Models.Conversation.Invite.Request;
 using SlackBot.Api.Models.Conversation.Join.Request;
 using SlackBot.Api.Models.Conversation.Join.Response;
+using SlackBot.Api.Models.Conversation.Kick.Request;
 using SlackBot.Api.Models.Conversation.Leave.Request;
 using SlackBot.Api.Models.Conversation.Leave.Response;
 using SlackBot.Api.Models.Conversation.List.Request;
@@ -224,6 +225,12 @@ namespace SlackBot.Api
 		/// </summary>
         public Task<JoinToConversationResponse> JoinToConversationAsync(ConversationToJoin conversationToJoin) 
             => SendPostFormUrlEncodedAsync<ConversationToJoin, JoinToConversationResponse>("conversations.join", conversationToJoin);
+		
+		/// <summary>
+		/// Removes a user from a conversation.
+		/// </summary>
+        public Task<SlackBaseResponse> KickFromConversationAsync(KickFromConversationRequest kickFromConversationRequest) 
+            => SendPostFormUrlEncodedAsync<KickFromConversationRequest, SlackBaseResponse>("conversations.kick", kickFromConversationRequest);
 		
 		/// <summary>
 		/// Leaves a conversation.

@@ -16,6 +16,7 @@ namespace SlackBot.Api.Exceptions
                 Error = parsedError.Error;
                 Warning = parsedError.Warning;
 				Metadata = parsedError.Metadata;
+				Errors = parsedError.Errors;
 			}
 		}
 
@@ -24,5 +25,7 @@ namespace SlackBot.Api.Exceptions
         public string Warning { get; }
 		
 		public object Metadata { get; }
+		
+		public object Errors { get; }
 	}
 }

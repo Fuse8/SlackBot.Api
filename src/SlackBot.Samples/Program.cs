@@ -41,6 +41,7 @@ using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.Conversation.Info.Request;
 using SlackBot.Api.Models.Conversation.Invite.Request;
 using SlackBot.Api.Models.Conversation.Join.Request;
+using SlackBot.Api.Models.Conversation.Kick.Request;
 using SlackBot.Api.Models.Conversation.Leave.Request;
 using SlackBot.Api.Models.Conversation.Leave.Response;
 using SlackBot.Api.Models.Conversation.List.Request;
@@ -186,6 +187,9 @@ namespace SlackBot.Samples
             
             /* Joins to conversation * /
 			var joinToConversationResponse = await JoinToConversationAsync();/**/
+            
+            /* Kicks from conversation * /
+			var kickFromConversationResponse = await KickFromConversationAsync();/**/
             
             /* Leaves conversation * /
 			var leaveConversationResponse = await LeaveConversationAsync();/**/
@@ -532,6 +536,16 @@ namespace SlackBot.Samples
 			return await _slackClient.JoinToConversationAsync(new ConversationToJoin(channelId));
         }
 
+		private static async Task<SlackBaseResponse> KickFromConversationAsync()
+        {
+			var channelId = await TryCreateChannelAsync();
+			
+			var userId = _slackBotSettings.UserId;
+			await TryInviteToConversationAsync(channelId, userId);
+
+			return await _slackClient.KickFromConversationAsync(new KickFromConversationRequest(channelId, userId)); // TODO returns error "restricted_action" 
+        }
+
 		private static async Task<LeaveConversationResponse> LeaveConversationAsync()
         {
 			var channelId = await GetChannelIdAsync();
@@ -563,13 +577,13 @@ namespace SlackBot.Samples
 		private static async Task<string> TryCreateChannelAsync()
 		{
 			string channelId;
-			
+
 			try
 			{
 				var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(NewChannelName));
 				channelId = createChannelResponse.Channel.Id;
 			}
-			catch (SlackApiResponseException e) when(e.Error == "name_taken")
+			catch (SlackApiResponseException e) when (e.Error == "name_taken")
 			{
 				channelId = await GetChannelIdAsync(NewChannelName);
 			}
@@ -581,11 +595,24 @@ namespace SlackBot.Samples
 		{
 			var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(NewChannelName));
 
-			var inviteToConversationResponse = await _slackClient.InviteToConversationAsync(
-				new ConversationToInvite(createChannelResponse.Channel.Id, _slackBotSettings.UserId));
+			var inviteToConversationResponse = await InviteToConversationInternalAsync(createChannelResponse.Channel.Id, _slackBotSettings.UserId);
 
 			return (createChannelResponse, inviteToConversationResponse);
 		}
+
+		private static async Task TryInviteToConversationAsync(string channelId, string userIds)
+		{
+			try
+			{
+				await InviteToConversationInternalAsync(channelId, userIds);
+			}
+			catch (SlackApiResponseException e) when (e.Error == "already_in_channel")
+			{
+			}
+		}
+
+		private static Task<ConversationResponse> InviteToConversationInternalAsync(string channelId, string userIds)
+			=> _slackClient.InviteToConversationAsync(new ConversationToInvite(channelId, userIds));
 
 		private static async Task<string> GetChannelIdAsync(string channelName = null)
         {
