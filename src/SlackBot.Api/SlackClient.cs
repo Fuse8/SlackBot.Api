@@ -18,11 +18,14 @@ using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
+using SlackBot.Api.Models.Conversation;
 using SlackBot.Api.Models.Conversation.Archive.Request;
 using SlackBot.Api.Models.Conversation.Close.Request;
 using SlackBot.Api.Models.Conversation.Close.Response;
+using SlackBot.Api.Models.Conversation.Create.Request;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Invite.Request;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
@@ -187,10 +190,22 @@ namespace SlackBot.Api
             => SendPostFormUrlEncodedAsync<ConversationToClose, ClosedConversationResponse>("conversations.close", conversationToClose);
 		
 		/// <summary>
+		/// Initiates a public or private channel-based conversation.
+		/// </summary>
+        public Task<ConversationResponse> CreateChannelAsync(ChannelToCreate channelToCreate) 
+            => SendPostFormUrlEncodedAsync<ChannelToCreate, ConversationResponse>("conversations.create", channelToCreate);
+		
+		/// <summary>
 		/// Fetches a conversation's history of messages and events.
 		/// </summary>
         public Task<ConversationsHistoryResponse> ConversationsHistoryAsync(ConversationsHistory conversationsHistory) 
             => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
+		
+		/// <summary>
+		/// Invites users to a channel.
+		/// </summary>
+        public Task<ConversationResponse> InviteToConversationAsync(ConversationToInvite conversationToInvite) 
+            => SendPostFormUrlEncodedAsync<ConversationToInvite, ConversationResponse>("conversations.invite", conversationToInvite);
 		
 		/// <summary>
 		/// Opens or resumes a direct message or multi-person direct message.

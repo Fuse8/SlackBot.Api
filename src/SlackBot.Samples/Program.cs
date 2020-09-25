@@ -30,11 +30,14 @@ using SlackBot.Api.Models.Chat.ScheduleMessage.Request;
 using SlackBot.Api.Models.Chat.ScheduleMessage.Response;
 using SlackBot.Api.Models.Chat.Update.Request;
 using SlackBot.Api.Models.Chat.Update.Response;
+using SlackBot.Api.Models.Conversation;
 using SlackBot.Api.Models.Conversation.Archive.Request;
 using SlackBot.Api.Models.Conversation.Close.Request;
 using SlackBot.Api.Models.Conversation.Close.Response;
+using SlackBot.Api.Models.Conversation.Create.Request;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Invite.Request;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
@@ -161,8 +164,14 @@ namespace SlackBot.Samples
             /* Archives conversation * /
 			var closeConversationResponse = await CloseConversationAsync();/**/
             
+            /* Creates channel * /
+			var createChannelResponse = await CreateChannelAsync();/**/
+            
             /* Gets conversation's history of messages and events * /
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
+            
+            /* Creates channel and invites user * /
+			var inviteToConversationResponse = await InviteToConversationAsync();/**/
             
             /* Opens conversation * /
 			var openConversationResponse = await OpenConversationAsync();/**/
@@ -468,11 +477,25 @@ namespace SlackBot.Samples
 			return await _slackClient.CloseConversationAsync(new ConversationToClose(openConversationResponse.Channel.Id));
 		}
 
+		private static async Task<ConversationResponse> CreateChannelAsync()
+		{
+			var (createChannelResponse, _) = await CreateChannelAndInviteAsync();
+
+			return createChannelResponse;
+		}
+
 		private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
         {
 	        var channelId = await GetChannelIdAsync();
 
 	        return await _slackClient.ConversationsHistoryAsync(new ConversationsHistory(channelId, 1000));
+        }
+
+		private static async Task<ConversationResponse> InviteToConversationAsync()
+        {
+			var (_, inviteToConversationResponse) = await CreateChannelAndInviteAsync();
+
+			return inviteToConversationResponse;
         }
 
 		private static async Task<OpenedConversationResponse> OpenConversationAsync()
@@ -492,6 +515,16 @@ namespace SlackBot.Samples
 
 			return await _slackClient.UnarchiveConversationAsync(new ConversationToUnarchive(channelId));
         }
+
+		private static async Task<(ConversationResponse CreateChannelResponse, ConversationResponse InviteToConversationResponse)> CreateChannelAndInviteAsync()
+		{
+			var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate("some-new-channel"));
+
+			var inviteToConversationResponse = await _slackClient.InviteToConversationAsync(
+				new ConversationToInvite(createChannelResponse.Channel.Id, _slackBotSettings.UserId));
+
+			return (createChannelResponse, inviteToConversationResponse);
+		}
 		
         private static async Task<string> GetChannelIdAsync()
         {
