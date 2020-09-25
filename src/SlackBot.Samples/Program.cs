@@ -50,7 +50,10 @@ using SlackBot.Api.Models.Conversation.Members.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Rename.Request;
+using SlackBot.Api.Models.Conversation.Replies.Request;
+using SlackBot.Api.Models.Conversation.Replies.Response;
 using SlackBot.Api.Models.Conversation.SetPurpose.Request;
+using SlackBot.Api.Models.Conversation.SetTopic.Request;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
 using SlackBot.Api.Models.Emoji.List.Response;
 using SlackBot.Api.Models.File.Delete.Request;
@@ -210,8 +213,14 @@ namespace SlackBot.Samples
             /* Renames conversation * /
 			var renameConversationResponse = await RenameConversationAsync();/**/
             
+            /* Gets message replies from conversation * /
+			var getConversationRepliesResponse = await GetConversationRepliesAsync();/**/
+            
             /* Sets conversation purpose * /
 			var setConversationPurposeResponse = await SetConversationPurposeAsync();/**/
+            
+            /* Sets conversation purpose * /
+			var setConversationTopicResponse = await SetConversationTopicAsync();/**/
             
             /* Unarchives conversation * /
 			var unarchiveConversationResponse = await UnarchiveConversationAsync();/**/
@@ -485,12 +494,13 @@ namespace SlackBot.Samples
 			return await _slackClient.UpdateMessageAsync(new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText"));
 		}
         
-		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod, string channelId = null)
+		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod, string channelId = null, string threadTimestamp = null)
 		{
 			var message = new Message
 			{
 				ChannelIdOrName = channelId ?? _slackBotSettings.ChannelName,
 				Text = $"{nameOfMethod} method",
+				ThreadTimestamp = threadTimestamp
 			};
 
 			return _slackClient.SendMessageAsync(message);
@@ -596,11 +606,31 @@ namespace SlackBot.Samples
 			return renameConversationResponse;
 		}
 
+		private static async Task<ConversationRepliesResponse> GetConversationRepliesAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			var parentMessage = await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId);
+
+			var parentMessageTimestamp = parentMessage.Timestamp;
+			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
+			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
+
+			return await _slackClient.ConversationRepliesAsync(new ConversationRepliesRequest(channelId, parentMessageTimestamp));;
+		}
+
 		private static async Task<ConversationResponse> SetConversationPurposeAsync()
 		{
 			var channelId = await GetChannelIdAsync();
 
 			return await _slackClient.SetConversationPurposeAsync(new ConversationPurposeRequest(channelId, "new purpose"));
+		}
+
+		private static async Task<ConversationResponse> SetConversationTopicAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.SetConversationTopicAsync(new ConversationTopicRequest(channelId, "new topic"));
 		}
 
 		private static async Task<SlackBaseResponse> UnarchiveConversationAsync()

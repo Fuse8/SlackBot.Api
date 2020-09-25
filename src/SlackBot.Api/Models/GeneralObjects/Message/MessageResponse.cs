@@ -64,6 +64,9 @@ namespace SlackBot.Api.Models.GeneralObjects.Message
         [JsonProperty("thread_ts")]
         public string ThreadTimestamp { get; set; }
         
+        [JsonProperty("parent_user_id")]
+        public string ParentUserId { get; set; }
+        
         [JsonProperty("reply_count")]
         public long? ReplyCount { get; set; }
         
