@@ -27,8 +27,11 @@ using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.Conversation.Info.Request;
 using SlackBot.Api.Models.Conversation.Invite.Request;
+using SlackBot.Api.Models.Conversation.Join.Request;
+using SlackBot.Api.Models.Conversation.Join.Response;
 using SlackBot.Api.Models.Conversation.Leave.Request;
 using SlackBot.Api.Models.Conversation.Leave.Response;
+using SlackBot.Api.Models.Conversation.List.Request;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
@@ -40,6 +43,7 @@ using SlackBot.Api.Models.File.List.Request;
 using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
+using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
@@ -54,7 +58,6 @@ using SlackBot.Api.Models.TeamProfile.Get.Request;
 using SlackBot.Api.Models.TeamProfile.Get.Response;
 using SlackBot.Api.Models.User;
 using SlackBot.Api.Models.User.Conversation.Request;
-using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Api.Models.User.GetPresence.Request;
 using SlackBot.Api.Models.User.GetPresence.Response;
 using SlackBot.Api.Models.User.Info.Request;
@@ -217,10 +220,22 @@ namespace SlackBot.Api
             => SendPostFormUrlEncodedAsync<ConversationToInvite, ConversationResponse>("conversations.invite", conversationToInvite);
 		
 		/// <summary>
+		/// Joins an existing conversation.
+		/// </summary>
+        public Task<JoinToConversationResponse> JoinToConversationAsync(ConversationToJoin conversationToJoin) 
+            => SendPostFormUrlEncodedAsync<ConversationToJoin, JoinToConversationResponse>("conversations.join", conversationToJoin);
+		
+		/// <summary>
 		/// Leaves a conversation.
 		/// </summary>
         public Task<LeaveConversationResponse> LeaveConversationAsync(ConversationToLeave conversationToLeave) 
             => SendPostFormUrlEncodedAsync<ConversationToLeave, LeaveConversationResponse>("conversations.leave", conversationToLeave);
+		
+		/// <summary>
+		/// Lists all channels in a Slack team.
+		/// </summary>
+        public Task<ConversationListResponse> ConversationListAsync(ConversationListRequest conversationListRequest) 
+            => SendGetAsync<ConversationListRequest, ConversationListResponse>("conversations.list", conversationListRequest);
 		
 		/// <summary>
 		/// Opens or resumes a direct message or multi-person direct message.
@@ -301,8 +316,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Gets conversations list the calling user may access.
 		/// </summary>
-		public Task<UserConversationsResponse> UserConversationsAsync(UserConversations userConversations)
-			=> SendGetAsync<UserConversations, UserConversationsResponse>("users.conversations", userConversations);
+		public Task<ConversationListResponse> UserConversationsAsync(UserConversations userConversations)
+			=> SendGetAsync<UserConversations, ConversationListResponse>("users.conversations", userConversations);
 
 		/// <summary>
 		/// Gets user presence information.

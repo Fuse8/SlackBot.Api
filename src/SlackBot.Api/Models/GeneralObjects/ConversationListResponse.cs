@@ -2,9 +2,9 @@
 using SlackBot.Api.Models.GeneralObjects.Conversation;
 using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
-namespace SlackBot.Api.Models.User.Conversation.Response
+namespace SlackBot.Api.Models.GeneralObjects
 {
-	public class UserConversationsResponse : CursorPaginationResponseBase
+	public class ConversationListResponse : CursorPaginationResponseBase
 	{
 		[JsonProperty("channels")]
 		public ConversationInfo[] Channels { get; set; }

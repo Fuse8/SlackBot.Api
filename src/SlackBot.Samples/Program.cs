@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
+using SlackBot.Api.Exceptions;
 using SlackBot.Api.Extensions;
 using SlackBot.Api.Models;
 using SlackBot.Api.Models.Bot.Info.Request;
@@ -39,8 +40,10 @@ using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.Conversation.Info.Request;
 using SlackBot.Api.Models.Conversation.Invite.Request;
+using SlackBot.Api.Models.Conversation.Join.Request;
 using SlackBot.Api.Models.Conversation.Leave.Request;
 using SlackBot.Api.Models.Conversation.Leave.Response;
+using SlackBot.Api.Models.Conversation.List.Request;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
@@ -52,6 +55,7 @@ using SlackBot.Api.Models.File.List.Request;
 using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.File.Upload.Response;
+using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
@@ -66,7 +70,6 @@ using SlackBot.Api.Models.TeamProfile.Get.Request;
 using SlackBot.Api.Models.TeamProfile.Get.Response;
 using SlackBot.Api.Models.User;
 using SlackBot.Api.Models.User.Conversation.Request;
-using SlackBot.Api.Models.User.Conversation.Response;
 using SlackBot.Api.Models.User.GetPresence.Request;
 using SlackBot.Api.Models.User.GetPresence.Response;
 using SlackBot.Api.Models.User.Info.Request;
@@ -92,6 +95,8 @@ namespace SlackBot.Samples
 	{
 		private static readonly SlackBotSettings _slackBotSettings;
 		private static readonly SlackClient _slackClient;
+
+		private const string NewChannelName = "some-new-channel";
 		
 		static Program()
 		{
@@ -179,8 +184,14 @@ namespace SlackBot.Samples
             /* Creates channel and invites user * /
 			var inviteToConversationResponse = await InviteToConversationAsync();/**/
             
+            /* Joins to conversation * /
+			var joinToConversationResponse = await JoinToConversationAsync();/**/
+            
             /* Leaves conversation * /
 			var leaveConversationResponse = await LeaveConversationAsync();/**/
+            
+            /* Gets conversation list * /
+			var getConversationListResponse = await GetConversationListAsync();/**/
             
             /* Opens conversation * /
 			var openConversationResponse = await OpenConversationAsync();/**/
@@ -514,12 +525,22 @@ namespace SlackBot.Samples
 			return inviteToConversationResponse;
         }
 
+		private static async Task<ConversationResponse> JoinToConversationAsync()
+        {
+			var channelId = await TryCreateChannelAsync();
+
+			return await _slackClient.JoinToConversationAsync(new ConversationToJoin(channelId));
+        }
+
 		private static async Task<LeaveConversationResponse> LeaveConversationAsync()
         {
 			var channelId = await GetChannelIdAsync();
 
 			return await _slackClient.LeaveConversationAsync(new ConversationToLeave(channelId));
         }
+
+		private static async Task<ConversationListResponse> GetConversationListAsync()
+			=> await _slackClient.ConversationListAsync(new ConversationListRequest("public_channel,private_channel,mpim,im", limit: 1000));
 
 		private static async Task<OpenedConversationResponse> OpenConversationAsync()
         {
@@ -539,20 +560,39 @@ namespace SlackBot.Samples
 			return await _slackClient.UnarchiveConversationAsync(new ConversationToUnarchive(channelId));
         }
 
+		private static async Task<string> TryCreateChannelAsync()
+		{
+			string channelId;
+			
+			try
+			{
+				var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(NewChannelName));
+				channelId = createChannelResponse.Channel.Id;
+			}
+			catch (SlackApiResponseException e) when(e.Error == "name_taken")
+			{
+				channelId = await GetChannelIdAsync(NewChannelName);
+			}
+
+			return channelId;
+		}
+
 		private static async Task<(ConversationResponse CreateChannelResponse, ConversationResponse InviteToConversationResponse)> CreateChannelAndInviteAsync()
 		{
-			var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate("some-new-channel"));
+			var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(NewChannelName));
 
 			var inviteToConversationResponse = await _slackClient.InviteToConversationAsync(
 				new ConversationToInvite(createChannelResponse.Channel.Id, _slackBotSettings.UserId));
 
 			return (createChannelResponse, inviteToConversationResponse);
 		}
-		
-        private static async Task<string> GetChannelIdAsync()
+
+		private static async Task<string> GetChannelIdAsync(string channelName = null)
         {
-			var conversationsHistoryResponse = await GetUserConversationsAsync();
-	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == _slackBotSettings.ChannelName)?.Id;
+			var conversationsHistoryResponse = await GetConversationListAsync();
+			
+			channelName ??= _slackBotSettings.ChannelName;
+	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == channelName)?.Id;
 
 	        return channelId;
 		}
@@ -652,7 +692,7 @@ namespace SlackBot.Samples
 
 		#region User
 
-		private static Task<UserConversationsResponse> GetUserConversationsAsync()
+		private static Task<ConversationListResponse> GetUserConversationsAsync()
 			=> _slackClient.UserConversationsAsync(new UserConversations("public_channel,private_channel,mpim,im"));
 
 		private static Task<UserPresenceResponse> GetUserPresenceAsync()
