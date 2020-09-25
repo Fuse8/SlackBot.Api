@@ -39,6 +39,8 @@ using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
 using SlackBot.Api.Models.Conversation.Info.Request;
 using SlackBot.Api.Models.Conversation.Invite.Request;
+using SlackBot.Api.Models.Conversation.Leave.Request;
+using SlackBot.Api.Models.Conversation.Leave.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
@@ -171,11 +173,14 @@ namespace SlackBot.Samples
             /* Gets conversation's history of messages and events * /
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
             
-            /* Gets information about conversation */
+            /* Gets information about conversation * /
 			var conversationInfoResponse = await GetConversationInfoAsync();/**/
             
             /* Creates channel and invites user * /
 			var inviteToConversationResponse = await InviteToConversationAsync();/**/
+            
+            /* Leaves conversation * /
+			var leaveConversationResponse = await LeaveConversationAsync();/**/
             
             /* Opens conversation * /
 			var openConversationResponse = await OpenConversationAsync();/**/
@@ -507,6 +512,13 @@ namespace SlackBot.Samples
 			var (_, inviteToConversationResponse) = await CreateChannelAndInviteAsync();
 
 			return inviteToConversationResponse;
+        }
+
+		private static async Task<LeaveConversationResponse> LeaveConversationAsync()
+        {
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.LeaveConversationAsync(new ConversationToLeave(channelId));
         }
 
 		private static async Task<OpenedConversationResponse> OpenConversationAsync()
