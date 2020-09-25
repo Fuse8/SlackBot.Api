@@ -20,6 +20,6 @@ namespace SlackBot.Api.Models.User.List.Request
 		/// </summary>
 		/// <example>true</example>
 		[FormPropertyName("include_locale")]
-		public bool? IncludeLocal { get; set; }
+		public bool? IncludeLocale { get; set; }
 	}
 }

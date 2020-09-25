@@ -102,7 +102,7 @@ namespace SlackBot.Api.Models.GeneralObjects.Conversation
 		public string[] PreviousNames { get; set; }
 
 		[JsonProperty("num_members")]
-		public long? NumMembers { get; set; }
+		public long? MemberCount { get; set; }
 
 		[JsonProperty("locale")]
 		public string Locale { get; set; }

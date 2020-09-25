@@ -37,6 +37,7 @@ using SlackBot.Api.Models.Conversation.Close.Response;
 using SlackBot.Api.Models.Conversation.Create.Request;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Info.Request;
 using SlackBot.Api.Models.Conversation.Invite.Request;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
@@ -169,6 +170,9 @@ namespace SlackBot.Samples
             
             /* Gets conversation's history of messages and events * /
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
+            
+            /* Gets information about conversation */
+			var conversationInfoResponse = await GetConversationInfoAsync();/**/
             
             /* Creates channel and invites user * /
 			var inviteToConversationResponse = await InviteToConversationAsync();/**/
@@ -489,6 +493,13 @@ namespace SlackBot.Samples
 	        var channelId = await GetChannelIdAsync();
 
 	        return await _slackClient.ConversationsHistoryAsync(new ConversationsHistory(channelId, 1000));
+        }
+
+		private static async Task<ConversationResponse> GetConversationInfoAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+	        return await _slackClient.ConversationInfoAsync(new ConversationToGetInfo(channelId, true, true));
         }
 
 		private static async Task<ConversationResponse> InviteToConversationAsync()

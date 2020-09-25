@@ -25,6 +25,7 @@ using SlackBot.Api.Models.Conversation.Close.Response;
 using SlackBot.Api.Models.Conversation.Create.Request;
 using SlackBot.Api.Models.Conversation.History.Request;
 using SlackBot.Api.Models.Conversation.History.Response;
+using SlackBot.Api.Models.Conversation.Info.Request;
 using SlackBot.Api.Models.Conversation.Invite.Request;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
@@ -200,6 +201,12 @@ namespace SlackBot.Api
 		/// </summary>
         public Task<ConversationsHistoryResponse> ConversationsHistoryAsync(ConversationsHistory conversationsHistory) 
             => SendGetAsync<ConversationsHistory, ConversationsHistoryResponse>("conversations.history", conversationsHistory);
+		
+		/// <summary>
+		/// Retrieve information about a conversation.
+		/// </summary>
+        public Task<ConversationResponse> ConversationInfoAsync(ConversationToGetInfo conversationToGetInfo) 
+            => SendGetAsync<ConversationToGetInfo, ConversationResponse>("conversations.info", conversationToGetInfo);
 		
 		/// <summary>
 		/// Invites users to a channel.
