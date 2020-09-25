@@ -33,6 +33,8 @@ using SlackBot.Api.Models.Conversation.Kick.Request;
 using SlackBot.Api.Models.Conversation.Leave.Request;
 using SlackBot.Api.Models.Conversation.Leave.Response;
 using SlackBot.Api.Models.Conversation.List.Request;
+using SlackBot.Api.Models.Conversation.Members.Request;
+using SlackBot.Api.Models.Conversation.Members.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
@@ -243,6 +245,12 @@ namespace SlackBot.Api
 		/// </summary>
         public Task<ConversationListResponse> ConversationListAsync(ConversationListRequest conversationListRequest) 
             => SendGetAsync<ConversationListRequest, ConversationListResponse>("conversations.list", conversationListRequest);
+		
+		/// <summary>
+		/// Retrieve members of a conversation.
+		/// </summary>
+        public Task<ConversationMembersResponse> ConversationMembersAsync(ConversationMembersRequest conversationMembersRequest) 
+            => SendGetAsync<ConversationMembersRequest, ConversationMembersResponse>("conversations.members", conversationMembersRequest);
 		
 		/// <summary>
 		/// Opens or resumes a direct message or multi-person direct message.

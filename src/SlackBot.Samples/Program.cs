@@ -45,6 +45,8 @@ using SlackBot.Api.Models.Conversation.Kick.Request;
 using SlackBot.Api.Models.Conversation.Leave.Request;
 using SlackBot.Api.Models.Conversation.Leave.Response;
 using SlackBot.Api.Models.Conversation.List.Request;
+using SlackBot.Api.Models.Conversation.Members.Request;
+using SlackBot.Api.Models.Conversation.Members.Response;
 using SlackBot.Api.Models.Conversation.Open.Request;
 using SlackBot.Api.Models.Conversation.Open.Response;
 using SlackBot.Api.Models.Conversation.Unarchive.Request;
@@ -196,6 +198,9 @@ namespace SlackBot.Samples
             
             /* Gets conversation list * /
 			var getConversationListResponse = await GetConversationListAsync();/**/
+            
+            /* Gets conversation's members * /
+			var getConversationMembersResponse = await GetConversationMembersAsync();/**/
             
             /* Opens conversation * /
 			var openConversationResponse = await OpenConversationAsync();/**/
@@ -555,6 +560,13 @@ namespace SlackBot.Samples
 
 		private static async Task<ConversationListResponse> GetConversationListAsync()
 			=> await _slackClient.ConversationListAsync(new ConversationListRequest("public_channel,private_channel,mpim,im", limit: 1000));
+
+		private static async Task<ConversationMembersResponse> GetConversationMembersAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+			
+			return await _slackClient.ConversationMembersAsync(new ConversationMembersRequest(channelId));
+		}
 
 		private static async Task<OpenedConversationResponse> OpenConversationAsync()
         {
