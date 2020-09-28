@@ -53,6 +53,8 @@ using SlackBot.Api.Models.FileRemote.Add.Request;
 using SlackBot.Api.Models.FileRemote.Info.Request;
 using SlackBot.Api.Models.FileRemote.List.Request;
 using SlackBot.Api.Models.FileRemote.List.Response;
+using SlackBot.Api.Models.FileRemote.Remove.Request;
+using SlackBot.Api.Models.FileRemote.Share.Request;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.Pin.Add.Request;
@@ -159,6 +161,18 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<RemoteFileListResponse> RemoteFileListAsync(RemoteFileListRequest remoteFileListRequest)
 			=> SendGetAsync<RemoteFileListRequest, RemoteFileListResponse>("files.remote.list", remoteFileListRequest);
+
+		/// <summary>
+		/// Remove a remote file.
+		/// </summary>
+		public Task<SlackBaseResponse> RemoveRemoteFileAsync(RemoteFileToRemove remoteFileToRemove)
+			=> SendPostFormUrlEncodedAsync("files.remote.remove", remoteFileToRemove);
+
+		/// <summary>
+		/// Share a remote file into a channel.
+		/// </summary>
+		public Task<SlackFileResponse> ShareRemoteFileAsync(RemoteFileToShare remoteFileToShare)
+			=> SendPostFormUrlEncodedAsync<RemoteFileToShare, SlackFileResponse>("files.remote.share", remoteFileToShare);
 
 		#endregion
 		

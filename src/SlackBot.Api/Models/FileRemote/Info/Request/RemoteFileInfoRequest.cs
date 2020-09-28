@@ -1,21 +1,14 @@
-﻿using SlackBot.Api.Attributes;
-
-namespace SlackBot.Api.Models.FileRemote.Info.Request
+﻿namespace SlackBot.Api.Models.FileRemote.Info.Request
 {
-	public class RemoteFileInfoRequest
+	public class RemoteFileInfoRequest : RemoteFileBaseRequest
 	{
-		/// <summary>
-		/// Creator defined GUID for the file.
-		/// </summary>
-		/// <example>123456</example>
-		[FormPropertyName("external_id")]
-		public string ExternalId { get; set; }
+		public RemoteFileInfoRequest()
+		{
+		}
 
-		/// <summary>
-		/// Specify a file by providing its ID.
-		/// </summary>
-		/// <example>F2147483862</example>
-		[FormPropertyName("file")]
-		public string FileId { get; set; }
+		public RemoteFileInfoRequest(string fileId = null, string externalId= null)
+			: base(fileId, externalId)
+		{
+		}
 	}
 }

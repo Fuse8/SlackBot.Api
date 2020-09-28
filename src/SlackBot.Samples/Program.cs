@@ -65,6 +65,8 @@ using SlackBot.Api.Models.FileRemote.Add.Request;
 using SlackBot.Api.Models.FileRemote.Info.Request;
 using SlackBot.Api.Models.FileRemote.List.Request;
 using SlackBot.Api.Models.FileRemote.List.Response;
+using SlackBot.Api.Models.FileRemote.Remove.Request;
+using SlackBot.Api.Models.FileRemote.Share.Request;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.Pin.Add.Request;
@@ -154,6 +156,12 @@ namespace SlackBot.Samples
  
 			/* Gets remote file list * /
 			var getRemoteFileListResponse = await GetRemoteFileListAsync(); /**/
+ 
+			/* Removes remote file * /
+			var removeRemoteFileResponse = await RemoveRemoteFileAsync(); /**/
+ 
+			/* Shares remote file * /
+			var shareRemoteFileResponse = await ShareRemoteFileAsync(); /**/
 
 			#endregion
 
@@ -401,12 +409,7 @@ namespace SlackBot.Samples
 		{
 			var addRemoteFileResponse = await AddRemoteFileAsync();
 
-			var remoteFileInfoRequest = new RemoteFileInfoRequest
-			{
-				FileId = addRemoteFileResponse.File.Id
-			};
-
-			return await _slackClient.RemoteFileInfoAsync(remoteFileInfoRequest);
+			return await _slackClient.RemoteFileInfoAsync(new RemoteFileInfoRequest(addRemoteFileResponse.File.Id));
 		}
 
 		private static async Task<RemoteFileListResponse> GetRemoteFileListAsync()
@@ -417,6 +420,22 @@ namespace SlackBot.Samples
 			await Task.Delay(30000);
 
 			return await _slackClient.RemoteFileListAsync(new RemoteFileListRequest());
+		}
+
+		private static async Task<SlackBaseResponse> RemoveRemoteFileAsync()
+		{
+			var addRemoteFileResponse = await AddRemoteFileAsync();
+
+			return await _slackClient.RemoveRemoteFileAsync(new RemoteFileToRemove(addRemoteFileResponse.File.Id));
+		}
+
+		private static async Task<SlackBaseResponse> ShareRemoteFileAsync()
+		{
+			var addRemoteFileResponse = await AddRemoteFileAsync();
+			
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.ShareRemoteFileAsync(new RemoteFileToShare(channelId, addRemoteFileResponse.File.Id));
 		}
 
 		#endregion
