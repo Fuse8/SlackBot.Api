@@ -67,6 +67,7 @@ using SlackBot.Api.Models.FileRemote.List.Request;
 using SlackBot.Api.Models.FileRemote.List.Response;
 using SlackBot.Api.Models.FileRemote.Remove.Request;
 using SlackBot.Api.Models.FileRemote.Share.Request;
+using SlackBot.Api.Models.FileRemote.Update.Request;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.Pin.Add.Request;
@@ -162,6 +163,9 @@ namespace SlackBot.Samples
  
 			/* Shares remote file * /
 			var shareRemoteFileResponse = await ShareRemoteFileAsync(); /**/
+ 
+			/* Updates remote file * /
+			var updateRemoteFileResponse = await UpdateRemoteFileAsync(); /**/
 
 			#endregion
 
@@ -429,13 +433,26 @@ namespace SlackBot.Samples
 			return await _slackClient.RemoveRemoteFileAsync(new RemoteFileToRemove(addRemoteFileResponse.File.Id));
 		}
 
-		private static async Task<SlackBaseResponse> ShareRemoteFileAsync()
+		private static async Task<SlackFileResponse> ShareRemoteFileAsync()
 		{
 			var addRemoteFileResponse = await AddRemoteFileAsync();
 			
 			var channelId = await GetChannelIdAsync();
 
 			return await _slackClient.ShareRemoteFileAsync(new RemoteFileToShare(channelId, addRemoteFileResponse.File.Id));
+		}
+
+		private static async Task<SlackFileResponse> UpdateRemoteFileAsync()
+		{
+			var addRemoteFileResponse = await AddRemoteFileAsync();
+
+			var remoteFileToUpdate = new RemoteFileToUpdate
+			{
+				FileId = addRemoteFileResponse.File.Id,
+				Title = "New title"
+			};
+
+			return await _slackClient.UpdateRemoteFileAsync(remoteFileToUpdate);
 		}
 
 		#endregion
