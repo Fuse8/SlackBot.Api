@@ -51,6 +51,8 @@ using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.FileRemote.Add.Request;
 using SlackBot.Api.Models.FileRemote.Info.Request;
+using SlackBot.Api.Models.FileRemote.List.Request;
+using SlackBot.Api.Models.FileRemote.List.Response;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.Pin.Add.Request;
@@ -151,6 +153,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackFileResponse> RemoteFileInfoAsync(RemoteFileInfoRequest remoteFileInfoRequest)
 			=> SendGetAsync<RemoteFileInfoRequest, SlackFileResponse>("files.remote.info", remoteFileInfoRequest);
+
+		/// <summary>
+		/// Retrieve information about a remote file added to Slack.
+		/// </summary>
+		public Task<RemoteFileListResponse> RemoteFileListAsync(RemoteFileListRequest remoteFileListRequest)
+			=> SendGetAsync<RemoteFileListRequest, RemoteFileListResponse>("files.remote.list", remoteFileListRequest);
 
 		#endregion
 		

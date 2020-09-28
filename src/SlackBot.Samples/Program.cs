@@ -63,6 +63,8 @@ using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
 using SlackBot.Api.Models.FileRemote.Add.Request;
 using SlackBot.Api.Models.FileRemote.Info.Request;
+using SlackBot.Api.Models.FileRemote.List.Request;
+using SlackBot.Api.Models.FileRemote.List.Response;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.Pin.Add.Request;
@@ -149,6 +151,9 @@ namespace SlackBot.Samples
  
 			/* Gets remote file info * /
 			var getRemoteFileInfoResponse = await GetRemoteFileInfoAsync(); /**/
+ 
+			/* Gets remote file list * /
+			var getRemoteFileListResponse = await GetRemoteFileListAsync(); /**/
 
 			#endregion
 
@@ -402,6 +407,16 @@ namespace SlackBot.Samples
 			};
 
 			return await _slackClient.RemoteFileInfoAsync(remoteFileInfoRequest);
+		}
+
+		private static async Task<RemoteFileListResponse> GetRemoteFileListAsync()
+		{
+			await AddRemoteFileAsync();
+			
+			// Because of slack cache... Files upload instantly, but they return in method "files.remote.list" with delay
+			await Task.Delay(30000);
+
+			return await _slackClient.RemoteFileListAsync(new RemoteFileListRequest());
 		}
 
 		#endregion
