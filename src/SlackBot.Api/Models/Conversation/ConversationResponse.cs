@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.Conversation;
 
 namespace SlackBot.Api.Models.Conversation

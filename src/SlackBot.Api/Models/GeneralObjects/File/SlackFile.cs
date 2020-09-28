@@ -1,8 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SlackBot.Api.Models.File.Upload.Response;
 
-namespace SlackBot.Api.Models.GeneralObjects
+namespace SlackBot.Api.Models.GeneralObjects.File
 {
 	public class SlackFile
 	{
@@ -82,13 +81,13 @@ namespace SlackBot.Api.Models.GeneralObjects
 		public string PreviewHighlight { get; set; }
 
 		[JsonProperty("lines")]
-		public long Lines { get; set; }
+		public long? Lines { get; set; }
 
 		[JsonProperty("lines_more")]
-		public long LinesMore { get; set; }
+		public long?LinesMore { get; set; }
 
 		[JsonProperty("preview_is_truncated")]
-		public bool PreviewIsTruncated { get; set; }
+		public bool? PreviewIsTruncated { get; set; }
 
 		[JsonProperty("comments_count")]
 		public long CommentsCount { get; set; }
@@ -125,9 +124,36 @@ namespace SlackBot.Api.Models.GeneralObjects
 
 		[JsonProperty("thumb_360_h")]
 		public long? Thumb360Height { get; set; }
+		
+		[JsonProperty("thumb_480")]
+		public Uri Thumb480Url { get; set; } 
+
+		[JsonProperty("thumb_480_w")]
+		public long? Thumb480Wight { get; set; } 
+
+		[JsonProperty("thumb_480_h")]
+		public long? Thumb480Height { get; set; } 
 
 		[JsonProperty("thumb_160")]
 		public Uri Thumb160Url { get; set; }
+		
+		[JsonProperty("thumb_720")]
+		public Uri Thumb720Url { get; set; } 
+
+		[JsonProperty("thumb_720_w")]
+		public long? Thumb720Wight { get; set; } 
+
+		[JsonProperty("thumb_720_h")]
+		public long? Thumb720Height { get; set; } 
+
+		[JsonProperty("thumb_800")]
+		public Uri Thumb800Url { get; set; } 
+
+		[JsonProperty("thumb_800_w")]
+		public long? Thumb800Wight { get; set; } 
+
+		[JsonProperty("thumb_800_h")]
+		public long? Thumb800Height { get; set; }
 
 		[JsonProperty("original_w")]
 		public long? OriginalWight { get; set; }
@@ -137,5 +163,11 @@ namespace SlackBot.Api.Models.GeneralObjects
 
 		[JsonProperty("thumb_tiny")]
 		public string ThumbTiny { get; set; }
+
+		[JsonProperty("external_id")]
+		public string ExternalId { get; set; }
+
+		[JsonProperty("external_url")]
+		public Uri ExternalUrl { get; set; }
 	}
 }

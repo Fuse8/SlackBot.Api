@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Models.Emoji.List.Response
 {

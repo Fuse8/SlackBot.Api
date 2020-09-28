@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
+using SlackBot.Api.Models.GeneralObjects.File;
 
 namespace SlackBot.Api.Models.GeneralObjects.Message
 {
@@ -74,7 +75,7 @@ namespace SlackBot.Api.Models.GeneralObjects.Message
         public long? ReplyUsersCount { get; set; }
         
         [JsonProperty("latest_reply")]
-        public string LatestReplyTimestamp { get; set; }
+        public string LatestReplyMessageTimestamp { get; set; }
         
         [JsonProperty("reply_users")]
         public List<string> ReplyUserIds { get; set; }

@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using SlackBot.Api.Models;
 using SlackBot.Api.Models.Bot.Info.Request;
 using SlackBot.Api.Models.Bot.Info.Response;
 using SlackBot.Api.Models.Chat.Delete.Request;
@@ -50,8 +49,10 @@ using SlackBot.Api.Models.File.Info.Response;
 using SlackBot.Api.Models.File.List.Request;
 using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
-using SlackBot.Api.Models.File.Upload.Response;
+using SlackBot.Api.Models.FileRemote.Add.Request;
+using SlackBot.Api.Models.FileRemote.Info.Request;
 using SlackBot.Api.Models.GeneralObjects;
+using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
@@ -126,15 +127,31 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Creates content as a file and uploads it.
 		/// </summary>
-		public Task<UploadFileResponse> UploadContentAsync(ContentToUpload contentToUpload)
-			=> SendPostMultipartFormAsync<ContentToUpload, UploadFileResponse>("files.upload", contentToUpload);
+		public Task<SlackFileResponse> UploadContentAsync(ContentToUpload contentToUpload)
+			=> SendPostMultipartFormAsync<ContentToUpload, SlackFileResponse>("files.upload", contentToUpload);
 
 		/// <summary>
 		/// Uploads a file.
 		/// </summary>
-		public Task<UploadFileResponse> UploadFileAsync(FileToUpload fileToUpload)
-			=> SendPostMultipartFormAsync<FileToUpload, UploadFileResponse>("files.upload", fileToUpload);
+		public Task<SlackFileResponse> UploadFileAsync(FileToUpload fileToUpload)
+			=> SendPostMultipartFormAsync<FileToUpload, SlackFileResponse>("files.upload", fileToUpload);
 		
+		#endregion
+
+		#region FileRemote
+
+		/// <summary>
+		/// Adds a file from a remote service.
+		/// </summary>
+		public Task<SlackFileResponse> AddRemoteFileAsync(RemoteFile remoteFile)
+			=> SendPostMultipartFormAsync<RemoteFile, SlackFileResponse>("files.remote.add", remoteFile);
+
+		/// <summary>
+		/// Retrieve information about a remote file added to Slack.
+		/// </summary>
+		public Task<SlackFileResponse> RemoteFileInfoAsync(RemoteFileInfoRequest remoteFileInfoRequest)
+			=> SendGetAsync<RemoteFileInfoRequest, SlackFileResponse>("files.remote.info", remoteFileInfoRequest);
+
 		#endregion
 		
 		#region Chat

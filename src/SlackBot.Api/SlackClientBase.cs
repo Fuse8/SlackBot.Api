@@ -6,7 +6,7 @@ using SlackBot.Api.Enums;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Extensions;
 using SlackBot.Api.Helpers;
-using SlackBot.Api.Models;
+using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api
 {

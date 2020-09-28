@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.File.Upload.Response
+namespace SlackBot.Api.Models.GeneralObjects.File
 {
 	public class Shares
 	{

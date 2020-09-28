@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Models.Conversation.Close.Response
 {

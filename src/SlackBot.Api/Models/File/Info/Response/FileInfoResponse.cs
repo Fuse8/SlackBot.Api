@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.GeneralObjects;
+using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
 namespace SlackBot.Api.Models.File.Info.Response

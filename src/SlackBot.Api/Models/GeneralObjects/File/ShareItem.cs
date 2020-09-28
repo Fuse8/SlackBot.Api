@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models.File.Upload.Response
+namespace SlackBot.Api.Models.GeneralObjects.File
 {
 	public class ShareItem
 	{
 		[JsonProperty("reply_users")]
-		public string[] ReplyUsers { get; set; }
+		public string[] ReplyUserIds { get; set; }
 
 		[JsonProperty("reply_users_count")]
 		public long ReplyUsersCount { get; set; }
@@ -26,6 +26,6 @@ namespace SlackBot.Api.Models.File.Upload.Response
 		public string ShareUserId { get; set; }
 
 		[JsonProperty("latest_reply")]
-		public string LatestReply { get; set; }
+		public string LatestReplyMessageTimestamp { get; set; }
 	}
 }

@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Extensions;
-using SlackBot.Api.Models;
 using SlackBot.Api.Models.Bot.Info.Request;
 using SlackBot.Api.Models.Bot.Info.Response;
 using SlackBot.Api.Models.Chat.Delete.Request;
@@ -62,8 +61,10 @@ using SlackBot.Api.Models.File.Info.Response;
 using SlackBot.Api.Models.File.List.Request;
 using SlackBot.Api.Models.File.List.Response;
 using SlackBot.Api.Models.File.Upload.Request;
-using SlackBot.Api.Models.File.Upload.Response;
+using SlackBot.Api.Models.FileRemote.Add.Request;
+using SlackBot.Api.Models.FileRemote.Info.Request;
 using SlackBot.Api.Models.GeneralObjects;
+using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
@@ -139,6 +140,16 @@ namespace SlackBot.Samples
 			/* Gets file list * /
 			var fileListResponse = await GetFileListAsync(); /**/
 			
+			#endregion
+
+			#region FileRemote methods
+ 
+			/* Adds remote file * /
+			var remoteFileResponse = await AddRemoteFileAsync(); /**/
+ 
+			/* Gets remote file info * /
+			var getRemoteFileInfoResponse = await GetRemoteFileInfoAsync(); /**/
+
 			#endregion
 
 			#region Chat methods
@@ -303,7 +314,7 @@ namespace SlackBot.Samples
 
 		#region File
 		
-		private static async Task<UploadFileResponse> UploadContentAsync()
+		private static async Task<SlackFileResponse> UploadContentAsync()
 		{
 			var content = await File.ReadAllTextAsync("./appsettings.json");
 			var contentMessage = new ContentToUpload
@@ -319,7 +330,7 @@ namespace SlackBot.Samples
 			return await _slackClient.UploadContentAsync(contentMessage);
 		}
 
-		private static async Task<UploadFileResponse> UploadFileAsync()
+		private static async Task<SlackFileResponse> UploadFileAsync()
 		{
 			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
 			var fileMessage = new FileToUpload
@@ -364,6 +375,35 @@ namespace SlackBot.Samples
 			return await _slackClient.GetFileListAsync(fileListRequest);
 		}
 		
+		#endregion
+
+		#region RemoteFile
+
+		private static Task<SlackFileResponse> AddRemoteFileAsync()
+		{
+			var remoteFile = new RemoteFile
+			{
+				ExternalId = Guid.NewGuid().ToString(),
+				ExternalUrl = new Uri("https://unsplash.com/photos/Dl39g6QhOIM"),
+				Title = "Beautiful cat",
+				FileType = "jpg",
+			};
+
+			return _slackClient.AddRemoteFileAsync(remoteFile);
+		}
+
+		private static async Task<SlackFileResponse> GetRemoteFileInfoAsync()
+		{
+			var addRemoteFileResponse = await AddRemoteFileAsync();
+
+			var remoteFileInfoRequest = new RemoteFileInfoRequest
+			{
+				FileId = addRemoteFileResponse.File.Id
+			};
+
+			return await _slackClient.RemoteFileInfoAsync(remoteFileInfoRequest);
+		}
+
 		#endregion
 
 		#region Chat
@@ -616,7 +656,7 @@ namespace SlackBot.Samples
 			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
 			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
 
-			return await _slackClient.ConversationRepliesAsync(new ConversationRepliesRequest(channelId, parentMessageTimestamp));;
+			return await _slackClient.ConversationRepliesAsync(new ConversationRepliesRequest(channelId, parentMessageTimestamp));
 		}
 
 		private static async Task<ConversationResponse> SetConversationPurposeAsync()

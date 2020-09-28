@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Models.GeneralObjects;
+using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.GeneralObjects.Message;
 
 namespace SlackBot.Api.Models.Reaction.Get.Response
 {
-	public class ReactionsByItemResponse : SlackBaseResponse
+	public class ReactionsByItemResponse : SlackFileResponse
 	{
 		[JsonProperty("type")]
 		public string Type { get; set; }
@@ -14,8 +14,5 @@ namespace SlackBot.Api.Models.Reaction.Get.Response
 
 		[JsonProperty("message")]
 		public MessageResponse Message { get; set; }
-
-		[JsonProperty("file")]
-		public SlackFile File { get; set; }
 	}
 }

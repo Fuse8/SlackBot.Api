@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Models
+namespace SlackBot.Api.Models.GeneralObjects
 {
 	public class SlackErrorResponse : SlackBaseResponse
 	{
