@@ -891,8 +891,12 @@ namespace SlackBot.Samples
 		private static Task<UserListResponse> GetUserListAsync()
 			=> _slackClient.UserListAsync(new UserListRequest());
 
-		private static Task<UserResponse> GetUserByEmailAsync()
-			=> _slackClient.UserByEmailAsync(new UserByEmailRequest(_slackBotSettings.UserEmail));
+		private static async Task<UserResponse> GetUserByEmailAsync()
+		{
+			var userInfoResponse = await GetUserInfoAsync();
+			
+			return await _slackClient.UserByEmailAsync(new UserByEmailRequest(userInfoResponse.User.Profile.Email));
+		}
 
 		private static Task<SlackBaseResponse> SetUserPresenceAsync()
 			=> _slackClient.SetUserPresenceAsync(new SetUserPresenceRequest("auto"));
