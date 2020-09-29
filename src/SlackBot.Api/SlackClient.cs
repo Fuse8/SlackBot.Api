@@ -85,6 +85,8 @@ using SlackBot.Api.Models.UserGroup;
 using SlackBot.Api.Models.UserGroup.Create.Request;
 using SlackBot.Api.Models.UserGroup.Disable.Request;
 using SlackBot.Api.Models.UserGroup.Enable.Request;
+using SlackBot.Api.Models.UserGroup.List.Request;
+using SlackBot.Api.Models.UserGroup.List.Response;
 using SlackBot.Api.Models.UserProfile.Get.Request;
 using SlackBot.Api.Models.UserProfile.Get.Response;
 
@@ -438,6 +440,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UserGroupActionResponse> EnableUserGroupAsync(UserGroupToEnable userGroupToEnable)
 			=> SendPostFormUrlEncodedAsync<UserGroupToEnable, UserGroupActionResponse>("usergroups.enable", userGroupToEnable);
+
+		/// <summary>
+		/// List all User Groups for a team.
+		/// </summary>
+		public Task<UserGroupListResponse> UserGroupListAsync(UserGroupListRequest userGroupListRequest)
+			=> SendGetAsync<UserGroupListRequest, UserGroupListResponse>("usergroups.list", userGroupListRequest);
 		
 		#endregion
 

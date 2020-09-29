@@ -99,6 +99,8 @@ using SlackBot.Api.Models.UserGroup;
 using SlackBot.Api.Models.UserGroup.Create.Request;
 using SlackBot.Api.Models.UserGroup.Disable.Request;
 using SlackBot.Api.Models.UserGroup.Enable.Request;
+using SlackBot.Api.Models.UserGroup.List.Request;
+using SlackBot.Api.Models.UserGroup.List.Response;
 using SlackBot.Api.Models.UserProfile.Get.Request;
 using SlackBot.Api.Models.UserProfile.Get.Response;
 using SlackBot.Samples.Configurations;
@@ -310,6 +312,9 @@ namespace SlackBot.Samples
 			
 			/* Enables user group * /
 			var enableUserGroupResponse = await EnableUserGroupAsync();/**/
+			
+			/* Gets user group list * /
+			var getUserGroupListResponse = await GetUserGroupListAsync();/**/
 
 			#endregion
 
@@ -934,6 +939,13 @@ namespace SlackBot.Samples
 			var disableUserGroupResponse = await DisableUserGroupAsync();
 
 			return await _slackClient.EnableUserGroupAsync(new UserGroupToEnable(disableUserGroupResponse.UserGroup.Id));
+		}
+		
+		private static async Task<UserGroupListResponse> GetUserGroupListAsync()
+		{
+			//var createUserGroupResponse = await CreateUserGroupAsync();
+
+			return await _slackClient.UserGroupListAsync(new UserGroupListRequest(true, true, true));
 		}
 
 		#endregion

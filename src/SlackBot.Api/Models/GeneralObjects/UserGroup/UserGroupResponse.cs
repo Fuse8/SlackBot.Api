@@ -60,7 +60,7 @@ namespace SlackBot.Api.Models.GeneralObjects.UserGroup
 		public UserGroupPreferences Preferences { get; set; }
 
 		[JsonProperty("users")]
-		public List<string> Users { get; set; }
+		public List<string> UserIds { get; set; }
 
 		[JsonProperty("user_count")]
 		public long UserCount { get; set; }
