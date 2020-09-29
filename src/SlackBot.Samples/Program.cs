@@ -80,6 +80,8 @@ using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
+using SlackBot.Api.Models.Team.Info.Request;
+using SlackBot.Api.Models.Team.Info.Response;
 using SlackBot.Api.Models.TeamProfile.Get.Request;
 using SlackBot.Api.Models.TeamProfile.Get.Response;
 using SlackBot.Api.Models.User;
@@ -283,7 +285,10 @@ namespace SlackBot.Samples
 			var removeReactionResponse = await RemoveReactionAsync();/**/
 			
 			#endregion
-            
+			
+			/* Gets team info * /
+			var teamInfoResponse = await GetTeamInfoAsync();/**/
+			
 			/* Gets team profile * /
 			var teamProfileResponse = await GetTeamProfileAsync();/**/
 
@@ -870,10 +875,17 @@ namespace SlackBot.Samples
 
 		#endregion
 
+		#region Team
+		
+		private static Task<TeamInfoResponse> GetTeamInfoAsync()
+			=> _slackClient.TeamInfoAsync(new TeamInfoRequest());
+
+		#endregion
+
 		#region TeamProfile
 		
-		private static async Task<TeamProfileResponse> GetTeamProfileAsync()
-			=> await _slackClient.TeamProfileAsync(new TeamProfileRequest(TeamFieldVisibilityType.Visible));
+		private static Task<TeamProfileResponse> GetTeamProfileAsync()
+			=> _slackClient.TeamProfileAsync(new TeamProfileRequest(TeamFieldVisibilityType.Visible));
 
 		#endregion
 

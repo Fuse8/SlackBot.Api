@@ -68,6 +68,8 @@ using SlackBot.Api.Models.Reaction.Get.Response;
 using SlackBot.Api.Models.Reaction.List.Request;
 using SlackBot.Api.Models.Reaction.List.Response;
 using SlackBot.Api.Models.Reaction.Remove.Request;
+using SlackBot.Api.Models.Team.Info.Request;
+using SlackBot.Api.Models.Team.Info.Response;
 using SlackBot.Api.Models.TeamProfile.Get.Request;
 using SlackBot.Api.Models.TeamProfile.Get.Response;
 using SlackBot.Api.Models.User;
@@ -388,6 +390,16 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> RemoveReactionAsync(ReactionToRemove reactionToRemove)
 			=> SendPostFormUrlEncodedAsync("reactions.remove", reactionToRemove);
+
+		#endregion
+
+		#region Team
+
+		/// <summary>
+		/// Gets information about the current team.
+		/// </summary>
+		public Task<TeamInfoResponse> TeamInfoAsync(TeamInfoRequest teamInfoRequest)
+			=> SendGetAsync<TeamInfoRequest, TeamInfoResponse>("team.info", teamInfoRequest);
 
 		#endregion
 
