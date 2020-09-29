@@ -58,7 +58,6 @@ using SlackBot.Api.Models.FileRemote.Share.Request;
 using SlackBot.Api.Models.FileRemote.Update.Request;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
-using SlackBot.Api.Models.GeneralObjects.User;
 using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
@@ -82,6 +81,8 @@ using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Api.Models.User.LookupByEmail.Request;
 using SlackBot.Api.Models.User.SetPresence.Request;
+using SlackBot.Api.Models.UserGroup;
+using SlackBot.Api.Models.UserGroup.Create.Request;
 using SlackBot.Api.Models.UserProfile.Get.Request;
 using SlackBot.Api.Models.UserProfile.Get.Response;
 
@@ -414,6 +415,16 @@ namespace SlackBot.Api
 		public Task<TeamProfileResponse> TeamProfileAsync(TeamProfileRequest teamProfileRequest)
 			=> SendGetAsync<TeamProfileRequest, TeamProfileResponse>("team.profile.get", teamProfileRequest);
 
+		#endregion
+
+		#region UserGroup
+
+		/// <summary>
+		/// Create a User Group.
+		/// </summary>
+		public Task<UserGroupActionResponse> CreateUserGroupAsync(UserGroup userGroup)
+			=> SendPostFormUrlEncodedAsync<UserGroup, UserGroupActionResponse>("usergroups.create", userGroup);
+		
 		#endregion
 
 		#region User

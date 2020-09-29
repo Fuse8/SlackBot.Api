@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.GeneralObjects.File
@@ -99,13 +100,13 @@ namespace SlackBot.Api.Models.GeneralObjects.File
 		public Shares Shares { get; set; }
 
 		[JsonProperty("channels")]
-		public string[] ChannelIds { get; set; }
+		public List<string> ChannelIds { get; set; }
 
 		[JsonProperty("groups")]
-		public string[] GroupIds { get; set; }
+		public List<string> GroupIds { get; set; }
 
 		[JsonProperty("ims")]
-		public string[] DirectMessageChannelIds { get; set; }
+		public List<string> DirectMessageChannelIds { get; set; }
 
 		[JsonProperty("has_rich_preview")]
 		public bool HasRichPreview { get; set; }
@@ -126,31 +127,31 @@ namespace SlackBot.Api.Models.GeneralObjects.File
 		public long? Thumb360Height { get; set; }
 		
 		[JsonProperty("thumb_480")]
-		public Uri Thumb480Url { get; set; } 
+		public Uri Thumb480Url { get; set; }
 
 		[JsonProperty("thumb_480_w")]
-		public long? Thumb480Wight { get; set; } 
+		public long? Thumb480Wight { get; set; }
 
 		[JsonProperty("thumb_480_h")]
-		public long? Thumb480Height { get; set; } 
+		public long? Thumb480Height { get; set; }
 
 		[JsonProperty("thumb_160")]
 		public Uri Thumb160Url { get; set; }
 		
 		[JsonProperty("thumb_720")]
-		public Uri Thumb720Url { get; set; } 
+		public Uri Thumb720Url { get; set; }
 
 		[JsonProperty("thumb_720_w")]
-		public long? Thumb720Wight { get; set; } 
+		public long? Thumb720Wight { get; set; }
 
 		[JsonProperty("thumb_720_h")]
-		public long? Thumb720Height { get; set; } 
+		public long? Thumb720Height { get; set; }
 
 		[JsonProperty("thumb_800")]
-		public Uri Thumb800Url { get; set; } 
+		public Uri Thumb800Url { get; set; }
 
 		[JsonProperty("thumb_800_w")]
-		public long? Thumb800Wight { get; set; } 
+		public long? Thumb800Wight { get; set; }
 
 		[JsonProperty("thumb_800_h")]
 		public long? Thumb800Height { get; set; }

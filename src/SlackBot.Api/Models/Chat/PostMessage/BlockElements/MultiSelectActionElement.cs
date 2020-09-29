@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
@@ -20,20 +21,20 @@ namespace SlackBot.Api.Models.Chat.PostMessage.BlockElements
 		/// An array of <see cref="OptionObject"/>. Maximum number of <strong><see cref="OptionObject"/> is 100</strong>. If <see cref="OptionGroups"/> is specified, this field should not be.
 		/// </summary>
 		[JsonProperty("options")]
-		public OptionObject[] Options { get; set; }
+		public List<OptionObject> Options { get; set; }
 
 		/// <summary>
 		/// An array of <see cref="OptionGroupObject"/>. Maximum number of <strong><see cref="OptionGroupObject"/> is 100</strong>. If <see cref="Options"/> is specified, this field should not be.
 		/// </summary>
 		[JsonProperty("option_groups")]
-		public OptionGroupObject[] OptionGroups { get; set; }
+		public List<OptionGroupObject> OptionGroups { get; set; }
 
 		/// <summary>
 		/// An array of <see cref="OptionObject"/> that exactly match one or more of the <see cref="OptionObject"/> within <see cref="Options"/> or <see cref="OptionGroups"/>.
 		/// These options will be selected when the menu initially loads.
 		/// </summary>
 		[JsonProperty("initial_options")]
-		public OptionObject[] InitialOptions { get; set; }
+		public List<OptionObject> InitialOptions { get; set; }
 
 		/// <summary>
 		/// Specifies the maximum number of items that can be selected in the menu. Minimum number is 1.

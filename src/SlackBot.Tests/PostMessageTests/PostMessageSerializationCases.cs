@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SlackBot.Api.Models.Chat.PostMessage;
 using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.Blocks;
@@ -15,13 +16,13 @@ namespace SlackBot.Tests.PostMessageTests
 	{
 		public static object[] MessageCases =
 		{
-			new object[]
+			new List<object>
 			{
 				new Message
 				{
 					ChannelIdOrName = "channel",
-					Attachments = new Attachment[0],
-					Blocks = new BlockBase[0],
+					Attachments = new List<Attachment>(),
+					Blocks = new List<BlockBase>(),
 					Parse = "full",
 					Text = "text",
 					Username = "username",
@@ -45,7 +46,7 @@ namespace SlackBot.Tests.PostMessageTests
 			{
 				new ActionBlock
 				{
-					Elements = new IActionElement[0],
+					Elements = new List<IActionElement>(),
 					BlockId = "BlockId"
 				},
 				@"{""type"":""actions"",""elements"":[],""block_id"":""BlockId""}"
@@ -54,7 +55,7 @@ namespace SlackBot.Tests.PostMessageTests
 			{
 				new ContextBlock
 				{
-					Elements = new IContextElement[0],
+					Elements = new List<IContextElement>(),
 					BlockId = "BlockId"
 				},
 				@"{""type"":""context"",""elements"":[],""block_id"":""BlockId""}"
@@ -103,7 +104,7 @@ namespace SlackBot.Tests.PostMessageTests
 				{
 					BlockId = "BlockId",
 					Accessory = new ImageElement(),
-					Fields = new TextObjectBase[0],
+					Fields = new List<TextObjectBase>(),
 					Text = new PlainTextObject()
 				},
 				@"{""type"":""section"",""text"":{""type"":""plain_text""},""block_id"":""BlockId"",""fields"":[],""accessory"":{""type"":""image""}}"
@@ -150,11 +151,11 @@ namespace SlackBot.Tests.PostMessageTests
 				new MultiSelectActionElement
 				{
 					Confirm = new ConfirmationDialogObject(),
-					Options = new OptionObject[0],
+					Options = new List<OptionObject>(),
 					Placeholder = new PlainTextObject(),
 					ActionId = "ActionId",
-					InitialOptions = new OptionObject[0],
-					OptionGroups = new OptionGroupObject[0],
+					InitialOptions = new List<OptionObject>(),
+					OptionGroups = new List<OptionGroupObject>(),
 					MaxSelectedItems = 25
 				},
 				@"{""type"":""multi_static_select"",""placeholder"":{""type"":""plain_text""},""action_id"":""ActionId"",""options"":[],""option_groups"":[],""initial_options"":[],""confirm"":{},""max_selected_items"":25}"
@@ -209,7 +210,7 @@ namespace SlackBot.Tests.PostMessageTests
 				new OptionGroupObject
 				{
 					Label = new PlainTextObject(),
-					Options = new OptionObject[0]
+					Options = new List<OptionObject>()
 				},
 				@"{""label"":{""type"":""plain_text""},""options"":[]}"
 			}

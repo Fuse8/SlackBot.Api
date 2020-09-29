@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.GeneralObjects.File
 {
 	public class ShareItem
 	{
 		[JsonProperty("reply_users")]
-		public string[] ReplyUserIds { get; set; }
+		public List<string> ReplyUserIds { get; set; }
 
 		[JsonProperty("reply_users_count")]
 		public long ReplyUsersCount { get; set; }

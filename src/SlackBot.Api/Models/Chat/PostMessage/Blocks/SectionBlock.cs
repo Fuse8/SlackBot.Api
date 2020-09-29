@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
@@ -22,7 +23,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 		/// Maximum number of items is <strong>10. Maximum length for the <see cref="TextObjectBase.Text"/> in each item is 2000 characters</strong>.
 		/// </summary>
 		[JsonProperty("fields")]
-		public TextObjectBase[] Fields { get; set; }
+		public List<TextObjectBase> Fields { get; set; }
 
 		/// <summary>
 		/// One of the available <see cref="ISectionElement"/> objects.

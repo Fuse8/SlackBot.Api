@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.GeneralObjects.Message;
 
 namespace SlackBot.Api.Models.GeneralObjects.Conversation
@@ -48,25 +49,25 @@ namespace SlackBot.Api.Models.GeneralObjects.Conversation
 		public bool? IsShared { get; set; }
 
 		[JsonProperty("parent_conversation")]
-		public object ParentConversation { get; set; } // TODO Couldn't find a description of this field in the documentation
+		public object ParentConversation { get; set; }// TODO Couldn't find a description of this field in the documentation
 
 		[JsonProperty("is_ext_shared")]
 		public bool? IsExtShared { get; set; }
 
 		[JsonProperty("is_org_shared")]
-		public bool? IsOrgShared { get; set; } 
+		public bool? IsOrgShared { get; set; }
 
 		[JsonProperty("user")]
 		public string UserId { get; set; }
 
 		[JsonProperty("shared_team_ids")]
-		public string[] SharedTeamIds { get; set; }
+		public List<string> SharedTeamIds { get; set; }
 
 		[JsonProperty("pending_shared")]
-		public object[] PendingShared { get; set; } // TODO Couldn't find a description of this field in the documentation
+		public List<object> PendingShared { get; set; }// TODO Couldn't find a description of this field in the documentation
 
 		[JsonProperty("pending_connected_team_ids")]
-		public string[] PendingConnectedTeamIds { get; set; }
+		public List<string> PendingConnectedTeamIds { get; set; }
 
 		[JsonProperty("is_pending_ext_shared")]
 		public bool? IsPendingExtShared { get; set; }
@@ -84,10 +85,10 @@ namespace SlackBot.Api.Models.GeneralObjects.Conversation
 		public MessageResponse LatestMessage { get; set; }
 
 		[JsonProperty("unread_count")]
-		public long? UnreadCount { get; set; } 
+		public long? UnreadCount { get; set; }
 
 		[JsonProperty("unread_count_display")]
-		public long? UnreadCountDisplay { get; set; } 
+		public long? UnreadCountDisplay { get; set; }
 
 		[JsonProperty("is_open")]
 		public bool? IsOpened { get; set; }
@@ -99,7 +100,7 @@ namespace SlackBot.Api.Models.GeneralObjects.Conversation
 		public ConversationDescription Purpose { get; set; }
 
 		[JsonProperty("previous_names")]
-		public string[] PreviousNames { get; set; }
+		public List<string> PreviousNames { get; set; }
 
 		[JsonProperty("num_members")]
 		public long? MemberCount { get; set; }

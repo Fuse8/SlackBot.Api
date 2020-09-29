@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
 
@@ -10,7 +11,7 @@ namespace SlackBot.Api.Models.Chat.PostEphemeral.Request
 		{
 		}
 
-		public EphemeralMessage(string channelIdOrName, string userId, string text = null, Attachment[] attachments = null, BlockBase[] blocks = null)
+		public EphemeralMessage(string channelIdOrName, string userId, string text = null, List<Attachment> attachments = null, List<BlockBase> blocks = null)
 			: base(channelIdOrName, text, attachments, blocks)
 		{
 			UserId = userId;

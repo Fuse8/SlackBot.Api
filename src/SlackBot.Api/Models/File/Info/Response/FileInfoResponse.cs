@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.GeneralObjects.File;
 using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
@@ -22,6 +23,6 @@ namespace SlackBot.Api.Models.File.Info.Response
 		public string ContentHighlightCss { get; set; }
 
 		[JsonProperty("comments")]
-		public object[] Comments { get; set; }
+		public List<object> Comments { get; set; }  // TODO Couldn't find a description of this field in the documentation
 	}
 }

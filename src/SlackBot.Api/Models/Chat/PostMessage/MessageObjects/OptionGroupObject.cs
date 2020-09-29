@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
@@ -16,6 +17,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageObjects
 		/// An array of <see cref="OptionObject"/> that belong to this specific group. Maximum of <strong>100 items</strong>.
 		/// </summary>
 		[JsonProperty("options")]
-		public OptionObject[] Options { get; set; }
+		public List<OptionObject> Options { get; set; }
 	}
 }

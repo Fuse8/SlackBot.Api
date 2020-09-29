@@ -6,9 +6,9 @@ namespace SlackBot.Api.Models.GeneralObjects.File
 	public class Shares
 	{
 		[JsonProperty("private")]
-		public Dictionary<string, ShareItem[]> Private { get; set; }
+		public Dictionary<string, List<ShareItem>> Private { get; set; }
 
 		[JsonProperty("public")]
-		public Dictionary<string, ShareItem[]> Public { get; set; }
+		public Dictionary<string, List<ShareItem>> Public { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
@@ -11,7 +12,7 @@ namespace SlackBot.Api.Models.Chat.Update.Request
 		{
 		}
 
-		public MessageToUpdate(string channelId, string messageTimestamp, string text = null, Attachment[] attachments = null, BlockBase[] blocks = null)
+		public MessageToUpdate(string channelId, string messageTimestamp, string text = null, List<Attachment> attachments = null, List<BlockBase> blocks = null)
 		{
 			ChannelId = channelId;
 			MessageTimestamp = messageTimestamp;
@@ -49,7 +50,7 @@ namespace SlackBot.Api.Models.Chat.Update.Request
 		/// </summary>
 		/// <example>[{"pretext": "pre-hello", "text": "text-world"}]</example>
 		[JsonProperty("attachments")]
-		public Attachment[] Attachments { get; set; }
+		public List<Attachment> Attachments { get; set; }
 
 		/// <summary>
 		/// A JSON-based array of structured blocks, presented as a URL-encoded string.
@@ -58,7 +59,7 @@ namespace SlackBot.Api.Models.Chat.Update.Request
 		/// </summary>
 		/// <example>[{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}]</example>
 		[JsonProperty("blocks")]
-		public BlockBase[] Blocks { get; set; }
+		public List<BlockBase> Blocks { get; set; }
 
 		/// <summary>
 		/// Find and link channel names and usernames.

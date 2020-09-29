@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Models.Pin.List.Response
@@ -6,6 +7,6 @@ namespace SlackBot.Api.Models.Pin.List.Response
 	public class PinListResponse : SlackBaseResponse
 	{
 		[JsonProperty("items")]
-		public PinnedItem[] Items { get; set; }
+		public List<PinnedItem> Items { get; set; }
 	}
 }

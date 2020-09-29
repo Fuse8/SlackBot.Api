@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.GeneralObjects.Message;
 using SlackBot.Api.Models.GeneralObjects.Pagination.Cursor;
 
@@ -10,7 +11,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public string Latest { get; set; }
         
         [JsonProperty("messages")]
-        public MessageResponse[] Messages { get; set; }
+        public List<MessageResponse> Messages { get; set; }
         
         [JsonProperty("has_more")]
         public bool HasMore { get; set; }
@@ -19,7 +20,7 @@ namespace SlackBot.Api.Models.Conversation.History.Response
         public long PinCount { get; set; }
 
         [JsonProperty("channel_actions_ts")]
-        public string ChannelActionsTimestamp { get; set; } // TODO Couldn't find a description of this field in the documentation
+        public string ChannelActionsTimestamp { get; set; }// TODO Couldn't find a description of this field in the documentation
 
         [JsonProperty("channel_actions_count")]
         public long? ChannelActionsCount { get; set; }

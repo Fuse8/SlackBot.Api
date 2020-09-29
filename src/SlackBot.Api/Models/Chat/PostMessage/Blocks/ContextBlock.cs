@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
 
@@ -12,6 +13,6 @@ namespace SlackBot.Api.Models.Chat.PostMessage.Blocks
 		/// An array of "image elements" and "text objects". Maximum number of <strong>items is 10</strong>.
 		/// </summary>
 		[JsonProperty("elements")]
-		public IContextElement[] Elements { get; set; }
+		public List<IContextElement> Elements { get; set; }
 	}
 }

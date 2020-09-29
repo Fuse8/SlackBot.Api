@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
@@ -11,7 +12,7 @@ namespace SlackBot.Api.Models.Chat
 		{
 		}
 
-		protected MessageBase(string channelIdOrName, string text, Attachment[] attachments, BlockBase[] blocks)
+		protected MessageBase(string channelIdOrName, string text, List<Attachment> attachments, List<BlockBase> blocks)
 		{
 			ChannelIdOrName = channelIdOrName;
 			Text = text;
@@ -49,14 +50,14 @@ namespace SlackBot.Api.Models.Chat
 		/// </summary>
 		/// <example>[{"pretext": "pre-hello", "text": "text-world"}]</example>
 		[JsonProperty("attachments")]
-		public Attachment[] Attachments { get; set; }
+		public List<Attachment> Attachments { get; set; }
 
 		/// <summary>
 		/// A JSON-based array of structured blocks, presented as a URL-encoded string.
 		/// </summary>
 		/// <example>[{"type": "section", "text": {"type": "plain_text", "text": "Hello world"}}]</example>
 		[JsonProperty("blocks")]
-		public BlockBase[] Blocks { get; set; }
+		public List<BlockBase> Blocks { get; set; }
 
 		/// <summary>
 		/// Emoji to use as the icon for this message. Overrides <see cref="IconUrl"/>.

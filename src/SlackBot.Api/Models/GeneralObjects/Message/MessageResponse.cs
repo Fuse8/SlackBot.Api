@@ -45,7 +45,7 @@ namespace SlackBot.Api.Models.GeneralObjects.Message
         public MessageEditedInfo EditedInfo { get; set; }
 
         [JsonProperty("blocks")]
-        public BlockBase[] Blocks { get; set; }
+        public List<BlockBase> Blocks { get; set; }
 
         [JsonProperty("team")]
         public string TeamId { get; set; }
@@ -140,7 +140,7 @@ namespace SlackBot.Api.Models.GeneralObjects.Message
         #region "file_comment" type
         
         [JsonProperty("comment")]
-        public object Comment { get; set; } // TODO Couldn't find a description of this field in the documentation
+        public object Comment { get; set; }// TODO Couldn't find a description of this field in the documentation
 
         #endregion
         
@@ -178,7 +178,7 @@ namespace SlackBot.Api.Models.GeneralObjects.Message
         public string ItemType { get; set; }
         
         [JsonProperty("item")]
-        public object Item { get; set; }  // TODO Couldn't find a description of this field in the documentation
+        public object Item { get; set; } // TODO Couldn't find a description of this field in the documentation
 
         #endregion
         

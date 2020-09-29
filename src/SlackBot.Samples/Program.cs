@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,6 +71,7 @@ using SlackBot.Api.Models.FileRemote.Share.Request;
 using SlackBot.Api.Models.FileRemote.Update.Request;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
+using SlackBot.Api.Models.GeneralObjects.UserGroup;
 using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
@@ -93,6 +95,8 @@ using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Api.Models.User.LookupByEmail.Request;
 using SlackBot.Api.Models.User.SetPresence.Request;
+using SlackBot.Api.Models.UserGroup;
+using SlackBot.Api.Models.UserGroup.Create.Request;
 using SlackBot.Api.Models.UserProfile.Get.Request;
 using SlackBot.Api.Models.UserProfile.Get.Response;
 using SlackBot.Samples.Configurations;
@@ -294,6 +298,13 @@ namespace SlackBot.Samples
 			/* Gets team profile * /
 			var teamProfileResponse = await GetTeamProfileAsync();/**/
 
+			#region UserGroup methods
+			
+			/* Creates user group * /
+			var createUserGroupResponse = await CreateUserGroupAsync();/**/
+
+			#endregion
+
 			#region User methods
 
             /* Gets list of user channels * /
@@ -478,7 +489,7 @@ namespace SlackBot.Samples
 				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Blocks = blocks,
 				Text = $"{nameof(SendMessageWithBlocksAsync)} method",
-				Attachments = new[]
+				Attachments = new List<Attachment>
 				{
 					new Attachment
 					{
@@ -514,11 +525,11 @@ namespace SlackBot.Samples
 			{
 				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Text = firstFile.File.Permalink + " " + secondFile.File.Permalink,
-				Blocks = new BlockBase[]
+				Blocks = new List<BlockBase>
 				{
 					new ContextBlock
 					{
-						Elements = new IContextElement[]
+						Elements = new List<IContextElement>
 						{
 							(PlainTextObject)$"{nameof(SendMessageWithMultipleFilesAsync)} method",
 						},
@@ -894,6 +905,17 @@ namespace SlackBot.Samples
 
 		#endregion
 
+		#region UserGroup
+		
+		private static async Task<UserGroupActionResponse> CreateUserGroupAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.CreateUserGroupAsync(new UserGroup("Test group", "test-group", channelId));
+		}
+
+		#endregion
+
 		#region User
 
 		private static Task<ConversationListResponse> GetUserConversationsAsync()
@@ -927,13 +949,13 @@ namespace SlackBot.Samples
 
 		#endregion
 
-		private static BlockBase[] GenerateBlocksForMessage()
+		private static List<BlockBase> GenerateBlocksForMessage()
 		{
-			var blocks = new BlockBase[]
+			var blocks = new List<BlockBase>
 			{
 				new ActionBlock
 				{
-					Elements = new IActionElement[]
+					Elements = new List<IActionElement>
 					{
 						new ButtonActionElement
 						{
@@ -961,7 +983,7 @@ namespace SlackBot.Samples
 				},
 				new ContextBlock
 				{
-					Elements = new IContextElement[]
+					Elements = new List<IContextElement>
 					{
 						(PlainTextObject)"This is Context Block",
 						new ImageElement
@@ -989,7 +1011,7 @@ namespace SlackBot.Samples
 				new SectionBlock
 				{
 					Text = (PlainTextObject)"This is Section Block",
-					Fields = new TextObjectBase[]
+					Fields = new List<TextObjectBase>
 					{
 						(MarkdownTextObject)"*Bold Text*",
 						(MarkdownTextObject)"_Italic Text_",

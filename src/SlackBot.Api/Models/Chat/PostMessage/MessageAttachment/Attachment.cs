@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 
@@ -13,7 +14,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageAttachment
 		public string Color { get; set; }
 
 		[JsonProperty("blocks")]
-		public BlockBase[] Blocks { get; set; }
+		public List<BlockBase> Blocks { get; set; }
 
 		[JsonProperty("pretext")]
 		public string Pretext { get; set; }
@@ -37,7 +38,7 @@ namespace SlackBot.Api.Models.Chat.PostMessage.MessageAttachment
 		public string Text { get; set; }
 
 		[JsonProperty("fields")]
-		public Field[] Fields { get; set; }
+		public List<Field> Fields { get; set; }
 
 		[JsonProperty("image_url")]
 		public Uri ImageUrl { get; set; }
