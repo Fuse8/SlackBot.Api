@@ -17,7 +17,7 @@ namespace SlackBot.Api.Models.UserGroup
 		/// <summary>
 		/// The encoded ID of the User Group.
 		/// </summary>
-		/// <example>S0604467</example>
+		/// <example>S06045678</example>
 		[FormPropertyName("usergroup")]
 		public string UserGroupId { get; set; }
 

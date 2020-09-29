@@ -101,6 +101,7 @@ using SlackBot.Api.Models.UserGroup.Disable.Request;
 using SlackBot.Api.Models.UserGroup.Enable.Request;
 using SlackBot.Api.Models.UserGroup.List.Request;
 using SlackBot.Api.Models.UserGroup.List.Response;
+using SlackBot.Api.Models.UserGroup.Update.Request;
 using SlackBot.Api.Models.UserProfile.Get.Request;
 using SlackBot.Api.Models.UserProfile.Get.Response;
 using SlackBot.Samples.Configurations;
@@ -315,6 +316,9 @@ namespace SlackBot.Samples
 			
 			/* Gets user group list * /
 			var getUserGroupListResponse = await GetUserGroupListAsync();/**/
+			
+			/* Updates user group * /
+			var updateUserGroupResponse = await UpdateUserGroupAsync();/**/
 
 			#endregion
 
@@ -924,7 +928,7 @@ namespace SlackBot.Samples
 		{
 			var channelId = await GetChannelIdAsync();
 
-			return await _slackClient.CreateUserGroupAsync(new UserGroup("Test group", "test-group", channelId));
+			return await _slackClient.CreateUserGroupAsync(new UserGroupToCreate("Test group", "test-group", channelId));
 		}
 		
 		private static async Task<UserGroupActionResponse> DisableUserGroupAsync()
@@ -943,9 +947,23 @@ namespace SlackBot.Samples
 		
 		private static async Task<UserGroupListResponse> GetUserGroupListAsync()
 		{
-			//var createUserGroupResponse = await CreateUserGroupAsync();
+			var createUserGroupResponse = await CreateUserGroupAsync();
 
 			return await _slackClient.UserGroupListAsync(new UserGroupListRequest(true, true, true));
+		}
+		
+		private static async Task<UserGroupActionResponse> UpdateUserGroupAsync()
+		{
+			var createUserGroupResponse = await CreateUserGroupAsync();
+
+			var userGroupToUpdate = new UserGroupToUpdate(createUserGroupResponse.UserGroup.Id)
+			{
+				Name = "New test group",
+				Handle = "new-test-group",
+				Description = "New user group description"
+			};
+
+			return await _slackClient.UpdateUserGroupAsync(userGroupToUpdate);
 		}
 
 		#endregion

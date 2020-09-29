@@ -87,6 +87,7 @@ using SlackBot.Api.Models.UserGroup.Disable.Request;
 using SlackBot.Api.Models.UserGroup.Enable.Request;
 using SlackBot.Api.Models.UserGroup.List.Request;
 using SlackBot.Api.Models.UserGroup.List.Response;
+using SlackBot.Api.Models.UserGroup.Update.Request;
 using SlackBot.Api.Models.UserProfile.Get.Request;
 using SlackBot.Api.Models.UserProfile.Get.Response;
 
@@ -426,8 +427,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Create a User Group.
 		/// </summary>
-		public Task<UserGroupActionResponse> CreateUserGroupAsync(UserGroup userGroup)
-			=> SendPostFormUrlEncodedAsync<UserGroup, UserGroupActionResponse>("usergroups.create", userGroup);
+		public Task<UserGroupActionResponse> CreateUserGroupAsync(UserGroupToCreate userGroup)
+			=> SendPostFormUrlEncodedAsync<UserGroupToCreate, UserGroupActionResponse>("usergroups.create", userGroup);
 
 		/// <summary>
 		/// Disable an existing User Group.
@@ -446,6 +447,12 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<UserGroupListResponse> UserGroupListAsync(UserGroupListRequest userGroupListRequest)
 			=> SendGetAsync<UserGroupListRequest, UserGroupListResponse>("usergroups.list", userGroupListRequest);
+
+		/// <summary>
+		/// Update an existing User Group.
+		/// </summary>
+		public Task<UserGroupActionResponse> UpdateUserGroupAsync(UserGroupToUpdate userGroupToUpdate)
+			=> SendPostFormUrlEncodedAsync<UserGroupToUpdate, UserGroupActionResponse>("usergroups.update", userGroupToUpdate);
 		
 		#endregion
 
