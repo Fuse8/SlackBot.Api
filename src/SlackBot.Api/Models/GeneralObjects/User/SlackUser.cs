@@ -32,7 +32,7 @@ namespace SlackBot.Api.Models.GeneralObjects.User
 		public int TimezoneOffset { get; set; } 
 
 		[JsonProperty("profile")]
-		public UserProfile Profile { get; set; } 
+		public UserProfileInfo Profile { get; set; } 
 
 		[JsonProperty("is_admin")]
 		public bool? IsAdmin { get; set; } 

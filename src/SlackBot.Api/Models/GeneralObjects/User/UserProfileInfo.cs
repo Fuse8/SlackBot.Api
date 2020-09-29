@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace SlackBot.Api.Models.GeneralObjects.User
 {
-	public class UserProfile
+	public class UserProfileInfo
 	{
 		[JsonProperty("title")]
 		public string Title { get; set; } 
@@ -27,7 +28,7 @@ namespace SlackBot.Api.Models.GeneralObjects.User
 		public string DisplayNameNormalized { get; set; }
 
 		[JsonProperty("fields")]
-		public object Fields { get; set; } // TODO Couldn't find a description of this field in the documentation
+		public Dictionary<string, UserProfileField> Fields { get; set; }
 
 		[JsonProperty("status_text")]
 		public string StatusText { get; set; } 
@@ -41,8 +42,14 @@ namespace SlackBot.Api.Models.GeneralObjects.User
 		[JsonProperty("avatar_hash")]
 		public string AvatarHash { get; set; }  
 
+		[JsonProperty("api_app_id")]
+		public string ApiAppId { get; set; }  
+
 		[JsonProperty("always_active")]
 		public bool? IsAlwaysActive { get; set; } 
+
+		[JsonProperty("bot_id")]
+		public string BotId { get; set; } 
 
 		[JsonProperty("first_name")]
 		public string FirstName { get; set; } 

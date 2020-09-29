@@ -58,6 +58,7 @@ using SlackBot.Api.Models.FileRemote.Share.Request;
 using SlackBot.Api.Models.FileRemote.Update.Request;
 using SlackBot.Api.Models.GeneralObjects;
 using SlackBot.Api.Models.GeneralObjects.File;
+using SlackBot.Api.Models.GeneralObjects.User;
 using SlackBot.Api.Models.Pin.Add.Request;
 using SlackBot.Api.Models.Pin.List.Request;
 using SlackBot.Api.Models.Pin.List.Response;
@@ -81,6 +82,8 @@ using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Api.Models.User.LookupByEmail.Request;
 using SlackBot.Api.Models.User.SetPresence.Request;
+using SlackBot.Api.Models.UserProfile.Get.Request;
+using SlackBot.Api.Models.UserProfile.Get.Response;
 
 namespace SlackBot.Api
 {
@@ -450,6 +453,16 @@ namespace SlackBot.Api
 		/// </summary>
 		public Task<SlackBaseResponse> SetUserPresenceAsync(SetUserPresenceRequest setUserPresenceRequest)
 			=> SendPostFormUrlEncodedAsync("users.setPresence", setUserPresenceRequest);
+		
+		#endregion
+
+		#region UserProfile
+
+		/// <summary>
+		/// Retrieves a user's profile information.
+		/// </summary>
+		public Task<UserProfileResponse> UserProfileAsync(UserProfileRequest userProfileRequest)
+			=> SendGetAsync<UserProfileRequest, UserProfileResponse>("users.profile.get", userProfileRequest);
 		
 		#endregion
 	}

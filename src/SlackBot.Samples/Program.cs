@@ -93,6 +93,8 @@ using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Api.Models.User.LookupByEmail.Request;
 using SlackBot.Api.Models.User.SetPresence.Request;
+using SlackBot.Api.Models.UserProfile.Get.Request;
+using SlackBot.Api.Models.UserProfile.Get.Response;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
@@ -313,6 +315,9 @@ namespace SlackBot.Samples
 			var setUserPresenceResponse = await SetUserPresenceAsync();/**/
 			
 			#endregion
+
+			/* Gets user profile * /
+			var getUserProfileResponse = await GetUserProfileAsync();/**/
 		}
 
 		#region Bot
@@ -913,6 +918,13 @@ namespace SlackBot.Samples
 		private static Task<SlackBaseResponse> SetUserPresenceAsync()
 			=> _slackClient.SetUserPresenceAsync(new SetUserPresenceRequest("auto"));
 		
+		#endregion
+
+		#region UserProfile
+
+		private static Task<UserProfileResponse> GetUserProfileAsync()
+			=> _slackClient.UserProfileAsync(new UserProfileRequest(_slackBotSettings.UserId, true));
+
 		#endregion
 
 		private static BlockBase[] GenerateBlocksForMessage()
