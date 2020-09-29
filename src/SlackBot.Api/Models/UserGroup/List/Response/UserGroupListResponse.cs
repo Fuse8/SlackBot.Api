@@ -8,6 +8,6 @@ namespace SlackBot.Api.Models.UserGroup.List.Response
 	public class UserGroupListResponse : SlackBaseResponse
 	{
 		[JsonProperty("usergroups")]
-		public List<UserGroupResponse> UserGroups { get; set; }
+		public List<UserGroupObject> UserGroups { get; set; }
 	}
 }
