@@ -30,14 +30,12 @@ namespace SlackBot.Api.Models.UserGroup.Create.Request
 		[FormPropertyName("channels")]
 		public string ChannelIds { get; set; }
 
-
 		/// <summary>
 		/// A short description of the User Group.
 		/// </summary>
 		/// <example>Short description</example>
 		[FormPropertyName("description")]
 		public string Description { get; set; }
-
 
 		/// <summary>
 		/// A mention handle. Must be unique among channels, users and User Groups.
@@ -46,12 +44,11 @@ namespace SlackBot.Api.Models.UserGroup.Create.Request
 		[FormPropertyName("handle")]
 		public string Handle { get; set; }
 
-
 		/// <summary>
 		/// Include the number of users in each User Group.
 		/// </summary>
 		/// <example>true</example>
 		[FormPropertyName("include_count")]
-		public bool? IncludeCount { get; set; }
+		public bool? IncludeUserCount { get; set; }
 	}
 }

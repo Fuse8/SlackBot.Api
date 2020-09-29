@@ -97,6 +97,7 @@ using SlackBot.Api.Models.User.LookupByEmail.Request;
 using SlackBot.Api.Models.User.SetPresence.Request;
 using SlackBot.Api.Models.UserGroup;
 using SlackBot.Api.Models.UserGroup.Create.Request;
+using SlackBot.Api.Models.UserGroup.Disable.Request;
 using SlackBot.Api.Models.UserProfile.Get.Request;
 using SlackBot.Api.Models.UserProfile.Get.Response;
 using SlackBot.Samples.Configurations;
@@ -302,6 +303,9 @@ namespace SlackBot.Samples
 			
 			/* Creates user group * /
 			var createUserGroupResponse = await CreateUserGroupAsync();/**/
+			
+			/* Disables user group */
+			var disableUserGroupResponse = await DisableUserGroupAsync();/**/
 
 			#endregion
 
@@ -912,6 +916,13 @@ namespace SlackBot.Samples
 			var channelId = await GetChannelIdAsync();
 
 			return await _slackClient.CreateUserGroupAsync(new UserGroup("Test group", "test-group", channelId));
+		}
+		
+		private static async Task<UserGroupActionResponse> DisableUserGroupAsync()
+		{
+			var createUserGroupResponse = await CreateUserGroupAsync();
+
+			return await _slackClient.DisableUserGroupAsync(new UserGroupToDisable(createUserGroupResponse.UserGroup.Id));
 		}
 
 		#endregion
