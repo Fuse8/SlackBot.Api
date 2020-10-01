@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using Moq;
 using Moq.Protected;
-using SlackBot.Api;
+using SlackBot.Api.Clients;
 
 namespace SlackBot.Tests.Helpers
 {

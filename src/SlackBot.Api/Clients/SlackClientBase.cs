@@ -8,23 +8,18 @@ using SlackBot.Api.Extensions;
 using SlackBot.Api.Helpers;
 using SlackBot.Api.Models.GeneralObjects;
 
-namespace SlackBot.Api
+namespace SlackBot.Api.Clients
 {
-    public abstract class SlackClientBase : IDisposable
+    public abstract class SlackClientBase : DisposableObjectBase
     {
         private readonly HttpClient _httpClient;
-        private bool _disposed;
         
         protected SlackClientBase(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
         
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        protected abstract string ObjectPath { get; }
 
         protected Task<SlackBaseResponse> SendPostJsonStringAsync<TRequest>(string path, TRequest request)
             where TRequest : class
@@ -34,11 +29,11 @@ namespace SlackBot.Api
             where TRequest : class 
             where TResponse : SlackBaseResponse 
             => SendPostAsync<TRequest, TResponse>(path, request, HttpContentHelper.GetJsonStringContent);
-        
+
         protected Task<SlackBaseResponse> SendPostFormUrlEncodedAsync<TRequest>(string path, TRequest request)
             where TRequest : class
-            => SendPostFormUrlEncodedAsync<TRequest, SlackBaseResponse>(path, request); 
-        
+            => SendPostFormUrlEncodedAsync<TRequest, SlackBaseResponse>(path, request);
+
         protected Task<TResponse> SendPostFormUrlEncodedAsync<TRequest, TResponse>(string path, TRequest request)
             where TRequest : class 
             where TResponse : SlackBaseResponse 
@@ -48,7 +43,7 @@ namespace SlackBot.Api
             where TRequest : class 
             where TResponse : SlackBaseResponse 
             => SendPostAsync<TRequest, TResponse>(path, request, HttpContentHelper.GetMultipartForm);
-        
+
         protected Task<TResponse> SendGetAsync<TRequest, TResponse>(string path, TRequest request)
             where TResponse : SlackBaseResponse
             where TRequest : class
@@ -62,17 +57,20 @@ namespace SlackBot.Api
         protected async Task<TResponse> SendGetAsync<TResponse>(string path)
             where TResponse : SlackBaseResponse
         {
-            var response = await _httpClient.GetAsync(path); 
+            var response = await _httpClient.GetAsync(BuildPath(path)); 
             var slackApiResponse = await ParseResponseAsync<TResponse>(response);
             
             return slackApiResponse;
         }
 
+        protected override void DisposeObjects()
+            => _httpClient?.Dispose();
+
         private async Task<TResponse> SendPostAsync<TRequest, TResponse>(string path, TRequest request, Func<TRequest, HttpContent> getHttpContext)
             where TResponse : SlackBaseResponse
         {
             var httpContext = getHttpContext(request);
-            var response = await _httpClient.PostAsync(path, httpContext);
+            var response = await _httpClient.PostAsync(BuildPath(path), httpContext);
             var slackApiResponse = await ParseResponseAsync<TResponse>(response);
             
             return slackApiResponse;
@@ -91,17 +89,7 @@ namespace SlackBot.Api
             return slackApiResponse;
         }
 
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _httpClient?.Dispose();
-                }
-                
-                _disposed = true;
-            }
-        }
+        private string BuildPath(string path)
+            => $"{ObjectPath}.{path}";
     }
 }

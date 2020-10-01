@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using SlackBot.Api;
+using SlackBot.Api.Clients;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Extensions;
 using SlackBot.Api.Models.Bot.Info.Request;
@@ -95,7 +95,6 @@ using SlackBot.Api.Models.User.List.Request;
 using SlackBot.Api.Models.User.List.Response;
 using SlackBot.Api.Models.User.LookupByEmail.Request;
 using SlackBot.Api.Models.User.SetPresence.Request;
-using SlackBot.Api.Models.UserGroup;
 using SlackBot.Api.Models.UserGroup.Create.Request;
 using SlackBot.Api.Models.UserGroup.Disable.Request;
 using SlackBot.Api.Models.UserGroup.Enable.Request;
@@ -365,10 +364,9 @@ namespace SlackBot.Samples
 
 		private static async Task<BotInfoResponse> GetBotInfoAsync()
 		{
-			var message = new Message(_slackBotSettings.ChannelName, $"{nameof(GetBotInfoAsync)} method");
-			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(GetBotInfoAsync));
 			
-			return await _slackClient.GetBotInfoAsync(new BotInfoRequest(sendMessageResponse.Message.BotId));
+			return await _slackClient.Bots.InfoAsync(new BotInfoRequest(sendMessageResponse.Message.BotId));
 		}
 		
 		#endregion
@@ -376,26 +374,26 @@ namespace SlackBot.Samples
 		#region Emoji
 
 		private static async Task<EmojiListResponse> GetEmojiListAsync()
-			=> await _slackClient.EmojiListAsync();
+			=> await _slackClient.Emoji.ListAsync();
 
 		#endregion
 
 		#region File
 		
-		private static async Task<SlackFileResponse> UploadContentAsync()
+		private static async Task<SlackFileResponse> UploadContentAsync(string title = "Title")
 		{
 			var content = await File.ReadAllTextAsync("./appsettings.json");
 			var contentMessage = new ContentToUpload
 			{
 				Comment = $"{nameof(UploadContentAsync)} method",
-				Title = "Title",
+				Title = title,
 				Channels = _slackBotSettings.ChannelName,
 				Content = content,
 				Filename = "appsettings.json",
 				FileType = "javascript",
 			};
 
-			return await _slackClient.UploadContentAsync(contentMessage);
+			return await _slackClient.Files.UploadContentAsync(contentMessage);
 		}
 
 		private static async Task<SlackFileResponse> UploadFileAsync()
@@ -408,21 +406,21 @@ namespace SlackBot.Samples
 				Comment = $"{nameof(UploadFileAsync)} method"
 			};
 
-			return await _slackClient.UploadFileAsync(fileMessage);
+			return await _slackClient.Files.UploadFileAsync(fileMessage);
 		}
 
 		private static async Task<SlackBaseResponse> DeleteFileAsync()
 		{
 			var uploadFileResponse = await UploadFileAsync();
 			
-			return await _slackClient.DeleteFileAsync(new FileToDelete(uploadFileResponse.File.Id));
+			return await _slackClient.Files.DeleteAsync(new FileToDelete(uploadFileResponse.File.Id));
 		}
 
 		private static async Task<FileInfoResponse> GetFileInfoAsync()
 		{
 			var uploadFileResponse = await UploadFileAsync();
 			
-			return await _slackClient.GetFileInfoAsync(new FileInfoRequest(uploadFileResponse.File.Id));
+			return await _slackClient.Files.InfoAsync(new FileInfoRequest(uploadFileResponse.File.Id));
 		}
 
 		private static async Task<FileListResponse> GetFileListAsync()
@@ -440,7 +438,7 @@ namespace SlackBot.Samples
 				TimestampFrom = firstFile.CreatedTimestamp.ToString(),
 			};
 
-			return await _slackClient.GetFileListAsync(fileListRequest);
+			return await _slackClient.Files.ListAsync(fileListRequest);
 		}
 		
 		#endregion
@@ -457,14 +455,14 @@ namespace SlackBot.Samples
 				FileType = "jpg",
 			};
 
-			return _slackClient.AddRemoteFileAsync(remoteFile);
+			return _slackClient.FilesRemote.AddAsync(remoteFile);
 		}
 
 		private static async Task<SlackFileResponse> GetRemoteFileInfoAsync()
 		{
 			var addRemoteFileResponse = await AddRemoteFileAsync();
 
-			return await _slackClient.RemoteFileInfoAsync(new RemoteFileInfoRequest(addRemoteFileResponse.File.Id));
+			return await _slackClient.FilesRemote.InfoAsync(new RemoteFileInfoRequest(addRemoteFileResponse.File.Id));
 		}
 
 		private static async Task<RemoteFileListResponse> GetRemoteFileListAsync()
@@ -474,14 +472,14 @@ namespace SlackBot.Samples
 			// Because of slack cache... Files upload instantly, but they return in method "files.remote.list" with delay
 			await Task.Delay(30000);
 
-			return await _slackClient.RemoteFileListAsync(new RemoteFileListRequest());
+			return await _slackClient.FilesRemote.ListAsync(new RemoteFileListRequest());
 		}
 
 		private static async Task<SlackBaseResponse> RemoveRemoteFileAsync()
 		{
 			var addRemoteFileResponse = await AddRemoteFileAsync();
 
-			return await _slackClient.RemoveRemoteFileAsync(new RemoteFileToRemove(addRemoteFileResponse.File.Id));
+			return await _slackClient.FilesRemote.RemoveAsync(new RemoteFileToRemove(addRemoteFileResponse.File.Id));
 		}
 
 		private static async Task<SlackFileResponse> ShareRemoteFileAsync()
@@ -490,7 +488,7 @@ namespace SlackBot.Samples
 			
 			var channelId = await GetChannelIdAsync();
 
-			return await _slackClient.ShareRemoteFileAsync(new RemoteFileToShare(channelId, addRemoteFileResponse.File.Id));
+			return await _slackClient.FilesRemote.ShareAsync(new RemoteFileToShare(channelId, addRemoteFileResponse.File.Id));
 		}
 
 		private static async Task<SlackFileResponse> UpdateRemoteFileAsync()
@@ -503,7 +501,7 @@ namespace SlackBot.Samples
 				Title = "New title"
 			};
 
-			return await _slackClient.UpdateRemoteFileAsync(remoteFileToUpdate);
+			return await _slackClient.FilesRemote.UpdateAsync(remoteFileToUpdate);
 		}
 
 		#endregion
@@ -529,27 +527,14 @@ namespace SlackBot.Samples
 				},
 			};
 
-			return _slackClient.SendMessageAsync(message);
+			return _slackClient.Chat.PostMessageAsync(message);
 		}
 
 		private static async Task<SendMessageResponse> SendMessageWithMultipleFilesAsync()
 		{
-			var content = await File.ReadAllTextAsync("./appsettings.json");
+			var firstFile = await UploadContentAsync("File1");
 
-			// Upload files without Channel
-			var contentMessage = new ContentToUpload
-			{
-				Comment = "Upload content",
-				Title = "File1",
-				Content = content,
-				Filename = "appsettings.json",
-				FileType = "javascript",
-			};
-
-			var firstFile = await _slackClient.UploadContentAsync(contentMessage);
-
-			contentMessage.Title = "File2";
-			var secondFile = await _slackClient.UploadContentAsync(contentMessage);
+			var secondFile = await UploadContentAsync("File2");
 
 			var message = new Message
 			{
@@ -567,7 +552,7 @@ namespace SlackBot.Samples
 				},
 			};
 
-			return await _slackClient.SendMessageAsync(message);
+			return await _slackClient.Chat.PostMessageAsync(message);
 		}
 
 		private static Task<SendEphemeralMessageResponse> SendEphemeralMessageAsync()
@@ -579,14 +564,14 @@ namespace SlackBot.Samples
 				Text = $"{nameof(SendEphemeralMessageAsync)} method"
 			};
 
-			return _slackClient.SendEphemeralMessageAsync(ephemeralMessage);
+			return _slackClient.Chat.PostEphemeralAsync(ephemeralMessage);
 		}
 		
 		private static async Task<DeletedMessageResponse> DeleteMessageAsync()
 		{
 			var sendMessageResponse = await SendSimpleMessageAsync(nameof(DeleteMessageAsync));
 
-			return await _slackClient.DeleteMessageAsync(new MessageToDelete(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
+			return await _slackClient.Chat.DeleteAsync(new MessageToDelete(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
 		}
 
 		private static Task<ScheduleMessageResponse> ScheduleMessageAsync(int minutesToSchedule = 1)
@@ -602,7 +587,7 @@ namespace SlackBot.Samples
 				PostAt = UnixTimeHelper.ToUnixTime(scheduledDateTime)
 			};
 
-			return _slackClient.ScheduleMessageAsync(scheduledMessage);
+			return _slackClient.Chat.ScheduleMessageAsync(scheduledMessage);
 		}
 		
 		private static async Task<ScheduledMessageListResponse> GetScheduledMessagesAsync()
@@ -611,29 +596,28 @@ namespace SlackBot.Samples
 			var scheduleMessage1 = await ScheduleMessageAsync(MinutesToSchedule);
 			var scheduleMessage2 = await ScheduleMessageAsync(MinutesToSchedule);
 
-			return await _slackClient.GetScheduledMessagesAsync(new ScheduledMessageListRequest(scheduleMessage2?.ChannelId));
+			return await _slackClient.Chat.ScheduledMessagesListAsync(new ScheduledMessageListRequest(scheduleMessage2?.ChannelId));
 		}
 		
 		private static async Task<SlackBaseResponse> DeleteScheduledMessageAsync()
 		{
 			var scheduleMessageResponse = await ScheduleMessageAsync(2);
 
-			return await _slackClient.DeleteScheduledMessageAsync(new ScheduledMessageToDelete(scheduleMessageResponse.ChannelId, scheduleMessageResponse.ScheduledMessageId));
+			return await _slackClient.Chat.DeleteScheduledMessageAsync(new ScheduledMessageToDelete(scheduleMessageResponse.ChannelId, scheduleMessageResponse.ScheduledMessageId));
 		}
 		
 		private static async Task<MessagePermalinkResponse> GetMessagePermalinkAsync()
 		{
 			var sendMessageResponse = await SendSimpleMessageAsync(nameof(GetMessagePermalinkAsync));
 
-			return await _slackClient.GetMessagePermalinkAsync(new MessagePermalinkRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
+			return await _slackClient.Chat.GetPermalinkAsync(new MessageToGetPermalink(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
 		}
 		
 		private static async Task<UpdateMessageResponse> UpdateMessageAsync()
 		{
-			var message = new Message(_slackBotSettings.ChannelName, "Not updated text");
-			var sendMessageResponse = await _slackClient.SendMessageAsync(message);
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(UpdateMessageAsync));
 			
-			return await _slackClient.UpdateMessageAsync(new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText"));
+			return await _slackClient.Chat.UpdateAsync(new MessageToUpdate(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, "UpdatedText"));
 		}
         
 		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod, string channelId = null, string threadTimestamp = null)
@@ -645,398 +629,8 @@ namespace SlackBot.Samples
 				ThreadTimestamp = threadTimestamp
 			};
 
-			return _slackClient.SendMessageAsync(message);
+			return _slackClient.Chat.PostMessageAsync(message);
 		}
-		
-		#endregion
-
-		#region Conversation
-
-		private static async Task<SlackBaseResponse> ArchiveConversationAsync(string conversationId = null)
-        {
-	        var channelId = conversationId ?? await GetChannelIdAsync();
-
-	        return await _slackClient.ArchiveConversationAsync(new ConversationToArchive(channelId));
-        }
-
-		private static async Task<ClosedConversationResponse> CloseConversationAsync()
-		{
-			var openConversationResponse = await OpenConversationAsync();
-			
-			return await _slackClient.CloseConversationAsync(new ConversationToClose(openConversationResponse.Channel.Id));
-		}
-
-		private static async Task<ConversationResponse> CreateChannelAsync()
-		{
-			var (createChannelResponse, _) = await CreateChannelAndInviteAsync();
-
-			return createChannelResponse;
-		}
-
-		private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
-        {
-	        var channelId = await GetChannelIdAsync();
-
-	        return await _slackClient.ConversationsHistoryAsync(new ConversationsHistory(channelId, 1000));
-        }
-
-		private static async Task<ConversationResponse> GetConversationInfoAsync()
-        {
-	        var channelId = await GetChannelIdAsync();
-
-	        return await _slackClient.ConversationInfoAsync(new ConversationToGetInfo(channelId, true, true));
-        }
-
-		private static async Task<ConversationResponse> InviteToConversationAsync()
-        {
-			var (_, inviteToConversationResponse) = await CreateChannelAndInviteAsync();
-
-			return inviteToConversationResponse;
-        }
-
-		private static async Task<ConversationResponse> JoinToConversationAsync()
-        {
-			var (channelId, _) = await TryCreateChannelAsync();
-
-			return await _slackClient.JoinToConversationAsync(new ConversationToJoin(channelId));
-        }
-
-		private static async Task<SlackBaseResponse> KickFromConversationAsync()
-        {
-			var (channelId, _) = await TryCreateChannelAsync();
-			
-			var userId = _slackBotSettings.UserId;
-			await TryInviteToConversationAsync(channelId, userId);
-
-			return await _slackClient.KickFromConversationAsync(new KickFromConversationRequest(channelId, userId)); // TODO returns error "restricted_action" 
-        }
-
-		private static async Task<LeaveConversationResponse> LeaveConversationAsync()
-        {
-			var channelId = await GetChannelIdAsync();
-
-			return await _slackClient.LeaveConversationAsync(new ConversationToLeave(channelId));
-        }
-
-		private static async Task<ConversationListResponse> GetConversationListAsync()
-			=> await _slackClient.ConversationListAsync(new ConversationListRequest("public_channel,private_channel,mpim,im", limit: 1000));
-
-		private static async Task<ConversationMembersResponse> GetConversationMembersAsync()
-		{
-			var channelId = await GetChannelIdAsync();
-			
-			return await _slackClient.ConversationMembersAsync(new ConversationMembersRequest(channelId));
-		}
-
-		private static async Task<OpenedConversationResponse> OpenConversationAsync()
-        {
-			var openedConversationResponse = await _slackClient.OpenConversationAsync(new ConversationToOpen(_slackBotSettings.UserId, true));
-			
-			await SendSimpleMessageAsync(nameof(OpenConversationAsync), openedConversationResponse.Channel.Id);
-
-			return openedConversationResponse;
-		}
-
-		private static async Task<ConversationResponse> RenameConversationAsync()
-		{
-			var (channelId, channelName) = await TryCreateChannelAsync();
-
-			var renameConversationResponse = await _slackClient.RenameConversationAsync(new ConversationToRename(channelId, $"{channelName}-new-name"));
-			
-			await _slackClient.RenameConversationAsync(new ConversationToRename(channelId, channelName));
-
-			return renameConversationResponse;
-		}
-
-		private static async Task<ConversationRepliesResponse> GetConversationRepliesAsync()
-		{
-			var channelId = await GetChannelIdAsync();
-
-			var parentMessage = await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId);
-
-			var parentMessageTimestamp = parentMessage.Timestamp;
-			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
-			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
-
-			return await _slackClient.ConversationRepliesAsync(new ConversationRepliesRequest(channelId, parentMessageTimestamp));
-		}
-
-		private static async Task<ConversationResponse> SetConversationPurposeAsync()
-		{
-			var channelId = await GetChannelIdAsync();
-
-			return await _slackClient.SetConversationPurposeAsync(new ConversationPurposeRequest(channelId, "new purpose"));
-		}
-
-		private static async Task<ConversationResponse> SetConversationTopicAsync()
-		{
-			var channelId = await GetChannelIdAsync();
-
-			return await _slackClient.SetConversationTopicAsync(new ConversationTopicRequest(channelId, "new topic"));
-		}
-
-		private static async Task<SlackBaseResponse> UnarchiveConversationAsync()
-        {
-	        var channelId = await GetChannelIdAsync();
-
-			await ArchiveConversationAsync(channelId);
-
-			return await _slackClient.UnarchiveConversationAsync(new ConversationToUnarchive(channelId));
-        }
-
-		private static async Task<(string ChannelId, string ChannelName)> TryCreateChannelAsync()
-		{
-			string channelId;
-			const string ChannelName = NewChannelName;
-
-			try
-			{
-				var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(ChannelName));
-				channelId = createChannelResponse.Channel.Id;
-			}
-			catch (SlackApiResponseException e) when (e.Error == "name_taken")
-			{
-				channelId = await GetChannelIdAsync(ChannelName);
-			}
-
-			return (channelId, ChannelName);
-		}
-
-		private static async Task<(ConversationResponse CreateChannelResponse, ConversationResponse InviteToConversationResponse)> CreateChannelAndInviteAsync()
-		{
-			var createChannelResponse = await _slackClient.CreateChannelAsync(new ChannelToCreate(NewChannelName));
-
-			var inviteToConversationResponse = await InviteToConversationInternalAsync(createChannelResponse.Channel.Id, _slackBotSettings.UserId);
-
-			return (createChannelResponse, inviteToConversationResponse);
-		}
-
-		private static async Task TryInviteToConversationAsync(string channelId, string userIds)
-		{
-			try
-			{
-				await InviteToConversationInternalAsync(channelId, userIds);
-			}
-			catch (SlackApiResponseException e) when (e.Error == "already_in_channel")
-			{
-			}
-		}
-
-		private static Task<ConversationResponse> InviteToConversationInternalAsync(string channelId, string userIds)
-			=> _slackClient.InviteToConversationAsync(new ConversationToInvite(channelId, userIds));
-
-		private static async Task<string> GetChannelIdAsync(string channelName = null)
-        {
-			var conversationsHistoryResponse = await GetConversationListAsync();
-			
-			channelName ??= _slackBotSettings.ChannelName;
-	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == channelName)?.Id;
-
-	        return channelId;
-		}
-		
-		#endregion
-
-		#region Pin
-
-		private static async Task<SlackBaseResponse> PinMessageAsync()
-		{
-			var (pinResponse, _) = await PinMessageInternalAsync();
-
-			return pinResponse;
-		}
-		
-		private static async Task<PinListResponse> GetPinListAsync()
-		{
-			var (_, sendMessageResponse) = await PinMessageInternalAsync();
-			await PinMessageInternalAsync();
-
-			return await _slackClient.GetPinListAsync(new PinListRequest(sendMessageResponse.ChannelId));
-		}
-
-		private static async Task<SlackBaseResponse> RemovePinAsync()
-		{
-			var (_, sendMessageResponse) = await PinMessageInternalAsync();
-			
-			return await _slackClient.RemovePinAsync(new PinItemToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
-		}
-
-		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
-		{
-			var sendMessageResponse = await SendSimpleMessageAsync(nameof(PinMessageInternalAsync));
-
-			var pinItem = new PinItem(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
-			var pinMessageResponse = await _slackClient.PinMessageAsync(pinItem);
-
-			return (pinMessageResponse, sendMessageResponse);
-		}
-		
-		#endregion
-
-		#region Reaction
-
-		private static async Task<SlackBaseResponse> AddReactionAsync()
-		{
-			var (addReactionResponse, _) = await AddReactionInternalAsync();
-
-			return addReactionResponse;
-		}
-		
-		private static async Task<ReactionsByItemResponse> GetReactionsByItemAsync()
-		{
-			var (_, sendMessageResponse) = await AddReactionInternalAsync();
-			await AddReactionToMessageAsync(sendMessageResponse, "smile");
-
-			return await _slackClient.GetReactionsByItemAsync(new ReactionsByItemRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
-		}
-		
-		private static async Task<ReactionsByUserResponse> GetReactionsByUserAsync()
-		{
-			var (_, sendMessageResponse) = await AddReactionInternalAsync();
-			await AddReactionToMessageAsync(sendMessageResponse, "smile");
-
-			return await _slackClient.GetReactionsByUserAsync(new ReactionsByUserRequest());
-		}
-		
-		private static async Task<SlackBaseResponse> RemoveReactionAsync()
-		{
-			const string EmojiName = "grin";
-			var (_, sendMessageResponse) = await AddReactionInternalAsync(EmojiName);
-			
-			return await _slackClient.RemoveReactionAsync(new ReactionToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, EmojiName));
-		}
-
-		private static async Task<(SlackBaseResponse AddReactionResponse, SendMessageResponse SendMessageResponse)> AddReactionInternalAsync(
-			string emojiName = "+1")
-		{
-			var sendMessageResponse = await SendSimpleMessageAsync(nameof(AddReactionAsync));
-
-			var addReactionResponse = await AddReactionToMessageAsync(sendMessageResponse, emojiName);
-
-			return (addReactionResponse, sendMessageResponse);
-		}
-
-		private static Task<SlackBaseResponse> AddReactionToMessageAsync(SendMessageResponse sendMessageResponse, string emojiName)
-			=> _slackClient.AddReactionAsync(new Reaction(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, emojiName));
-
-		#endregion
-
-		#region Team
-		
-		private static Task<TeamInfoResponse> GetTeamInfoAsync()
-			=> _slackClient.TeamInfoAsync(new TeamInfoRequest());
-
-		#endregion
-
-		#region TeamProfile
-		
-		private static Task<TeamProfileResponse> GetTeamProfileAsync()
-			=> _slackClient.TeamProfileAsync(new TeamProfileRequest(TeamFieldVisibilityType.Visible));
-
-		#endregion
-
-		#region UserGroup
-		
-		private static async Task<UserGroupResponse> CreateUserGroupAsync()
-		{
-			var channelId = await GetChannelIdAsync();
-
-			return await _slackClient.CreateUserGroupAsync(new UserGroupToCreate("Test group", "test-group", channelId));
-		}
-		
-		private static async Task<UserGroupResponse> DisableUserGroupAsync()
-		{
-			var createUserGroupResponse = await CreateUserGroupAsync();
-
-			return await _slackClient.DisableUserGroupAsync(new UserGroupToDisable(createUserGroupResponse.UserGroup.Id));
-		}
-		
-		private static async Task<UserGroupResponse> EnableUserGroupAsync()
-		{
-			var disableUserGroupResponse = await DisableUserGroupAsync();
-
-			return await _slackClient.EnableUserGroupAsync(new UserGroupToEnable(disableUserGroupResponse.UserGroup.Id));
-		}
-		
-		private static async Task<UserGroupListResponse> GetUserGroupListAsync()
-		{
-			var createUserGroupResponse = await CreateUserGroupAsync();
-
-			return await _slackClient.UserGroupListAsync(new UserGroupListRequest(true, true, true));
-		}
-		
-		private static async Task<UserGroupResponse> UpdateUserGroupAsync()
-		{
-			var createUserGroupResponse = await CreateUserGroupAsync();
-
-			var userGroupToUpdate = new UserGroupToUpdate(createUserGroupResponse.UserGroup.Id)
-			{
-				Name = "New test group",
-				Handle = "new-test-group",
-				Description = "New user group description"
-			};
-
-			return await _slackClient.UpdateUserGroupAsync(userGroupToUpdate);
-		}
-
-		#endregion
-
-		#region UserGroupUser
-		
-		private static async Task<UserGroupUserListResponse> GetUserGroupUserListAsync()
-		{
-			var updateUsersInUserGroupResponse = await UpdateUsersInUserGroupAsync();
-
-			return await _slackClient.UserGroupUserListAsync(new UserGroupUserListRequest(updateUsersInUserGroupResponse.UserGroup.Id));
-		}
-		
-		private static async Task<UserGroupResponse> UpdateUsersInUserGroupAsync()
-		{
-			var createUserGroupResponse = await CreateUserGroupAsync();
-
-			var updateUsersInUserGroupRequest = new UpdateUsersInUserGroupRequest
-			{
-				UserGroupId = createUserGroupResponse.UserGroup.Id,
-				UserIds = _slackBotSettings.UserId
-			};
-
-			return await _slackClient.UpdateUsersInUserGroupAsync(updateUsersInUserGroupRequest);
-		}
-
-		#endregion
-
-		#region User
-
-		private static Task<ConversationListResponse> GetUserConversationsAsync()
-			=> _slackClient.UserConversationsAsync(new UserConversations("public_channel,private_channel,mpim,im"));
-
-		private static Task<UserPresenceResponse> GetUserPresenceAsync()
-			=> _slackClient.UserPresenceAsync(new UserPresenceRequest(_slackBotSettings.UserId));
-
-		private static Task<UserResponse> GetUserInfoAsync()
-			=> _slackClient.UserInfoAsync(new UserToGetInfo(_slackBotSettings.UserId));
-
-		private static Task<UserListResponse> GetUserListAsync()
-			=> _slackClient.UserListAsync(new UserListRequest());
-
-		private static async Task<UserResponse> GetUserByEmailAsync()
-		{
-			var userInfoResponse = await GetUserInfoAsync();
-			
-			return await _slackClient.UserByEmailAsync(new UserByEmailRequest(userInfoResponse.User.Profile.Email));
-		}
-
-		private static Task<SlackBaseResponse> SetUserPresenceAsync()
-			=> _slackClient.SetUserPresenceAsync(new SetUserPresenceRequest("auto"));
-		
-		#endregion
-
-		#region UserProfile
-
-		private static Task<UserProfileResponse> GetUserProfileAsync()
-			=> _slackClient.UserProfileAsync(new UserProfileRequest(_slackBotSettings.UserId, true));
-
-		#endregion
 
 		private static List<BlockBase> GenerateBlocksForMessage()
 		{
@@ -1114,6 +708,396 @@ namespace SlackBot.Samples
 			};
 			return blocks;
 		}
+		
+		#endregion
+
+		#region Conversation
+
+		private static async Task<SlackBaseResponse> ArchiveConversationAsync(string conversationId = null)
+        {
+	        var channelId = conversationId ?? await GetChannelIdAsync();
+
+	        return await _slackClient.Conversations.ArchiveAsync(new ConversationToArchive(channelId));
+        }
+
+		private static async Task<ClosedConversationResponse> CloseConversationAsync()
+		{
+			var openConversationResponse = await OpenConversationAsync();
+			
+			return await _slackClient.Conversations.CloseAsync(new ConversationToClose(openConversationResponse.Channel.Id));
+		}
+
+		private static async Task<ConversationResponse> CreateChannelAsync()
+		{
+			var (createChannelResponse, _) = await CreateChannelAndInviteAsync();
+
+			return createChannelResponse;
+		}
+
+		private static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+	        return await _slackClient.Conversations.HistoryAsync(new ConversationsHistory(channelId, 1000));
+        }
+
+		private static async Task<ConversationResponse> GetConversationInfoAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+	        return await _slackClient.Conversations.InfoAsync(new ConversationToGetInfo(channelId, true, true));
+        }
+
+		private static async Task<ConversationResponse> InviteToConversationAsync()
+        {
+			var (_, inviteToConversationResponse) = await CreateChannelAndInviteAsync();
+
+			return inviteToConversationResponse;
+        }
+
+		private static async Task<ConversationResponse> JoinToConversationAsync()
+        {
+			var (channelId, _) = await TryCreateChannelAsync();
+
+			return await _slackClient.Conversations.JoinAsync(new ConversationToJoin(channelId));
+        }
+
+		private static async Task<SlackBaseResponse> KickFromConversationAsync()
+        {
+			var (channelId, _) = await TryCreateChannelAsync();
+			
+			var userId = _slackBotSettings.UserId;
+			await TryInviteToConversationAsync(channelId, userId);
+
+			return await _slackClient.Conversations.KickAsync(new KickFromConversationRequest(channelId, userId)); // TODO returns error "restricted_action" 
+        }
+
+		private static async Task<LeaveConversationResponse> LeaveConversationAsync()
+        {
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.Conversations.LeaveAsync(new ConversationToLeave(channelId));
+        }
+
+		private static async Task<ConversationListResponse> GetConversationListAsync()
+			=> await _slackClient.Conversations.ListAsync(new ConversationListRequest("public_channel,private_channel,mpim,im", limit: 1000));
+
+		private static async Task<ConversationMembersResponse> GetConversationMembersAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+			
+			return await _slackClient.Conversations.MembersAsync(new ConversationMembersRequest(channelId));
+		}
+
+		private static async Task<OpenedConversationResponse> OpenConversationAsync()
+        {
+			var openedConversationResponse = await _slackClient.Conversations.OpenAsync(new ConversationToOpen(_slackBotSettings.UserId, true));
+			
+			await SendSimpleMessageAsync(nameof(OpenConversationAsync), openedConversationResponse.Channel.Id);
+
+			return openedConversationResponse;
+		}
+
+		private static async Task<ConversationResponse> RenameConversationAsync()
+		{
+			var (channelId, channelName) = await TryCreateChannelAsync();
+
+			var renameConversationResponse = await _slackClient.Conversations.RenameAsync(new ConversationToRename(channelId, $"{channelName}-new-name"));
+			
+			await _slackClient.Conversations.RenameAsync(new ConversationToRename(channelId, channelName));
+
+			return renameConversationResponse;
+		}
+
+		private static async Task<ConversationRepliesResponse> GetConversationRepliesAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			var parentMessage = await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId);
+
+			var parentMessageTimestamp = parentMessage.Timestamp;
+			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
+			await SendSimpleMessageAsync(nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
+
+			return await _slackClient.Conversations.RepliesAsync(new ConversationRepliesRequest(channelId, parentMessageTimestamp));
+		}
+
+		private static async Task<ConversationResponse> SetConversationPurposeAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.Conversations.SetPurposeAsync(new ConversationPurposeRequest(channelId, "new purpose"));
+		}
+
+		private static async Task<ConversationResponse> SetConversationTopicAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.Conversations.SetTopicAsync(new ConversationTopicRequest(channelId, "new topic"));
+		}
+
+		private static async Task<SlackBaseResponse> UnarchiveConversationAsync()
+        {
+	        var channelId = await GetChannelIdAsync();
+
+			await ArchiveConversationAsync(channelId);
+
+			return await _slackClient.Conversations.UnarchiveAsync(new ConversationToUnarchive(channelId));
+        }
+
+		private static async Task<(string ChannelId, string ChannelName)> TryCreateChannelAsync()
+		{
+			string channelId;
+			const string ChannelName = NewChannelName;
+
+			try
+			{
+				var createChannelResponse = await _slackClient.Conversations.CreateAsync(new ChannelToCreate(ChannelName));
+				channelId = createChannelResponse.Channel.Id;
+			}
+			catch (SlackApiResponseException e) when (e.Error == "name_taken")
+			{
+				channelId = await GetChannelIdAsync(ChannelName);
+			}
+
+			return (channelId, ChannelName);
+		}
+
+		private static async Task<(ConversationResponse CreateChannelResponse, ConversationResponse InviteToConversationResponse)> CreateChannelAndInviteAsync()
+		{
+			var createChannelResponse = await _slackClient.Conversations.CreateAsync(new ChannelToCreate(NewChannelName));
+
+			var inviteToConversationResponse = await InviteToConversationInternalAsync(createChannelResponse.Channel.Id, _slackBotSettings.UserId);
+
+			return (createChannelResponse, inviteToConversationResponse);
+		}
+
+		private static async Task TryInviteToConversationAsync(string channelId, string userIds)
+		{
+			try
+			{
+				await InviteToConversationInternalAsync(channelId, userIds);
+			}
+			catch (SlackApiResponseException e) when (e.Error == "already_in_channel")
+			{
+			}
+		}
+
+		private static Task<ConversationResponse> InviteToConversationInternalAsync(string channelId, string userIds)
+			=> _slackClient.Conversations.InviteAsync(new ConversationToInvite(channelId, userIds));
+
+		private static async Task<string> GetChannelIdAsync(string channelName = null)
+        {
+			var conversationsHistoryResponse = await GetConversationListAsync();
+			
+			channelName ??= _slackBotSettings.ChannelName;
+	        var channelId = conversationsHistoryResponse?.Channels?.FirstOrDefault(p => p.Name == channelName)?.Id;
+
+	        return channelId;
+		}
+		
+		#endregion
+
+		#region Pin
+
+		private static async Task<SlackBaseResponse> PinMessageAsync()
+		{
+			var (pinResponse, _) = await PinMessageInternalAsync();
+
+			return pinResponse;
+		}
+		
+		private static async Task<PinListResponse> GetPinListAsync()
+		{
+			var (_, sendMessageResponse) = await PinMessageInternalAsync();
+			await PinMessageInternalAsync();
+
+			return await _slackClient.Pins.ListAsync(new PinListRequest(sendMessageResponse.ChannelId));
+		}
+
+		private static async Task<SlackBaseResponse> RemovePinAsync()
+		{
+			var (_, sendMessageResponse) = await PinMessageInternalAsync();
+			
+			return await _slackClient.Pins.RemoveAsync(new PinItemToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
+		}
+
+		private static async Task<(SlackBaseResponse PinResponse, SendMessageResponse SendMessageResponse)> PinMessageInternalAsync()
+		{
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(PinMessageInternalAsync));
+
+			var pinItem = new PinItem(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp);
+			var pinMessageResponse = await _slackClient.Pins.PinAsync(pinItem);
+
+			return (pinMessageResponse, sendMessageResponse);
+		}
+		
+		#endregion
+
+		#region Reaction
+
+		private static async Task<SlackBaseResponse> AddReactionAsync()
+		{
+			var (addReactionResponse, _) = await AddReactionInternalAsync();
+
+			return addReactionResponse;
+		}
+		
+		private static async Task<ReactionsByItemResponse> GetReactionsByItemAsync()
+		{
+			var (_, sendMessageResponse) = await AddReactionInternalAsync();
+			await AddReactionToMessageAsync(sendMessageResponse, "smile");
+
+			return await _slackClient.Reactions.GetAsync(new ReactionsByItemRequest(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp));
+		}
+		
+		private static async Task<ReactionsByUserResponse> GetReactionsByUserAsync()
+		{
+			var (_, sendMessageResponse) = await AddReactionInternalAsync();
+			await AddReactionToMessageAsync(sendMessageResponse, "smile");
+
+			return await _slackClient.Reactions.ListAsync(new ReactionsByUserRequest());
+		}
+		
+		private static async Task<SlackBaseResponse> RemoveReactionAsync()
+		{
+			const string EmojiName = "grin";
+			var (_, sendMessageResponse) = await AddReactionInternalAsync(EmojiName);
+			
+			return await _slackClient.Reactions.RemoveAsync(new ReactionToRemove(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, EmojiName));
+		}
+
+		private static async Task<(SlackBaseResponse AddReactionResponse, SendMessageResponse SendMessageResponse)> AddReactionInternalAsync(
+			string emojiName = "+1")
+		{
+			var sendMessageResponse = await SendSimpleMessageAsync(nameof(AddReactionAsync));
+
+			var addReactionResponse = await AddReactionToMessageAsync(sendMessageResponse, emojiName);
+
+			return (addReactionResponse, sendMessageResponse);
+		}
+
+		private static Task<SlackBaseResponse> AddReactionToMessageAsync(SendMessageResponse sendMessageResponse, string emojiName)
+			=> _slackClient.Reactions.AddAsync(new Reaction(sendMessageResponse.ChannelId, sendMessageResponse.Timestamp, emojiName));
+
+		#endregion
+
+		#region Team
+		
+		private static Task<TeamInfoResponse> GetTeamInfoAsync()
+			=> _slackClient.Team.InfoAsync(new TeamInfoRequest());
+
+		#endregion
+
+		#region TeamProfile
+		
+		private static Task<TeamProfileResponse> GetTeamProfileAsync()
+			=> _slackClient.TeamProfile.GetAsync(new TeamProfileRequest(TeamFieldVisibilityType.Visible));
+
+		#endregion
+
+		#region UserGroup
+		
+		private static async Task<UserGroupResponse> CreateUserGroupAsync()
+		{
+			var channelId = await GetChannelIdAsync();
+
+			return await _slackClient.UserGroups.CreateAsync(new UserGroupToCreate("Test group", "test-group", channelId));
+		}
+		
+		private static async Task<UserGroupResponse> DisableUserGroupAsync()
+		{
+			var createUserGroupResponse = await CreateUserGroupAsync();
+
+			return await _slackClient.UserGroups.DisableAsync(new UserGroupToDisable(createUserGroupResponse.UserGroup.Id));
+		}
+		
+		private static async Task<UserGroupResponse> EnableUserGroupAsync()
+		{
+			var disableUserGroupResponse = await DisableUserGroupAsync();
+
+			return await _slackClient.UserGroups.EnableAsync(new UserGroupToEnable(disableUserGroupResponse.UserGroup.Id));
+		}
+		
+		private static async Task<UserGroupListResponse> GetUserGroupListAsync()
+		{
+			var createUserGroupResponse = await CreateUserGroupAsync();
+
+			return await _slackClient.UserGroups.ListAsync(new UserGroupListRequest(true, true, true));
+		}
+		
+		private static async Task<UserGroupResponse> UpdateUserGroupAsync()
+		{
+			var createUserGroupResponse = await CreateUserGroupAsync();
+
+			var userGroupToUpdate = new UserGroupToUpdate(createUserGroupResponse.UserGroup.Id)
+			{
+				Name = "New test group",
+				Handle = "new-test-group",
+				Description = "New user group description"
+			};
+
+			return await _slackClient.UserGroups.UpdateAsync(userGroupToUpdate);
+		}
+
+		#endregion
+
+		#region UserGroupUser
+		
+		private static async Task<UserGroupUserListResponse> GetUserGroupUserListAsync()
+		{
+			var updateUsersInUserGroupResponse = await UpdateUsersInUserGroupAsync();
+
+			return await _slackClient.UserGroupsUsers.ListAsync(new UserGroupUserListRequest(updateUsersInUserGroupResponse.UserGroup.Id));
+		}
+		
+		private static async Task<UserGroupResponse> UpdateUsersInUserGroupAsync()
+		{
+			var createUserGroupResponse = await CreateUserGroupAsync();
+
+			var updateUsersInUserGroupRequest = new UpdateUsersInUserGroupRequest
+			{
+				UserGroupId = createUserGroupResponse.UserGroup.Id,
+				UserIds = _slackBotSettings.UserId
+			};
+
+			return await _slackClient.UserGroupsUsers.UpdateAsync(updateUsersInUserGroupRequest);
+		}
+
+		#endregion
+
+		#region User
+
+		private static Task<ConversationListResponse> GetUserConversationsAsync()
+			=> _slackClient.Users.ConversationsAsync(new UserConversations("public_channel,private_channel,mpim,im"));
+
+		private static Task<UserPresenceResponse> GetUserPresenceAsync()
+			=> _slackClient.UserPresenceAsync(new UserPresenceRequest(_slackBotSettings.UserId));
+
+		private static Task<UserResponse> GetUserInfoAsync()
+			=> _slackClient.Users.InfoAsync(new UserToGetInfo(_slackBotSettings.UserId));
+
+		private static Task<UserListResponse> GetUserListAsync()
+			=> _slackClient.Users.ListAsync(new UserListRequest());
+
+		private static async Task<UserResponse> GetUserByEmailAsync()
+		{
+			var userInfoResponse = await GetUserInfoAsync();
+			
+			return await _slackClient.Users.LookupByEmailAsync(new UserByEmailRequest(userInfoResponse.User.Profile.Email));
+		}
+
+		private static Task<SlackBaseResponse> SetUserPresenceAsync()
+			=> _slackClient.Users.SetPresenceAsync(new SetUserPresenceRequest("auto"));
+		
+		#endregion
+
+		#region UserProfile
+
+		private static Task<UserProfileResponse> GetUserProfileAsync()
+			=> _slackClient.UsersProfile.GetAsync(new UserProfileRequest(_slackBotSettings.UserId, true));
+
+		#endregion
 
 		private static IConfiguration GetConfiguration()
 			=> new ConfigurationBuilder()

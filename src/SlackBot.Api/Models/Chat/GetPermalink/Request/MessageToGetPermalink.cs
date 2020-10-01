@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api.Models.Chat.GetPermalink.Request
 {
-	public class MessagePermalinkRequest
+	public class MessageToGetPermalink
 	{
-		public MessagePermalinkRequest()
+		public MessageToGetPermalink()
 		{
 		}
 
-		public MessagePermalinkRequest(string channelId, string messageTimestamp)
+		public MessageToGetPermalink(string channelId, string messageTimestamp)
 		{
 			ChannelId = channelId;
 			MessageTimestamp = messageTimestamp;
