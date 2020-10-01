@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.GeneralObjects.Pagination.Classic
+namespace SlackBot.Api.Clients
 {
 	public abstract class ClassicPaginationResponseBase : SlackBaseResponse
 	{

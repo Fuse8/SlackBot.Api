@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Clients.Rename.Request
+namespace SlackBot.Api.Clients
 {
 	public class ConversationToRename : ConversationRequestBase
 	{

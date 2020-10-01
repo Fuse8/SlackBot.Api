@@ -1,7 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
-using SlackBot.Api.Clients.GeneralObjects.Pagination.Cursor;
 
-namespace SlackBot.Api.Clients.Conversation.Request
+namespace SlackBot.Api.Clients
 {
 	public class UserConversations : CursorPaginationWithTimestampBase
 	{

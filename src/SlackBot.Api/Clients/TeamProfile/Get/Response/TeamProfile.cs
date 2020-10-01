@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.Get.Response
+namespace SlackBot.Api.Clients
 {
 	public class TeamProfile
 	{

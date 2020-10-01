@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage;
 
-namespace SlackBot.Api.Clients.ScheduleMessage.Request
+namespace SlackBot.Api.Clients
 {
 	public class MessageToSchedule : Message
 	{

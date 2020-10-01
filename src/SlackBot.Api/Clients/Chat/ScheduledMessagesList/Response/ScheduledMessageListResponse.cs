@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects.Pagination.Cursor;
 
-namespace SlackBot.Api.Clients.ScheduledMessagesList.Response
+namespace SlackBot.Api.Clients
 {
 	public class ScheduledMessageListResponse : CursorPaginationResponseBase
 	{

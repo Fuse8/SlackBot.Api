@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Clients.Upload.Request
+namespace SlackBot.Api.Clients
 {
 	public class FileToUpload : FileToUploadBase
 	{

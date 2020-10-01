@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects;
-using SlackBot.Api.Clients.PostMessage.Response;
 
-namespace SlackBot.Api.Clients.Update.Response
+namespace SlackBot.Api.Clients
 {
 	public class UpdateMessageResponse : SlackBaseResponse
 	{

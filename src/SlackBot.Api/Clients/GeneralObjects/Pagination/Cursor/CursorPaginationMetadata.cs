@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.GeneralObjects.Pagination.Cursor
+namespace SlackBot.Api.Clients
 {
 	public class CursorPaginationMetadata
 	{

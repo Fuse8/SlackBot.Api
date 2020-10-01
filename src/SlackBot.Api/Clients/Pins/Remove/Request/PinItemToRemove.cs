@@ -1,6 +1,4 @@
-﻿using SlackBot.Api.Clients.GeneralObjects;
-
-namespace SlackBot.Api.Clients.Remove.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class PinItemToRemove : ItemActionRequestBase
 	{

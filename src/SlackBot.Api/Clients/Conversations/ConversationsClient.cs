@@ -1,30 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using SlackBot.Api.Clients.Archive.Request;
-using SlackBot.Api.Clients.Close.Request;
-using SlackBot.Api.Clients.Close.Response;
-using SlackBot.Api.Clients.Create.Request;
-using SlackBot.Api.Clients.GeneralObjects;
-using SlackBot.Api.Clients.History.Request;
-using SlackBot.Api.Clients.History.Response;
-using SlackBot.Api.Clients.Info.Request;
-using SlackBot.Api.Clients.Invite.Request;
-using SlackBot.Api.Clients.Join.Request;
-using SlackBot.Api.Clients.Join.Response;
-using SlackBot.Api.Clients.Kick.Request;
-using SlackBot.Api.Clients.Leave.Request;
-using SlackBot.Api.Clients.Leave.Response;
-using SlackBot.Api.Clients.List.Request;
-using SlackBot.Api.Clients.Members.Request;
-using SlackBot.Api.Clients.Members.Response;
-using SlackBot.Api.Clients.Open.Request;
-using SlackBot.Api.Clients.Open.Response;
-using SlackBot.Api.Clients.Rename.Request;
-using SlackBot.Api.Clients.Replies.Request;
-using SlackBot.Api.Clients.Replies.Response;
-using SlackBot.Api.Clients.SetPurpose.Request;
-using SlackBot.Api.Clients.SetTopic.Request;
-using SlackBot.Api.Clients.Unarchive.Request;
 
 namespace SlackBot.Api.Clients
 {

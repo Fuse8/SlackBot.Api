@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.PostMessage.Enums
+﻿namespace SlackBot.Api.Clients
 {
 	public enum StyleType
 	{

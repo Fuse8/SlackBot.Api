@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using SlackBot.Api.Clients.GeneralObjects.File;
-using SlackBot.Api.Clients.GeneralObjects.Pagination.Classic;
 
-namespace SlackBot.Api.Clients.List.Response
+namespace SlackBot.Api.Clients
 {
 	public class FileListResponse : ClassicPaginationResponseBase
 	{

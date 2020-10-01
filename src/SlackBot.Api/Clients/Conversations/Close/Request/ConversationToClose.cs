@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Close.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class ConversationToClose : ConversationRequestBase
 	{

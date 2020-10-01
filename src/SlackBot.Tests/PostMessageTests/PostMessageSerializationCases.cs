@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SlackBot.Api.Clients.PostMessage;
-using SlackBot.Api.Clients.PostMessage.BlockElements;
-using SlackBot.Api.Clients.PostMessage.Blocks;
-using SlackBot.Api.Clients.PostMessage.Contracts;
-using SlackBot.Api.Clients.PostMessage.Contracts.BlockElements;
-using SlackBot.Api.Clients.PostMessage.Enums;
-using SlackBot.Api.Clients.PostMessage.MessageAttachment;
-using SlackBot.Api.Clients.PostMessage.MessageObjects;
-using SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects;
+using SlackBot.Api.Clients;
 
 namespace SlackBot.Tests.PostMessageTests
 {

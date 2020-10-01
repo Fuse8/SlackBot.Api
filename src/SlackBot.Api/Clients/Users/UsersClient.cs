@@ -1,14 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using SlackBot.Api.Clients.Conversation.Request;
-using SlackBot.Api.Clients.GeneralObjects;
-using SlackBot.Api.Clients.GetPresence.Request;
-using SlackBot.Api.Clients.GetPresence.Response;
-using SlackBot.Api.Clients.Info.Request;
-using SlackBot.Api.Clients.List.Request;
-using SlackBot.Api.Clients.List.Response;
-using SlackBot.Api.Clients.LookupByEmail.Request;
-using SlackBot.Api.Clients.SetPresence.Request;
 
 namespace SlackBot.Api.Clients
 {

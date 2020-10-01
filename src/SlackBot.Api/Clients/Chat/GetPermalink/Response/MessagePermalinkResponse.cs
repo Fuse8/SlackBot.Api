@@ -1,8 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects;
 
-namespace SlackBot.Api.Clients.GetPermalink.Response
+namespace SlackBot.Api.Clients
 {
 	public class MessagePermalinkResponse : SlackBaseResponse
 	{

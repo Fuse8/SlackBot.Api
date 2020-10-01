@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.PostMessage.Contracts
+namespace SlackBot.Api.Clients
 {
 	public abstract class BlockBase : ObjectWithType
 	{

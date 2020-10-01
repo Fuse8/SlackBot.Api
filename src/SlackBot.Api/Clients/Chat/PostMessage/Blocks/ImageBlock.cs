@@ -1,9 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts;
-using SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects;
 
-namespace SlackBot.Api.Clients.PostMessage.Blocks
+namespace SlackBot.Api.Clients
 {
 	public class ImageBlock : BlockBase
 	{

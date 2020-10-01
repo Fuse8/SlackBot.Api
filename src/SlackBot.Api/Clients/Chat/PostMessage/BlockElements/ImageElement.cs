@@ -1,9 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts;
-using SlackBot.Api.Clients.PostMessage.Contracts.BlockElements;
 
-namespace SlackBot.Api.Clients.PostMessage.BlockElements
+namespace SlackBot.Api.Clients
 {
 	public class ImageElement : ObjectWithType, ISectionElement, IContextElement
 	{

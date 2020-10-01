@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SlackBot.Api.Clients.PostMessage.Contracts;
+using SlackBot.Api.Clients;
 using SlackBot.Api.Helpers;
 
 namespace SlackBot.Api.JsonConverters

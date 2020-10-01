@@ -1,7 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
-using SlackBot.Api.Clients.GeneralObjects;
 
-namespace SlackBot.Api.Clients.Get.Request
+namespace SlackBot.Api.Clients
 {
 	public class ReactionsByItemRequest : ItemActionRequestBase
 	{

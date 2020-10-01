@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Clients.SetTopic.Request
+namespace SlackBot.Api.Clients
 {
 	public class ConversationTopicRequest : ConversationRequestBase
 	{

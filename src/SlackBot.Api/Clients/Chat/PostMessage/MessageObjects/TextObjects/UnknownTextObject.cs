@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using SlackBot.Api.Clients.PostMessage.Contracts;
 
-namespace SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects
+namespace SlackBot.Api.Clients
 {
 	/// <summary>
 	///     Do not use in request to the slack.

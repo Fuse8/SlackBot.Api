@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Disable.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class UserGroupToDisable : UserGroupActionRequestBase
 	{

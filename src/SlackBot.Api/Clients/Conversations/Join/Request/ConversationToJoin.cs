@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Join.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class ConversationToJoin : ConversationRequestBase
 	{

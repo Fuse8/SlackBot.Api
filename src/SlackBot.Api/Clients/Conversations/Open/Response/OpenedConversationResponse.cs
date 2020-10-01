@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects;
-using SlackBot.Api.Clients.GeneralObjects.Conversation;
 
-namespace SlackBot.Api.Clients.Open.Response
+namespace SlackBot.Api.Clients
 {
 	public class OpenedConversationResponse : SlackBaseResponse
 	{

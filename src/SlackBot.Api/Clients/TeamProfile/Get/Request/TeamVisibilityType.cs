@@ -1,6 +1,4 @@
-﻿using SlackBot.Api.Clients.Get.Response;
-
-namespace SlackBot.Api.Clients.Get.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public enum TeamFieldVisibilityType
 	{

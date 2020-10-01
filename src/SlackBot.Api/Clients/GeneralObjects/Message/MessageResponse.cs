@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects.File;
-using SlackBot.Api.Clients.PostMessage.Contracts;
 
-namespace SlackBot.Api.Clients.GeneralObjects.Message
+namespace SlackBot.Api.Clients
 {
     public class MessageResponse
     {
@@ -57,7 +55,7 @@ namespace SlackBot.Api.Clients.GeneralObjects.Message
         public string BotId { get; set; }
 
         [JsonProperty("bot_profile")]
-        public BotInfo.BotInfo BotInfo { get; set; }
+        public BotInfo BotInfo { get; set; }
         
         [JsonProperty("files")]
         public List<SlackFile> Files { get; set; }

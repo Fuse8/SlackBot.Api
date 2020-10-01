@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Enums;
-using SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects;
 
-namespace SlackBot.Api.Clients.PostMessage.MessageObjects
+namespace SlackBot.Api.Clients
 {
 	public class ConfirmationDialogObject
 	{

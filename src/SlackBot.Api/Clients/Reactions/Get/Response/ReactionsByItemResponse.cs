@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects.File;
-using SlackBot.Api.Clients.GeneralObjects.Message;
 
-namespace SlackBot.Api.Clients.Get.Response
+namespace SlackBot.Api.Clients
 {
 	public class ReactionsByItemResponse : SlackFileResponse
 	{

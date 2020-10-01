@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects.Message;
 
-namespace SlackBot.Api.Clients.GeneralObjects.Conversation
+namespace SlackBot.Api.Clients
 {
 	public class ConversationInfo
 	{

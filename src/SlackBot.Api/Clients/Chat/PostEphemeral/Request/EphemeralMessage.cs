@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts;
-using SlackBot.Api.Clients.PostMessage.MessageAttachment;
 
-namespace SlackBot.Api.Clients.PostEphemeral.Request
+namespace SlackBot.Api.Clients
 {
 	public class EphemeralMessage : MessageBase
 	{

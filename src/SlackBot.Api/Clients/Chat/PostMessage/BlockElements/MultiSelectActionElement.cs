@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts.BlockElements;
-using SlackBot.Api.Clients.PostMessage.MessageObjects;
-using SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects;
 
-namespace SlackBot.Api.Clients.PostMessage.BlockElements
+namespace SlackBot.Api.Clients
 {
 	public class MultiSelectActionElement : ActionElementBase, ISectionElement, IInputElement
 	{

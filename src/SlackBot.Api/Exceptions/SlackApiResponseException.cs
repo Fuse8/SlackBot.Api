@@ -1,5 +1,5 @@
 ﻿using System;
-using SlackBot.Api.Clients.GeneralObjects;
+using SlackBot.Api.Clients;
 using SlackBot.Api.Enums;
 using SlackBot.Api.Extensions;
 

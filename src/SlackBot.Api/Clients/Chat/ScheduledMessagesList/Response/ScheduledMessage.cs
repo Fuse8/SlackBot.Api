@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.ScheduledMessagesList.Response
+namespace SlackBot.Api.Clients
 {
 	public class ScheduledMessage
 	{

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.GeneralObjects.User
+namespace SlackBot.Api.Clients
 {
 	public class UserProfileField
 	{

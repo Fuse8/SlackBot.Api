@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.GeneralObjects.Message
+namespace SlackBot.Api.Clients
 {
     public class MessageReactionItem
     {

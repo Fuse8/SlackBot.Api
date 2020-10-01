@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Clients.GetPermalink.Request
+namespace SlackBot.Api.Clients
 {
 	public class MessageToGetPermalink
 	{

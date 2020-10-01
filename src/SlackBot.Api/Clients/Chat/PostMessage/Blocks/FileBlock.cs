@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts;
 
-namespace SlackBot.Api.Clients.PostMessage.Blocks
+namespace SlackBot.Api.Clients
 {
 	public class FileBlock : BlockBase
 	{

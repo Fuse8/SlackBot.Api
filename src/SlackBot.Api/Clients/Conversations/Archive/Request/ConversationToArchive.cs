@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Archive.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class ConversationToArchive : ConversationRequestBase
 	{

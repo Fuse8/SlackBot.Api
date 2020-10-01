@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects.File;
-using SlackBot.Api.Clients.GeneralObjects.Pagination.Cursor;
 
-namespace SlackBot.Api.Clients.Info.Response
+namespace SlackBot.Api.Clients
 {
 	public class FileInfoResponse : CursorPaginationResponseBase
 	{

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects;
-using SlackBot.Api.Clients.GeneralObjects.UserGroup;
 
-namespace SlackBot.Api.Clients.List.Response
+namespace SlackBot.Api.Clients
 {
 	public class UserGroupListResponse : SlackBaseResponse
 	{

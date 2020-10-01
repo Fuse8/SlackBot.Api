@@ -1,7 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
-using SlackBot.Api.Clients.Add.Request;
 
-namespace SlackBot.Api.Clients.Update.Request
+namespace SlackBot.Api.Clients
 {
 	public class RemoteFileToUpdate : RemoteFile
 	{

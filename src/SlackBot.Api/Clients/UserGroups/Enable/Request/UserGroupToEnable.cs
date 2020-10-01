@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Enable.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class UserGroupToEnable : UserGroupActionRequestBase
 	{

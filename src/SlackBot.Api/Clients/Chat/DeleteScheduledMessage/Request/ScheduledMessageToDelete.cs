@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.ScheduleMessage.Response;
 
-namespace SlackBot.Api.Clients.DeleteScheduledMessage.Request
+namespace SlackBot.Api.Clients
 {
 	public class ScheduledMessageToDelete
 	{

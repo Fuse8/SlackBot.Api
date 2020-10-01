@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Info.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class RemoteFileInfoRequest : RemoteFileBaseRequest
 	{

@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts;
-using SlackBot.Api.Clients.PostMessage.MessageAttachment;
 
-namespace SlackBot.Api.Clients.PostMessage
+namespace SlackBot.Api.Clients
 {
-	public class Message : MessageBase
+	public class Message : MessageBase //TODO Rename to SlackMessage
 	{
 		public Message()
 		{

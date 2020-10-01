@@ -1,9 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using SlackBot.Api.Clients.GeneralObjects.UserGroup;
-using SlackBot.Api.Clients.List.Request;
-using SlackBot.Api.Clients.List.Response;
-using SlackBot.Api.Clients.Update.Request;
 
 namespace SlackBot.Api.Clients
 {

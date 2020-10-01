@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects;
 
-namespace SlackBot.Api.Clients.GetPresence.Response
+namespace SlackBot.Api.Clients
 {
 	public class UserPresenceResponse : SlackBaseResponse
 	{

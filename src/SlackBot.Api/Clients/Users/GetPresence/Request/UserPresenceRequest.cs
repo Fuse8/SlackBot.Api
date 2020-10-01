@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.GetPresence.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class UserPresenceRequest
 	{

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts;
-using SlackBot.Api.Clients.PostMessage.MessageAttachment;
 
-namespace SlackBot.Api.Clients.Update.Request
+namespace SlackBot.Api.Clients
 {
 	public class MessageToUpdate
 	{

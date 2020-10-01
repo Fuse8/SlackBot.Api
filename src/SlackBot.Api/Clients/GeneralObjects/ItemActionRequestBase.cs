@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Clients.GeneralObjects
+namespace SlackBot.Api.Clients
 {
 	public abstract class ItemActionRequestBase
 	{

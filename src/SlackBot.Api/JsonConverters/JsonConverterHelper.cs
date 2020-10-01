@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.Contracts;
-using SlackBot.Api.Clients.PostMessage.Contracts.BlockElements;
-using SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects;
+using SlackBot.Api.Clients;
 
 namespace SlackBot.Api.JsonConverters
 {

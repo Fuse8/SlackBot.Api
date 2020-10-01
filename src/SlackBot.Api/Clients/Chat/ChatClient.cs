@@ -1,21 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using SlackBot.Api.Clients.Delete.Request;
-using SlackBot.Api.Clients.Delete.Response;
-using SlackBot.Api.Clients.DeleteScheduledMessage.Request;
-using SlackBot.Api.Clients.GeneralObjects;
-using SlackBot.Api.Clients.GetPermalink.Request;
-using SlackBot.Api.Clients.GetPermalink.Response;
-using SlackBot.Api.Clients.PostEphemeral.Request;
-using SlackBot.Api.Clients.PostEphemeral.Response;
-using SlackBot.Api.Clients.PostMessage;
-using SlackBot.Api.Clients.PostMessage.Response;
-using SlackBot.Api.Clients.ScheduledMessagesList.Request;
-using SlackBot.Api.Clients.ScheduledMessagesList.Response;
-using SlackBot.Api.Clients.ScheduleMessage.Request;
-using SlackBot.Api.Clients.ScheduleMessage.Response;
-using SlackBot.Api.Clients.Update.Request;
-using SlackBot.Api.Clients.Update.Response;
 
 namespace SlackBot.Api.Clients
 {

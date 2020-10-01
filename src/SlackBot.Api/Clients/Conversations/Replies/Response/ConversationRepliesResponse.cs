@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects.Message;
-using SlackBot.Api.Clients.GeneralObjects.Pagination.Cursor;
 
-namespace SlackBot.Api.Clients.Replies.Response
+namespace SlackBot.Api.Clients
 {
 	public class ConversationRepliesResponse : CursorPaginationResponseBase
 	{

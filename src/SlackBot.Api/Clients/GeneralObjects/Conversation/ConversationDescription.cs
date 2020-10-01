@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.GeneralObjects.Conversation
+namespace SlackBot.Api.Clients
 {
 	public class ConversationDescription
 	{

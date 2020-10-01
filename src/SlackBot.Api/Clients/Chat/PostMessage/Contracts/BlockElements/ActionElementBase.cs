@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.PostMessage.MessageObjects;
 
-namespace SlackBot.Api.Clients.PostMessage.Contracts.BlockElements
+namespace SlackBot.Api.Clients
 {
 	public abstract class ActionElementBase : ObjectWithType
 	{

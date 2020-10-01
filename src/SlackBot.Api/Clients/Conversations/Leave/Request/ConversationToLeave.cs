@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Leave.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class ConversationToLeave : ConversationRequestBase
 	{

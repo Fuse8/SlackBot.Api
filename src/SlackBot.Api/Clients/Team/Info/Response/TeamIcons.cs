@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.Info.Response
+namespace SlackBot.Api.Clients
 {
 	public class TeamIcons
 	{

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using SlackBot.Api.Clients.GeneralObjects;
 
-namespace SlackBot.Api.Clients.Close.Response
+namespace SlackBot.Api.Clients
 {
 	public class ClosedConversationResponse : SlackBaseResponse
 	{

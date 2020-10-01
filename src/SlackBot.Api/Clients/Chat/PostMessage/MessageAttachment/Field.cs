@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients.PostMessage.MessageAttachment
+namespace SlackBot.Api.Clients
 {
 	public class Field
 	{

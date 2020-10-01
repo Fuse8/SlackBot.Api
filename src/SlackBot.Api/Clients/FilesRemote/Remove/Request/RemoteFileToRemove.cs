@@ -1,4 +1,4 @@
-﻿namespace SlackBot.Api.Clients.Remove.Request
+﻿namespace SlackBot.Api.Clients
 {
 	public class RemoteFileToRemove : RemoteFileBaseRequest
 	{
