@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using SlackBot.Api.Models.Chat.PostMessage;
+using SlackBot.Api.Clients.PostMessage;
 using SlackBot.Tests.Helpers;
 
 namespace SlackBot.Tests.PostMessageTests

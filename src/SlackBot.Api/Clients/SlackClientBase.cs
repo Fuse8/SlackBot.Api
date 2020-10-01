@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SlackBot.Api.Clients.GeneralObjects;
 using SlackBot.Api.Enums;
 using SlackBot.Api.Exceptions;
 using SlackBot.Api.Extensions;
 using SlackBot.Api.Helpers;
-using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Clients
 {

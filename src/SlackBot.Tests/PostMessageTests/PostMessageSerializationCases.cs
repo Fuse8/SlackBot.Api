@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using SlackBot.Api.Models.Chat.PostMessage;
-using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.Blocks;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.Enums;
-using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
-using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
-using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
+using SlackBot.Api.Clients.PostMessage;
+using SlackBot.Api.Clients.PostMessage.BlockElements;
+using SlackBot.Api.Clients.PostMessage.Blocks;
+using SlackBot.Api.Clients.PostMessage.Contracts;
+using SlackBot.Api.Clients.PostMessage.Contracts.BlockElements;
+using SlackBot.Api.Clients.PostMessage.Enums;
+using SlackBot.Api.Clients.PostMessage.MessageAttachment;
+using SlackBot.Api.Clients.PostMessage.MessageObjects;
+using SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Tests.PostMessageTests
 {

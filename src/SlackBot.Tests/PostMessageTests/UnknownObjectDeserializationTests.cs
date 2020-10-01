@@ -1,10 +1,10 @@
 using System;
 using NUnit.Framework;
+using SlackBot.Api.Clients.PostMessage.Blocks;
+using SlackBot.Api.Clients.PostMessage.Contracts;
+using SlackBot.Api.Clients.PostMessage.Contracts.BlockElements;
+using SlackBot.Api.Clients.PostMessage.MessageObjects.TextObjects;
 using SlackBot.Api.Extensions;
-using SlackBot.Api.Models.Chat.PostMessage.Blocks;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
 
 namespace SlackBot.Tests.PostMessageTests
 {
