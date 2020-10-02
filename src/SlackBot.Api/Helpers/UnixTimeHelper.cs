@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SlackBot.Api.Extensions
+namespace SlackBot.Api.Helpers
 {
 	public static class UnixTimeHelper
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
 	public class UserGroupObject
 	{

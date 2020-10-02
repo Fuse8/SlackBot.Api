@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
 	public class OptionObject
 	{

@@ -1,6 +1,6 @@
 using System;
 using NUnit.Framework;
-using SlackBot.Api.Clients;
+using SlackBot.Api;
 using SlackBot.Api.Extensions;
 
 namespace SlackBot.Tests.PostMessageTests

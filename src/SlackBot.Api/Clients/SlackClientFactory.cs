@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
 	public static class SlackClientFactory
 	{
@@ -16,12 +16,12 @@ namespace SlackBot.Api.Clients
 			return new SlackClient(httpClient);
 		}
 		
-		public static TClient CreateClient<TClient>(string token) //TODO
+		public static TClient CreateClient<TClient>(string token) //TODO test
 			where TClient : SlackClientBase, new()
 		{
 			var httpClient = CreateHttpClient(token);
 
-			return new TClient();
+			return (TClient)Activator.CreateInstance(typeof(TClient), httpClient);
 		}
 
 		private static HttpClient CreateHttpClient(string token)

@@ -1,6 +1,6 @@
 ﻿using SlackBot.Api.Attributes;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
 	public class UserGroupToCreate
 	{

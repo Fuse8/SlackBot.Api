@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using SlackBot.Api.Helpers;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
     public class SlackClient : DisposableObjectBase
 	{

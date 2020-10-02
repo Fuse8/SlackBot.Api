@@ -7,7 +7,7 @@ using SlackBot.Api.Exceptions;
 using SlackBot.Api.Extensions;
 using SlackBot.Api.Helpers;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
     public abstract class SlackClientBase : DisposableObjectBase
     {

@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
 	public class TeamClient : SlackClientBase
 	{

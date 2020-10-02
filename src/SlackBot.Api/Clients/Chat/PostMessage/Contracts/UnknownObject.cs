@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SlackBot.Api.Clients
+namespace SlackBot.Api
 {
 	/// <summary>
 	///     Do not use in request to the slack.

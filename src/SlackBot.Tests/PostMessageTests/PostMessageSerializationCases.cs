@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SlackBot.Api.Clients;
+using SlackBot.Api;
 
 namespace SlackBot.Tests.PostMessageTests
 {

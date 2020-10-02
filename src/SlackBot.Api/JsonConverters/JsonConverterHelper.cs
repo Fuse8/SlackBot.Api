@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using SlackBot.Api.Clients;
 
 namespace SlackBot.Api.JsonConverters
 {

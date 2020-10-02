@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using SlackBot.Api.Clients;
+using SlackBot.Api;
 using SlackBot.Api.Exceptions;
-using SlackBot.Api.Extensions;
+using SlackBot.Api.Helpers;
 using SlackBot.Samples.Configurations;
 using SlackBot.Samples.Extensions;
 
