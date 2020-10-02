@@ -15,8 +15,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Gets conversations list the calling user may access.
 		/// </summary>
-		public Task<ConversationListResponse> ConversationsAsync(UserConversations userConversations)
-			=> SendGetAsync<UserConversations, ConversationListResponse>("conversations", userConversations);
+		public Task<ConversationObjectListResponse> ConversationsAsync(UserConversations userConversations)
+			=> SendGetAsync<UserConversations, ConversationObjectListResponse>("conversations", userConversations);
 
 		/// <summary>
 		/// Gets user presence information.

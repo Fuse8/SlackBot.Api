@@ -69,8 +69,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Lists all channels in a Slack team.
 		/// </summary>
-        public Task<ConversationListResponse> ListAsync(ConversationListRequest conversationListRequest) 
-            => SendGetAsync<ConversationListRequest, ConversationListResponse>("list", conversationListRequest);
+        public Task<ConversationObjectListResponse> ListAsync(ConversationListRequest conversationListRequest) 
+            => SendGetAsync<ConversationListRequest, ConversationObjectListResponse>("list", conversationListRequest);
 		
 		/// <summary>
 		/// Retrieve members of a conversation.

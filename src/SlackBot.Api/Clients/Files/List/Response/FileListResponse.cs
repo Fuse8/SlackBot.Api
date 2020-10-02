@@ -4,6 +4,6 @@ namespace SlackBot.Api
 {
 	public class FileListResponse : ClassicPaginationResponseBase
 	{
-		public List<SlackFile> Files { get; set; }
+		public List<FileObject> Files { get; set; }
 	}
 }

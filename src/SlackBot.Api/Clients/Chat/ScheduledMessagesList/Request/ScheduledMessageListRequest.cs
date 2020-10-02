@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class ScheduledMessageListRequest : CursorPaginationWithTimestampBase
+	public class ScheduledMessageListRequest : CursorPaginationWithTimestampRequestBase
 	{
 		public ScheduledMessageListRequest()
 		{

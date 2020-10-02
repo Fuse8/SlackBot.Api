@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class UserProfileField
+	public class UserProfileObjectField
 	{
 		[JsonProperty("value")]
 		public string Value { get; set; }

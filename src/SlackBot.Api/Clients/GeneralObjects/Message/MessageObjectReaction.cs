@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-    public class MessageReactionItem
+    public class MessageObjectReaction
     {
         [JsonProperty("name")]
         public string Name { get; set; }

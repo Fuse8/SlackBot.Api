@@ -57,7 +57,7 @@ namespace SlackBot.Api
 		public string DeletedById { get; set; }
 
 		[JsonProperty("prefs")]
-		public UserGroupPreferences Preferences { get; set; }
+		public UserGroupObjectPreferences Preferences { get; set; }
 
 		[JsonProperty("users")]
 		public List<string> UserIds { get; set; }

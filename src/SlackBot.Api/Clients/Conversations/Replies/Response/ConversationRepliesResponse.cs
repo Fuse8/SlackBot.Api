@@ -6,7 +6,7 @@ namespace SlackBot.Api
 	public class ConversationRepliesResponse : CursorPaginationResponseBase
 	{
 		[JsonProperty("messages")]
-		public List<MessageResponse> Messages { get; set; }
+		public List<MessageObject> Messages { get; set; }
 
 		[JsonProperty("has_more")]
 		public bool HasMore { get; set; }

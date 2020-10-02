@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api
 {
-    public abstract class CursorPaginationWithTimestampBase : CursorPaginationBase
+    public abstract class CursorPaginationWithTimestampRequestBase : CursorPaginationRequestBase
     {
-        protected CursorPaginationWithTimestampBase()
+        protected CursorPaginationWithTimestampRequestBase()
         {
         }
         
-        protected CursorPaginationWithTimestampBase(string cursor, long? limit, string oldest, string latest)
+        protected CursorPaginationWithTimestampRequestBase(string cursor, long? limit, string oldest, string latest)
             : base(cursor, limit)
         {
             Oldest = oldest;

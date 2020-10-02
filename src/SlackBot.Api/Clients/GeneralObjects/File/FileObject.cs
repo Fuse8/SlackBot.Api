@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-	public class SlackFile
+	public class FileObject
 	{
 		[JsonProperty("id")]
 		public string Id { get; set; }
@@ -97,7 +97,7 @@ namespace SlackBot.Api
 		public bool IsStarred { get; set; }
 
 		[JsonProperty("shares")]
-		public Shares Shares { get; set; }
+		public FileObjectShares Shares { get; set; }
 
 		[JsonProperty("channels")]
 		public List<string> ChannelIds { get; set; }

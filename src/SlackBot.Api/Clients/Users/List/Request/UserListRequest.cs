@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class UserListRequest : CursorPaginationBase
+	public class UserListRequest : CursorPaginationRequestBase
 	{
 		public UserListRequest()
 		{

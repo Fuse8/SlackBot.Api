@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-    public class BotInfo
+    public class BotObject
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -23,7 +23,7 @@ namespace SlackBot.Api
         public string UserId { get; set; }
 
         [JsonProperty("icons")]
-        public BotIcons Icons { get; set; }
+        public BotObjectIcons Icons { get; set; }
 
         [JsonProperty("team_id")]
         public string TeamId { get; set; }

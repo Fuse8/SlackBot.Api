@@ -15,14 +15,14 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Adds a file from a remote service.
 		/// </summary>
-		public Task<SlackFileResponse> AddAsync(RemoteFile remoteFile)
-			=> SendPostMultipartFormAsync<RemoteFile, SlackFileResponse>("add", remoteFile);
+		public Task<FileObjectResponse> AddAsync(RemoteFile remoteFile)
+			=> SendPostMultipartFormAsync<RemoteFile, FileObjectResponse>("add", remoteFile);
 
 		/// <summary>
 		/// Retrieve information about a remote file added to Slack.
 		/// </summary>
-		public Task<SlackFileResponse> InfoAsync(RemoteFileInfoRequest remoteFileInfoRequest)
-			=> SendGetAsync<RemoteFileInfoRequest, SlackFileResponse>("info", remoteFileInfoRequest);
+		public Task<FileObjectResponse> InfoAsync(RemoteFileInfoRequest remoteFileInfoRequest)
+			=> SendGetAsync<RemoteFileInfoRequest, FileObjectResponse>("info", remoteFileInfoRequest);
 
 		/// <summary>
 		/// Retrieve information about a remote file added to Slack.
@@ -39,13 +39,13 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Share a remote file into a channel.
 		/// </summary>
-		public Task<SlackFileResponse> ShareAsync(RemoteFileToShare remoteFileToShare)
-			=> SendPostFormUrlEncodedAsync<RemoteFileToShare, SlackFileResponse>("share", remoteFileToShare);
+		public Task<FileObjectResponse> ShareAsync(RemoteFileToShare remoteFileToShare)
+			=> SendPostFormUrlEncodedAsync<RemoteFileToShare, FileObjectResponse>("share", remoteFileToShare);
 
 		/// <summary>
 		/// Updates an existing remote file.
 		/// </summary>
-		public Task<SlackFileResponse> UpdateAsync(RemoteFileToUpdate remoteFileToUpdate)
-			=> SendPostFormUrlEncodedAsync<RemoteFileToUpdate, SlackFileResponse>("update", remoteFileToUpdate);
+		public Task<FileObjectResponse> UpdateAsync(RemoteFileToUpdate remoteFileToUpdate)
+			=> SendPostFormUrlEncodedAsync<RemoteFileToUpdate, FileObjectResponse>("update", remoteFileToUpdate);
 	}
 }

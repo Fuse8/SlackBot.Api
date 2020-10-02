@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-	public class ConversationInfo
+	public class ConversationObject
 	{
 		[JsonProperty("id")]
 		public string Id { get; set; }
@@ -81,7 +81,7 @@ namespace SlackBot.Api
 		public string LastReadTimestamp { get; set; }
 
 		[JsonProperty("latest")]
-		public MessageResponse LatestMessage { get; set; }
+		public MessageObject LatestMessage { get; set; }
 
 		[JsonProperty("unread_count")]
 		public long? UnreadCount { get; set; }
@@ -93,10 +93,10 @@ namespace SlackBot.Api
 		public bool? IsOpened { get; set; }
 
 		[JsonProperty("topic")]
-		public ConversationDescription Topic { get; set; }
+		public ConversationObjectDescription Topic { get; set; }
 
 		[JsonProperty("purpose")]
-		public ConversationDescription Purpose { get; set; }
+		public ConversationObjectDescription Purpose { get; set; }
 
 		[JsonProperty("previous_names")]
 		public List<string> PreviousNames { get; set; }

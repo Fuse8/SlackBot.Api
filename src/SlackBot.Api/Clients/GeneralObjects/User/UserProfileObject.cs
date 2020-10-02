@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-	public class UserProfileInfo
+	public class UserProfileObject
 	{
 		[JsonProperty("title")]
 		public string Title { get; set; }
@@ -28,7 +28,7 @@ namespace SlackBot.Api
 		public string DisplayNameNormalized { get; set; }
 
 		[JsonProperty("fields")]
-		public Dictionary<string, UserProfileField> Fields { get; set; }
+		public Dictionary<string, UserProfileObjectField> Fields { get; set; }
 
 		[JsonProperty("status_text")]
 		public string StatusText { get; set; }

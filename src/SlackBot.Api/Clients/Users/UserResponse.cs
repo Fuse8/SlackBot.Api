@@ -5,6 +5,6 @@ namespace SlackBot.Api
 	public class UserResponse : SlackBaseResponse
 	{
 		[JsonProperty("user")]
-		public SlackUser User { get; set; }
+		public UserObject User { get; set; }
 	}
 }

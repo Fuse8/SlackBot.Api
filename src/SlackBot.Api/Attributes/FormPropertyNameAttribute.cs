@@ -6,7 +6,7 @@ namespace SlackBot.Api.Attributes
 	///     Specifies the property name that is present in the form data when serializing
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
-	public sealed class FormPropertyNameAttribute : Attribute
+	internal sealed class FormPropertyNameAttribute : Attribute
 	{
 		/// <summary>
 		///     Initializes a new instance of <see cref="FormPropertyNameAttribute" /> with the specified property name.

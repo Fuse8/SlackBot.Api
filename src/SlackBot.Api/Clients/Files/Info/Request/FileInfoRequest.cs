@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class FileInfoRequest : CursorPaginationBase
+	public class FileInfoRequest : CursorPaginationRequestBase
 	{
 		public FileInfoRequest()
 		{

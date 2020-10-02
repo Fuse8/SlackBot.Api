@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-	public class ShareItem
+	public class FileObjectShareItem
 	{
 		[JsonProperty("reply_users")]
 		public List<string> ReplyUserIds { get; set; }

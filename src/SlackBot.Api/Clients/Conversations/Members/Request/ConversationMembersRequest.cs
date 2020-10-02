@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class ConversationMembersRequest : CursorPaginationBase
+	public class ConversationMembersRequest : CursorPaginationRequestBase
 	{
 		public ConversationMembersRequest()
 		{

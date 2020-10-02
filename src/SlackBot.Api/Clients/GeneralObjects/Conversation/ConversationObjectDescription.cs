@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class ConversationDescription
+	public class ConversationObjectDescription
 	{
 		[JsonProperty("value")]
 		public string Value { get; set; }

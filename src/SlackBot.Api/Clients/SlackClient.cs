@@ -91,11 +91,11 @@ namespace SlackBot.Api
 			=> Files.ListAsync(fileListRequest);
 
 		///<inheritdoc cref="FilesClient.UploadContentAsync"/>
-		public Task<SlackFileResponse> UploadContentAsync(ContentToUpload contentToUpload)
+		public Task<FileObjectResponse> UploadContentAsync(ContentToUpload contentToUpload)
 			=> Files.UploadContentAsync(contentToUpload);
 
 		///<inheritdoc cref="FilesClient.UploadFileAsync"/>
-		public Task<SlackFileResponse> UploadFileAsync(FileToUpload fileToUpload)
+		public Task<FileObjectResponse> UploadFileAsync(FileToUpload fileToUpload)
 			=> Files.UploadFileAsync(fileToUpload);
 		
 		#endregion
@@ -103,11 +103,11 @@ namespace SlackBot.Api
 		#region FileRemote
 
 		///<inheritdoc cref="FilesRemoteClient.AddAsync"/>
-		public Task<SlackFileResponse> AddRemoteFileAsync(RemoteFile remoteFile)
+		public Task<FileObjectResponse> AddRemoteFileAsync(RemoteFile remoteFile)
 			=> FilesRemote.AddAsync(remoteFile);
 
 		///<inheritdoc cref="FilesRemoteClient.InfoAsync"/>
-		public Task<SlackFileResponse> RemoteFileInfoAsync(RemoteFileInfoRequest remoteFileInfoRequest)
+		public Task<FileObjectResponse> RemoteFileInfoAsync(RemoteFileInfoRequest remoteFileInfoRequest)
 			=> FilesRemote.InfoAsync(remoteFileInfoRequest);
 
 		///<inheritdoc cref="FilesRemoteClient.ListAsync"/>
@@ -119,11 +119,11 @@ namespace SlackBot.Api
 			=> FilesRemote.RemoveAsync(remoteFileToRemove);
 
 		///<inheritdoc cref="FilesRemoteClient.ShareAsync"/>
-		public Task<SlackFileResponse> ShareRemoteFileAsync(RemoteFileToShare remoteFileToShare)
+		public Task<FileObjectResponse> ShareRemoteFileAsync(RemoteFileToShare remoteFileToShare)
 			=> FilesRemote.ShareAsync(remoteFileToShare);
 
 		///<inheritdoc cref="FilesRemoteClient.UpdateAsync"/>
-		public Task<SlackFileResponse> UpdateRemoteFileAsync(RemoteFileToUpdate remoteFileToUpdate)
+		public Task<FileObjectResponse> UpdateRemoteFileAsync(RemoteFileToUpdate remoteFileToUpdate)
 			=> FilesRemote.UpdateAsync(remoteFileToUpdate);
 
 		#endregion
@@ -147,8 +147,8 @@ namespace SlackBot.Api
 			=> Chat.PostEphemeralAsync(ephemeralMessage);
 
 		///<inheritdoc cref="ChatClient.PostMessageAsync"/>
-		public Task<SendMessageResponse> SendMessageAsync(Message message)
-			=> Chat.PostMessageAsync(message);
+		public Task<SendMessageResponse> SendMessageAsync(SlackMessage slackMessage)
+			=> Chat.PostMessageAsync(slackMessage);
 		
 		///<inheritdoc cref="ChatClient.ScheduleMessageAsync"/>
 		public Task<ScheduleMessageResponse> ScheduleMessageAsync(MessageToSchedule messageToSchedule)
@@ -203,7 +203,7 @@ namespace SlackBot.Api
             => Conversations.LeaveAsync(conversationToLeave);
 		
 		///<inheritdoc cref="ConversationsClient.ListAsync"/>
-        public Task<ConversationListResponse> ConversationListAsync(ConversationListRequest conversationListRequest) 
+        public Task<ConversationObjectListResponse> ConversationListAsync(ConversationListRequest conversationListRequest) 
             => Conversations.ListAsync(conversationListRequest);
 		
 		///<inheritdoc cref="ConversationsClient.MembersAsync"/>
@@ -291,15 +291,15 @@ namespace SlackBot.Api
 		#region UserGroup
 
 		///<inheritdoc cref="UserGroupsClient.CreateAsync"/>
-		public Task<UserGroupResponse> CreateUserGroupAsync(UserGroupToCreate userGroup)
+		public Task<UserGroupObjectResponse> CreateUserGroupAsync(UserGroupToCreate userGroup)
 			=> UserGroups.CreateAsync(userGroup);
 
 		///<inheritdoc cref="UserGroupsClient.DisableAsync"/>
-		public Task<UserGroupResponse> DisableUserGroupAsync(UserGroupToDisable userGroupToDisable)
+		public Task<UserGroupObjectResponse> DisableUserGroupAsync(UserGroupToDisable userGroupToDisable)
 			=> UserGroups.DisableAsync(userGroupToDisable);
 
 		///<inheritdoc cref="UserGroupsClient.EnableAsync"/>
-		public Task<UserGroupResponse> EnableUserGroupAsync(UserGroupToEnable userGroupToEnable)
+		public Task<UserGroupObjectResponse> EnableUserGroupAsync(UserGroupToEnable userGroupToEnable)
 			=> UserGroups.EnableAsync(userGroupToEnable);
 
 		///<inheritdoc cref="UserGroupsClient.ListAsync"/>
@@ -307,7 +307,7 @@ namespace SlackBot.Api
 			=> UserGroups.ListAsync(userGroupListRequest);
 
 		///<inheritdoc cref="UserGroupsClient.UpdateAsync"/>
-		public Task<UserGroupResponse> UpdateUserGroupAsync(UserGroupToUpdate userGroupToUpdate)
+		public Task<UserGroupObjectResponse> UpdateUserGroupAsync(UserGroupToUpdate userGroupToUpdate)
 			=> UserGroups.UpdateAsync(userGroupToUpdate);
 		
 		#endregion
@@ -319,7 +319,7 @@ namespace SlackBot.Api
 			=> UserGroupsUsers.ListAsync(userGroupUserListRequest);
 
 		///<inheritdoc cref="UserGroupsUsersClient.UpdateAsync"/>
-		public Task<UserGroupResponse> UpdateUsersInUserGroupAsync(UpdateUsersInUserGroupRequest updateUsersInUserGroupRequest)
+		public Task<UserGroupObjectResponse> UpdateUsersInUserGroupAsync(UpdateUsersInUserGroupRequest updateUsersInUserGroupRequest)
 			=> UserGroupsUsers.UpdateAsync(updateUsersInUserGroupRequest);
 		
 		#endregion
@@ -327,7 +327,7 @@ namespace SlackBot.Api
 		#region User
 
 		///<inheritdoc cref="UsersClient.ConversationsAsync"/>
-		public Task<ConversationListResponse> UserConversationsAsync(UserConversations userConversations)
+		public Task<ConversationObjectListResponse> UserConversationsAsync(UserConversations userConversations)
 			=> Users.ConversationsAsync(userConversations);
 
 		///<inheritdoc cref="UsersClient.GetPresenceAsync"/>

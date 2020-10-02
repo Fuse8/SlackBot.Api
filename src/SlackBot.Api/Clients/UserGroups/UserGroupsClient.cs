@@ -15,20 +15,20 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Create a User Group.
 		/// </summary>
-		public Task<UserGroupResponse> CreateAsync(UserGroupToCreate userGroup)
-			=> SendPostFormUrlEncodedAsync<UserGroupToCreate, UserGroupResponse>("create", userGroup);
+		public Task<UserGroupObjectResponse> CreateAsync(UserGroupToCreate userGroup)
+			=> SendPostFormUrlEncodedAsync<UserGroupToCreate, UserGroupObjectResponse>("create", userGroup);
 
 		/// <summary>
 		/// Disable an existing User Group.
 		/// </summary>
-		public Task<UserGroupResponse> DisableAsync(UserGroupToDisable userGroupToDisable)
-			=> SendPostFormUrlEncodedAsync<UserGroupToDisable, UserGroupResponse>("disable", userGroupToDisable);
+		public Task<UserGroupObjectResponse> DisableAsync(UserGroupToDisable userGroupToDisable)
+			=> SendPostFormUrlEncodedAsync<UserGroupToDisable, UserGroupObjectResponse>("disable", userGroupToDisable);
 
 		/// <summary>
 		/// Enable a User Group.
 		/// </summary>
-		public Task<UserGroupResponse> EnableAsync(UserGroupToEnable userGroupToEnable)
-			=> SendPostFormUrlEncodedAsync<UserGroupToEnable, UserGroupResponse>("enable", userGroupToEnable);
+		public Task<UserGroupObjectResponse> EnableAsync(UserGroupToEnable userGroupToEnable)
+			=> SendPostFormUrlEncodedAsync<UserGroupToEnable, UserGroupObjectResponse>("enable", userGroupToEnable);
 
 		/// <summary>
 		/// List all User Groups for a team.
@@ -39,7 +39,7 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Update an existing User Group.
 		/// </summary>
-		public Task<UserGroupResponse> UpdateAsync(UserGroupToUpdate userGroupToUpdate)
-			=> SendPostFormUrlEncodedAsync<UserGroupToUpdate, UserGroupResponse>("update", userGroupToUpdate);
+		public Task<UserGroupObjectResponse> UpdateAsync(UserGroupToUpdate userGroupToUpdate)
+			=> SendPostFormUrlEncodedAsync<UserGroupToUpdate, UserGroupObjectResponse>("update", userGroupToUpdate);
 	}
 }

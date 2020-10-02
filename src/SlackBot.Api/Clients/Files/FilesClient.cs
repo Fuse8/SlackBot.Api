@@ -33,13 +33,13 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Creates content as a file and uploads it.
 		/// </summary>
-		public Task<SlackFileResponse> UploadContentAsync(ContentToUpload contentToUpload)
-			=> SendPostMultipartFormAsync<ContentToUpload, SlackFileResponse>("upload", contentToUpload);
+		public Task<FileObjectResponse> UploadContentAsync(ContentToUpload contentToUpload)
+			=> SendPostMultipartFormAsync<ContentToUpload, FileObjectResponse>("upload", contentToUpload);
 
 		/// <summary>
 		/// Uploads a file.
 		/// </summary>
-		public Task<SlackFileResponse> UploadFileAsync(FileToUpload fileToUpload)
-			=> SendPostMultipartFormAsync<FileToUpload, SlackFileResponse>("upload", fileToUpload);
+		public Task<FileObjectResponse> UploadFileAsync(FileToUpload fileToUpload)
+			=> SendPostMultipartFormAsync<FileToUpload, FileObjectResponse>("upload", fileToUpload);
 	}
 }

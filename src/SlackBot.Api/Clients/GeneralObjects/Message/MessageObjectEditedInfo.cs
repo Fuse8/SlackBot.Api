@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-    public class MessageEditedInfo
+    public class MessageObjectEditedInfo
     {
         [JsonProperty("user")]
         public string UserId { get; set; }

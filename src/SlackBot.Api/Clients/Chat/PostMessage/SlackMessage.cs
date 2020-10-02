@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-	public class Message : MessageBase //TODO Rename to SlackMessage
+	public class SlackMessage : MessageBase
 	{
-		public Message()
+		public SlackMessage()
 		{
 		}
 
-		public Message(string channelIdOrName, string text = null, List<Attachment> attachments = null, List<BlockBase> blocks = null)
+		public SlackMessage(string channelIdOrName, string text = null, List<Attachment> attachments = null, List<BlockBase> blocks = null)
 			: base(channelIdOrName, text, attachments, blocks)
 		{
 		}

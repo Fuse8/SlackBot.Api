@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class MessageToSchedule : Message
+	public class MessageToSchedule : SlackMessage
 	{
 		/// <summary>
 		/// Unix EPOCH timestamp of time in future to send the message.

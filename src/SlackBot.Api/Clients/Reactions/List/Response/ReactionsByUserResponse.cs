@@ -6,6 +6,6 @@ namespace SlackBot.Api
 	public class ReactionsByUserResponse : CursorPaginationResponseBase
 	{
 		[JsonProperty("items")]
-		public List<ItemResponse> Items { get; set; }
+		public List<ItemActionResponse> Items { get; set; }
 	}
 }

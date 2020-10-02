@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class ItemResponse
+	public class ItemActionResponse
 	{
 		[JsonProperty("type")]
 		public string Type { get; set; }
@@ -11,9 +11,9 @@ namespace SlackBot.Api
 		public string ChannelId { get; set; }
 
 		[JsonProperty("message")]
-		public MessageResponse Message { get; set; }
+		public MessageObject Message { get; set; }
 
 		[JsonProperty("file")]
-		public SlackFile File { get; set; }
+		public FileObject File { get; set; }
 	}
 }

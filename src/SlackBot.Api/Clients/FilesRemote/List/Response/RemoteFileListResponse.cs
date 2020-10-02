@@ -6,6 +6,6 @@ namespace SlackBot.Api
 	public class RemoteFileListResponse : CursorPaginationResponseBase
 	{
 		[JsonProperty("files")]
-		public List<SlackFile> Files { get; set; }
+		public List<FileObject> Files { get; set; }
 	}
 }

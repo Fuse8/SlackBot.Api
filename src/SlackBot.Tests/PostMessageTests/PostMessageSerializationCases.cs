@@ -10,7 +10,7 @@ namespace SlackBot.Tests.PostMessageTests
 		{
 			new List<object>
 			{
-				new Message
+				new SlackMessage
 				{
 					ChannelIdOrName = "channel",
 					Attachments = new List<Attachment>(),

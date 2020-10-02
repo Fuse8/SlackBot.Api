@@ -11,7 +11,7 @@ namespace SlackBot.Tests.PostMessageTests
 		[Test]
 		public async Task RequestParametersAreCorrectAsync()
 		{
-			var httpRequestMessage = await SlackClientMockHelpers.GetApiRequestAsync(new Message(), (slackClient, requestModel) => slackClient.Chat.PostMessageAsync(requestModel));
+			var httpRequestMessage = await SlackClientMockHelpers.GetApiRequestAsync(new SlackMessage(), (slackClient, requestModel) => slackClient.Chat.PostMessageAsync(requestModel));
 			
 			Assert.AreEqual(HttpMethod.Post, httpRequestMessage.Method);
 			Assert.AreEqual("application/json", httpRequestMessage.Content.Headers.ContentType.MediaType);

@@ -39,8 +39,8 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Sends a message to a channel.
 		/// </summary>
-		public Task<SendMessageResponse> PostMessageAsync(Message message)
-			=> SendPostJsonStringAsync<Message, SendMessageResponse>("postMessage", message);
+		public Task<SendMessageResponse> PostMessageAsync(SlackMessage slackMessage)
+			=> SendPostJsonStringAsync<SlackMessage, SendMessageResponse>("postMessage", slackMessage);
 		
 		/// <summary>
 		/// Schedules a message to be sent to a channel.

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-    public class MessageResponse
+    public class MessageObject
     {
         [JsonProperty("type")]
         public string Type { get; set; }
@@ -22,10 +22,10 @@ namespace SlackBot.Api
         public List<string> PinnedToChannelIds { get; set; }
         
         [JsonProperty("pinned_info")]
-        public PinnedInfo PinnedInfo { get; set; }
+        public MessageObjectPinnedInfo PinnedInfo { get; set; }
         
         [JsonProperty("reactions")]
-        public List<MessageReactionItem> Reactions { get; set; }
+        public List<MessageObjectReaction> Reactions { get; set; }
         
         [JsonProperty("channel")]
         public string ChannelId { get; set; }
@@ -40,7 +40,7 @@ namespace SlackBot.Api
         public string Timestamp { get; set; }
 
         [JsonProperty("edited")]
-        public MessageEditedInfo EditedInfo { get; set; }
+        public MessageObjectEditedInfo EditedInfo { get; set; }
 
         [JsonProperty("blocks")]
         public List<BlockBase> Blocks { get; set; }
@@ -55,10 +55,10 @@ namespace SlackBot.Api
         public string BotId { get; set; }
 
         [JsonProperty("bot_profile")]
-        public BotInfo BotInfo { get; set; }
+        public BotObject BotInfo { get; set; }
         
         [JsonProperty("files")]
-        public List<SlackFile> Files { get; set; }
+        public List<FileObject> Files { get; set; }
         
         [JsonProperty("thread_ts")]
         public string ThreadTimestamp { get; set; }
@@ -131,7 +131,7 @@ namespace SlackBot.Api
         #region "file_comment" and "file_mention" type
         
         [JsonProperty("file")]
-        public SlackFile File { get; set; }
+        public FileObject File { get; set; }
         
         #endregion
         
@@ -152,7 +152,7 @@ namespace SlackBot.Api
         #region "message_changed" and "message_replied" type
         
         [JsonProperty("message")]
-        public MessageResponse UpdatedMessage { get; set; }
+        public MessageObject UpdatedMessage { get; set; }
 
         #endregion
         
@@ -190,7 +190,7 @@ namespace SlackBot.Api
         #region "thread_broadcast" type
         
         [JsonProperty("root")]
-        public MessageResponse RootMessage { get; set; }
+        public MessageObject RootMessage { get; set; }
 
         #endregion
     }

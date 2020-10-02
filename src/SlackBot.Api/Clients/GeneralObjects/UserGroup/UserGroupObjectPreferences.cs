@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace SlackBot.Api
 {
-	public class UserGroupPreferences
+	public class UserGroupObjectPreferences
 	{
 		[JsonProperty("channels")]
 		public List<string> ChannelIds { get; set; }

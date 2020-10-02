@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class SlackUser
+	public class UserObject
 	{
 		[JsonProperty("id")]
 		public string Id { get; set; }
@@ -32,7 +32,7 @@ namespace SlackBot.Api
 		public int TimezoneOffset { get; set; }
 
 		[JsonProperty("profile")]
-		public UserProfileInfo Profile { get; set; }
+		public UserProfileObject Profile { get; set; }
 
 		[JsonProperty("is_admin")]
 		public bool? IsAdmin { get; set; }

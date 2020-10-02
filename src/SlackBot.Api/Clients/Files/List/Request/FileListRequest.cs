@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class FileListRequest : ClassicPaginationBase
+	public class FileListRequest : ClassicPaginationRequestBase
 	{
 		public FileListRequest()
 		{

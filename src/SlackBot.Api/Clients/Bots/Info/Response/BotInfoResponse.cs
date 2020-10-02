@@ -5,6 +5,6 @@ namespace SlackBot.Api
 	public class BotInfoResponse : SlackBaseResponse
 	{
 		[JsonProperty("bot")]
-		public BotInfo Bot { get; set; }
+		public BotObject Bot { get; set; }
 	}
 }

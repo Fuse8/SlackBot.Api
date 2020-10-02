@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api
 {
-    public abstract class CursorPaginationBase
+    public abstract class CursorPaginationRequestBase
     {
-        protected CursorPaginationBase()
+        protected CursorPaginationRequestBase()
         {
         }
         
-        protected CursorPaginationBase(string cursor, long? limit)
+        protected CursorPaginationRequestBase(string cursor, long? limit)
         {
             Cursor = cursor;
             Limit = limit;

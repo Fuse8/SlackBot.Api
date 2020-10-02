@@ -6,7 +6,7 @@ namespace SlackBot.Api
 	public class FileInfoResponse : CursorPaginationResponseBase
 	{
 		[JsonProperty("file")]
-		public SlackFile File { get; set; }
+		public FileObject File { get; set; }
 
 		[JsonProperty("content")]
 		public string Content { get; set; }

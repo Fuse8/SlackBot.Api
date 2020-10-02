@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-    public class PinnedInfo
+    public class MessageObjectPinnedInfo
     {
         [JsonProperty("channel")]
         public string ChannelId { get; set; }

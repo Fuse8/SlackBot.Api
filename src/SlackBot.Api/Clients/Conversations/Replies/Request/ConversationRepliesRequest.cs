@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class ConversationRepliesRequest : CursorPaginationWithTimestampBase
+	public class ConversationRepliesRequest : CursorPaginationWithTimestampRequestBase
 	{
 		public ConversationRepliesRequest()
 		{

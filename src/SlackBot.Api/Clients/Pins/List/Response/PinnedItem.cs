@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-	public class PinnedItem : ItemResponse
+	public class PinnedItem : ItemActionResponse
 	{
 		[JsonProperty("created")]
 		public long CreatedTimestamp { get; set; }

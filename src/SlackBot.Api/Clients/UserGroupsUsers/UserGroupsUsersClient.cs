@@ -21,7 +21,7 @@ namespace SlackBot.Api
 		/// <summary>
 		/// Update the list of users for a User Group.
 		/// </summary>
-		public Task<UserGroupResponse> UpdateAsync(UpdateUsersInUserGroupRequest updateUsersInUserGroupRequest)
-			=> SendPostFormUrlEncodedAsync<UpdateUsersInUserGroupRequest, UserGroupResponse>("update", updateUsersInUserGroupRequest);
+		public Task<UserGroupObjectResponse> UpdateAsync(UpdateUsersInUserGroupRequest updateUsersInUserGroupRequest)
+			=> SendPostFormUrlEncodedAsync<UpdateUsersInUserGroupRequest, UserGroupObjectResponse>("update", updateUsersInUserGroupRequest);
 	}
 }

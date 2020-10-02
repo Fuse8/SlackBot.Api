@@ -6,7 +6,7 @@ namespace SlackBot.Api
 	public class UserListResponse : CursorPaginationResponseBase
 	{
 		[JsonProperty("members")]
-		public List<SlackUser> Members { get; set; }
+		public List<UserObject> Members { get; set; }
 
 		[JsonProperty("cache_ts")]
 		public long CacheTimestamp { get; set; }

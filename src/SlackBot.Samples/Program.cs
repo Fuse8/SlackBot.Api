@@ -38,11 +38,19 @@ namespace SlackBot.Samples
 		// ReSharper disable once InconsistentNaming
 		public static async Task Main()
 		{
+			#region Bot methods
+			
 			/* Gets bot info * /
 			var botInfoResponse = await GetBotInfoAsync(); /**/
 			
+			#endregion
+			
+			#region Emoji methods
+			
 			/* Gets custom emoji list for team * /
 			var emojiListResponse = await GetEmojiListAsync(); /**/
+			
+			#endregion
 
 			#region File methods
 
@@ -121,7 +129,7 @@ namespace SlackBot.Samples
             /* Archives conversation * /
 			var archiveConversationResponse = await ArchiveConversationAsync();/**/
             
-            /* Archives conversation * /
+            /* Closes conversation * /
 			var closeConversationResponse = await CloseConversationAsync();/**/
             
             /* Creates channel * /
@@ -129,136 +137,148 @@ namespace SlackBot.Samples
             
             /* Gets conversation's history of messages and events * /
 			var conversationsHistoryResponse = await GetConversationsHistoryAsync();/**/
-            
-            /* Gets information about conversation * /
+
+			/* Gets information about conversation * /
 			var conversationInfoResponse = await GetConversationInfoAsync();/**/
-            
-            /* Creates channel and invites user * /
+
+			/* Creates channel and invites user * /
 			var inviteToConversationResponse = await InviteToConversationAsync();/**/
-            
-            /* Joins to conversation * /
+
+			/* Joins to conversation * /
 			var joinToConversationResponse = await JoinToConversationAsync();/**/
-            
-            /* Kicks from conversation * /
+
+			/* Kicks from conversation * /
 			var kickFromConversationResponse = await KickFromConversationAsync();/**/
-            
-            /* Leaves conversation * /
+
+			/* Leaves conversation * /
 			var leaveConversationResponse = await LeaveConversationAsync();/**/
-            
-            /* Gets conversation list * /
+
+			/* Gets conversation list * /
 			var getConversationListResponse = await GetConversationListAsync();/**/
-            
-            /* Gets conversation's members * /
+
+			/* Gets conversation's members * /
 			var getConversationMembersResponse = await GetConversationMembersAsync();/**/
-            
-            /* Opens conversation * /
+
+			/* Opens conversation * /
 			var openConversationResponse = await OpenConversationAsync();/**/
-            
-            /* Renames conversation * /
+
+			/* Renames conversation * /
 			var renameConversationResponse = await RenameConversationAsync();/**/
-            
-            /* Gets message replies from conversation * /
+
+			/* Gets message replies from conversation * /
 			var getConversationRepliesResponse = await GetConversationRepliesAsync();/**/
-            
-            /* Sets conversation purpose * /
+
+			/* Sets conversation purpose * /
 			var setConversationPurposeResponse = await SetConversationPurposeAsync();/**/
-            
-            /* Sets conversation purpose * /
+
+			/* Sets conversation purpose * /
 			var setConversationTopicResponse = await SetConversationTopicAsync();/**/
-            
-            /* Unarchives conversation * /
+
+			/* Unarchives conversation * /
 			var unarchiveConversationResponse = await UnarchiveConversationAsync();/**/
 
 			#endregion
 
 			#region Pin methods
-			
+
 			/* Pins message * /
 			var pinMessageResponse = await PinMessageAsync(); /**/
- 
+
 			/* Get pinned items * /
 			var pinListResponse = await GetPinListAsync(); /**/
- 
+
 			/* Removes pinned item * /
 			var removePinResponse = await RemovePinAsync(); /**/
-			
+
 			#endregion
 
 			#region Reaction methods
 
 			/* Adds reaction * /
 			var addReactionResponse = await AddReactionAsync(); /**/
- 
+
 			/* Gets reactions by item* /
 			var reactionsByItemResponse = await GetReactionsByItemAsync(); /**/
- 
+
 			/* Gets reactions by user* /
 			var reactionsByUserResponse = await GetReactionsByUserAsync(); /**/
 
-            /* Removes reaction * /
+			/* Removes reaction * /
 			var removeReactionResponse = await RemoveReactionAsync();/**/
-			
+
 			#endregion
 			
+			#region Team methods
+
 			/* Gets team info * /
 			var teamInfoResponse = await GetTeamInfoAsync();/**/
 			
+			#endregion
+
+			#region TeamProfile methods
+			
 			/* Gets team profile * /
 			var teamProfileResponse = await GetTeamProfileAsync();/**/
+			
+			#endregion
 
 			#region UserGroup methods
-			
+
 			/* Creates user group * /
 			var createUserGroupResponse = await CreateUserGroupAsync();/**/
-			
+
 			/* Disables user group * /
 			var disableUserGroupResponse = await DisableUserGroupAsync();/**/
-			
+
 			/* Enables user group * /
 			var enableUserGroupResponse = await EnableUserGroupAsync();/**/
-			
+
 			/* Gets user group list * /
 			var getUserGroupListResponse = await GetUserGroupListAsync();/**/
-			
+
 			/* Updates user group * /
 			var updateUserGroupResponse = await UpdateUserGroupAsync();/**/
 
 			#endregion
 
 			#region UserGroupUser methods
-			
+
 			/* Gets user group users * /
 			var getUserGroupUserListResponse = await GetUserGroupUserListAsync();/**/
-			
+
 			/* Updates users in user group * /
 			var updateUsersInUserGroupResponse = await UpdateUsersInUserGroupAsync();/**/
-			
+
 			#endregion
 
 			#region User methods
 
-            /* Gets list of user channels * /
+			/* Gets list of user channels * /
 			var userConversationsResponse = await GetUserConversationsAsync();/**/
 
 			/* Gets user presence information * /
 			var userPresenceResponse = await GetUserPresenceAsync();/**/
 
-            /* Gets information about user * /
+			/* Gets information about user * /
 			var userInfoResponse = await GetUserInfoAsync();/**/
 
-            /* Gets list of all users * /
+			/* Gets list of all users * /
 			var userListResponse = await GetUserListAsync();/**/
 
-            /* Gets user by email * /
+			/* Gets user by email * /
 			var userByEmailResponse = await GetUserByEmailAsync();/**/
 
-            /* Sets user presence * /
+			/* Sets user presence * /
 			var setUserPresenceResponse = await SetUserPresenceAsync();/**/
-			
+
 			#endregion
+			
+			#region UserProfile methods
 
 			/* Gets user profile * /
 			var getUserProfileResponse = await GetUserProfileAsync();/**/
+			
+			#endregion
 		}
 
 		#region Bot
@@ -281,7 +301,7 @@ namespace SlackBot.Samples
 
 		#region File
 		
-		private static async Task<SlackFileResponse> UploadContentAsync(string title = "Title")
+		private static async Task<FileObjectResponse> UploadContentAsync(string title = "Title")
 		{
 			var content = await File.ReadAllTextAsync("./appsettings.json");
 			var contentMessage = new ContentToUpload
@@ -297,7 +317,7 @@ namespace SlackBot.Samples
 			return await _slackClient.Files.UploadContentAsync(contentMessage);
 		}
 
-		private static async Task<SlackFileResponse> UploadFileAsync()
+		private static async Task<FileObjectResponse> UploadFileAsync()
 		{
 			await using var fileStream = File.Open("./appsettings.json", FileMode.Open);
 			var fileMessage = new FileToUpload
@@ -346,7 +366,7 @@ namespace SlackBot.Samples
 
 		#region RemoteFile
 
-		private static Task<SlackFileResponse> AddRemoteFileAsync()
+		private static Task<FileObjectResponse> AddRemoteFileAsync()
 		{
 			var remoteFile = new RemoteFile
 			{
@@ -359,7 +379,7 @@ namespace SlackBot.Samples
 			return _slackClient.FilesRemote.AddAsync(remoteFile);
 		}
 
-		private static async Task<SlackFileResponse> GetRemoteFileInfoAsync()
+		private static async Task<FileObjectResponse> GetRemoteFileInfoAsync()
 		{
 			var addRemoteFileResponse = await AddRemoteFileAsync();
 
@@ -383,7 +403,7 @@ namespace SlackBot.Samples
 			return await _slackClient.FilesRemote.RemoveAsync(new RemoteFileToRemove(addRemoteFileResponse.File.Id));
 		}
 
-		private static async Task<SlackFileResponse> ShareRemoteFileAsync()
+		private static async Task<FileObjectResponse> ShareRemoteFileAsync()
 		{
 			var addRemoteFileResponse = await AddRemoteFileAsync();
 			
@@ -392,7 +412,7 @@ namespace SlackBot.Samples
 			return await _slackClient.FilesRemote.ShareAsync(new RemoteFileToShare(channelId, addRemoteFileResponse.File.Id));
 		}
 
-		private static async Task<SlackFileResponse> UpdateRemoteFileAsync()
+		private static async Task<FileObjectResponse> UpdateRemoteFileAsync()
 		{
 			var addRemoteFileResponse = await AddRemoteFileAsync();
 
@@ -413,7 +433,7 @@ namespace SlackBot.Samples
 		{
 			var blocks = GenerateBlocksForMessage();
 
-			var message = new Message
+			var message = new SlackMessage
 			{
 				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Blocks = blocks,
@@ -437,7 +457,7 @@ namespace SlackBot.Samples
 
 			var secondFile = await UploadContentAsync("File2");
 
-			var message = new Message
+			var message = new SlackMessage
 			{
 				ChannelIdOrName = _slackBotSettings.ChannelName,
 				Text = firstFile.File.Permalink + " " + secondFile.File.Permalink,
@@ -523,7 +543,7 @@ namespace SlackBot.Samples
         
 		private static Task<SendMessageResponse> SendSimpleMessageAsync(string nameOfMethod, string channelId = null, string threadTimestamp = null)
 		{
-			var message = new Message
+			var message = new SlackMessage
 			{
 				ChannelIdOrName = channelId ?? _slackBotSettings.ChannelName,
 				Text = $"{nameOfMethod} method",
@@ -680,7 +700,7 @@ namespace SlackBot.Samples
 			return await _slackClient.Conversations.LeaveAsync(new ConversationToLeave(channelId));
         }
 
-		private static async Task<ConversationListResponse> GetConversationListAsync()
+		private static async Task<ConversationObjectListResponse> GetConversationListAsync()
 			=> await _slackClient.Conversations.ListAsync(new ConversationListRequest("public_channel,private_channel,mpim,im", limit: 1000));
 
 		private static async Task<ConversationMembersResponse> GetConversationMembersAsync()
@@ -899,21 +919,21 @@ namespace SlackBot.Samples
 
 		#region UserGroup
 		
-		private static async Task<UserGroupResponse> CreateUserGroupAsync()
+		private static async Task<UserGroupObjectResponse> CreateUserGroupAsync()
 		{
 			var channelId = await GetChannelIdAsync();
 
 			return await _slackClient.UserGroups.CreateAsync(new UserGroupToCreate("Test group", "test-group", channelId));
 		}
 		
-		private static async Task<UserGroupResponse> DisableUserGroupAsync()
+		private static async Task<UserGroupObjectResponse> DisableUserGroupAsync()
 		{
 			var createUserGroupResponse = await CreateUserGroupAsync();
 
 			return await _slackClient.UserGroups.DisableAsync(new UserGroupToDisable(createUserGroupResponse.UserGroup.Id));
 		}
 		
-		private static async Task<UserGroupResponse> EnableUserGroupAsync()
+		private static async Task<UserGroupObjectResponse> EnableUserGroupAsync()
 		{
 			var disableUserGroupResponse = await DisableUserGroupAsync();
 
@@ -927,7 +947,7 @@ namespace SlackBot.Samples
 			return await _slackClient.UserGroups.ListAsync(new UserGroupListRequest(true, true, true));
 		}
 		
-		private static async Task<UserGroupResponse> UpdateUserGroupAsync()
+		private static async Task<UserGroupObjectResponse> UpdateUserGroupAsync()
 		{
 			var createUserGroupResponse = await CreateUserGroupAsync();
 
@@ -952,7 +972,7 @@ namespace SlackBot.Samples
 			return await _slackClient.UserGroupsUsers.ListAsync(new UserGroupUserListRequest(updateUsersInUserGroupResponse.UserGroup.Id));
 		}
 		
-		private static async Task<UserGroupResponse> UpdateUsersInUserGroupAsync()
+		private static async Task<UserGroupObjectResponse> UpdateUsersInUserGroupAsync()
 		{
 			var createUserGroupResponse = await CreateUserGroupAsync();
 
@@ -969,7 +989,7 @@ namespace SlackBot.Samples
 
 		#region User
 
-		private static Task<ConversationListResponse> GetUserConversationsAsync()
+		private static Task<ConversationObjectListResponse> GetUserConversationsAsync()
 			=> _slackClient.Users.ConversationsAsync(new UserConversations("public_channel,private_channel,mpim,im"));
 
 		private static Task<UserPresenceResponse> GetUserPresenceAsync()

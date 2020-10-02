@@ -11,6 +11,6 @@ namespace SlackBot.Api
 		public bool? IsAlreadyOpened { get; set; }
 		
 		[JsonProperty("channel")]
-		public ConversationInfo Channel { get; set; }
+		public ConversationObject Channel { get; set; }
 	}
 }

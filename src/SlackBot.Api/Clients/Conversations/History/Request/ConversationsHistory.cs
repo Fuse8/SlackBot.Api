@@ -2,7 +2,7 @@
 
 namespace SlackBot.Api
 {
-    public class ConversationsHistory : CursorPaginationWithTimestampBase
+    public class ConversationsHistory : CursorPaginationWithTimestampRequestBase
     {
         public ConversationsHistory()
         {
