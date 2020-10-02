@@ -12,6 +12,10 @@ namespace SlackBot.Api
 
 		protected override string ObjectPath => "team.profile";
 
+		/// <inheritdoc cref="GetAsync(TeamProfileRequest)"/>
+		public Task<TeamProfileResponse> GetAsync(TeamFieldVisibilityType? visibility = null)
+			=> GetAsync(new TeamProfileRequest(visibility));
+
 		/// <summary>
 		/// Retrieve a team's profile.
 		/// </summary>

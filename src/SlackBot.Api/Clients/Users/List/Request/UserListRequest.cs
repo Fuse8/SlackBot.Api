@@ -8,9 +8,10 @@ namespace SlackBot.Api
 		{
 		}
 
-		public UserListRequest(string cursor, long? limit = null)
+		public UserListRequest(string cursor, long? limit = null, bool? includeLocale = null)
 			: base(cursor, limit)
 		{
+			IncludeLocale = includeLocale;
 		}
 
 		/// <summary>

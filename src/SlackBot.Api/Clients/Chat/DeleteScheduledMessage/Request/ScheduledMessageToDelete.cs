@@ -8,9 +8,9 @@ namespace SlackBot.Api
 		{
 		}
 
-		public ScheduledMessageToDelete(string channel, string scheduledMessageId)
+		public ScheduledMessageToDelete(string channelId, string scheduledMessageId)
 		{
-			Channel = channel;
+			ChannelId = channelId;
 			ScheduledMessageId = scheduledMessageId;
 		}
 
@@ -19,7 +19,7 @@ namespace SlackBot.Api
 		/// </summary>
 		/// <example>C123456789</example>
 		[JsonProperty("channel")]
-		public string Channel { get; set; }
+		public string ChannelId { get; set; }
 		
 		/// <summary>
 		/// <see cref="ScheduleMessageResponse.ScheduledMessageId"/> returned from call to "chat.scheduleMessage"

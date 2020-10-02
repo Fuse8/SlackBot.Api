@@ -8,7 +8,7 @@ namespace SlackBot.Tests.PostMessageTests
 	{
 		public static object[] MessageCases =
 		{
-			new List<object>
+			new object[]
 			{
 				new SlackMessage
 				{

@@ -12,6 +12,10 @@ namespace SlackBot.Api
 
 		protected override string ObjectPath => "users.profile";
 
+		/// <inheritdoc cref="GetAsync(UserProfileRequest)"/>
+		public Task<UserProfileResponse> GetAsync(string userId = null, bool? includeLabels = null)
+			=> GetAsync(new UserProfileRequest(userId, includeLabels));
+
 		/// <summary>
 		/// Retrieves a user's profile information.
 		/// </summary>

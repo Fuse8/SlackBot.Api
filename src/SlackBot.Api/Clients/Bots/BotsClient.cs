@@ -12,6 +12,10 @@ namespace SlackBot.Api
 
 		protected override string ObjectPath => "bots";
 		
+		/// <inheritdoc cref="BotsClient.InfoAsync(BotInfoRequest)"/>
+		public Task<BotInfoResponse> InfoAsync(string botId)
+			=> InfoAsync(new BotInfoRequest(botId));
+		
 		/// <summary>
 		/// Gets information about a bot user.
 		/// </summary>

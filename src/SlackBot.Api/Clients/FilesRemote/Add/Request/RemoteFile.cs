@@ -6,6 +6,26 @@ namespace SlackBot.Api
 {
 	public class RemoteFile
 	{
+		public RemoteFile()
+		{
+		}
+
+		public RemoteFile(
+			string externalId,
+			Uri externalUrl,
+			string title = null,
+			Stream previewImageStream = null,
+			string fileType = null,
+			Stream indexableContentStream = null)
+		{
+			ExternalId = externalId;
+			ExternalUrl = externalUrl;
+			Title = title;
+			PreviewImageStream = previewImageStream;
+			FileType = fileType;
+			IndexableContentStream = indexableContentStream;
+		}
+
 		/// <summary>
 		/// Creator defined GUID for the file.
 		/// </summary>

@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api
 {
-	public class UserGroupToCreate
+	public class SlackUserGroup
 	{
-		public UserGroupToCreate()
+		public SlackUserGroup()
 		{
 		}
 
-		public UserGroupToCreate(string name, string handle = null, string channelIds = null, string description = null)
+		public SlackUserGroup(string name, string handle = null, string channelIds = null, string description = null)
 		{
 			Name = name;
 			Handle = handle;

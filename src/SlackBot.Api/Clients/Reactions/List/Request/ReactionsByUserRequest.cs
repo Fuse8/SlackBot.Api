@@ -8,7 +8,7 @@ namespace SlackBot.Api
 		{
 		}
 
-		public ReactionsByUserRequest(string cursor, long? limit = null, string userId = null)
+		public ReactionsByUserRequest(string userId, string cursor = null, long? limit = null)
 			: base(cursor, limit)
 		{
 			UserId = userId;

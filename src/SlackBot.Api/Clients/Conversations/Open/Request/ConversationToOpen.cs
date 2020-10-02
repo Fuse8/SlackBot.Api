@@ -8,10 +8,10 @@ namespace SlackBot.Api
 		{
 		}
 		
-		public ConversationToOpen(string userIds, bool? returnFillDirectMessageInfo = null)
+		public ConversationToOpen(string userIds, bool? returnFullDirectMessageInfo = null)
 		{
 			UserIds = userIds;
-			ReturnFillDirectMessageInfo = returnFillDirectMessageInfo;
+			ReturnFullDirectMessageInfo = returnFullDirectMessageInfo;
 		}
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace SlackBot.Api
 		/// </summary>
 		/// <example>true</example>
 		[FormPropertyName("return_im")]
-		public bool? ReturnFillDirectMessageInfo { get; set; }
+		public bool? ReturnFullDirectMessageInfo { get; set; }
 
 		/// <summary>
 		/// Comma separated lists of users. If only one user is included, this creates a 1:1 DM.

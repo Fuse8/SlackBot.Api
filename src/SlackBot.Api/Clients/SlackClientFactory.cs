@@ -16,13 +16,17 @@ namespace SlackBot.Api
 			return new SlackClient(httpClient);
 		}
 		
-		public static TClient CreateClient<TClient>(string token) //TODO test
-			where TClient : SlackClientBase, new()
+		public static TClient CreateClient<TClient>(string token)
+			where TClient : SlackClientBase
 		{
 			var httpClient = CreateHttpClient(token);
 
 			return (TClient)Activator.CreateInstance(typeof(TClient), httpClient);
 		}
+		
+		public static TClient CreateClient<TClient>(HttpClient httpClient)
+			where TClient : SlackClientBase
+			=> (TClient)Activator.CreateInstance(typeof(TClient), httpClient);
 
 		private static HttpClient CreateHttpClient(string token)
 		{

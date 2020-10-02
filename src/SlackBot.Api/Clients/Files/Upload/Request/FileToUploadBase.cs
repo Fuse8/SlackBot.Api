@@ -4,12 +4,26 @@ namespace SlackBot.Api
 {
 	public abstract class FileToUploadBase
 	{
+		protected FileToUploadBase()
+		{
+		}
+
+		protected FileToUploadBase(string channelNamesOrIds, string filename, string comment, string title, string fileType, string threadTimestamp)
+		{
+			ChannelNamesOrIds = channelNamesOrIds;
+			Filename = filename;
+			Comment = comment;
+			Title = title;
+			FileType = fileType;
+			ThreadTimestamp = threadTimestamp;
+		}
+
 		/// <summary>
 		/// Comma-separated list of channel names or IDs where the file will be shared.
 		/// </summary>
 		/// <example>C1234567890,C2345678901,C3456789012</example>
 		[FormPropertyName("channels")]
-		public string Channels { get; set; }
+		public string ChannelNamesOrIds { get; set; }
 
 		/// <summary>
 		/// Filename of file.
@@ -26,7 +40,7 @@ namespace SlackBot.Api
 		public string FileType { get; set; }
 
 		/// <summary>
-		/// The message text introducing the file in specified <see cref="Channels"/>.
+		/// The message text introducing the file in specified <see cref="ChannelNamesOrIds"/>.
 		/// </summary>
 		/// <example>Best!</example>
 		[FormPropertyName("initial_comment")]

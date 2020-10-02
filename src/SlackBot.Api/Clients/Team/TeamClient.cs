@@ -12,6 +12,10 @@ namespace SlackBot.Api
 
 		protected override string ObjectPath => "team";
 
+		/// <inheritdoc cref="InfoAsync(TeamInfoRequest)"/>
+		public Task<TeamInfoResponse> InfoAsync(string teamId = null)
+			=> InfoAsync(new TeamInfoRequest(teamId));
+
 		/// <summary>
 		/// Gets information about the current team.
 		/// </summary>

@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api
 {
-	public class UserGroupToUpdate : UserGroupToCreate
+	public class UserGroupToUpdate : SlackUserGroup
 	{
 		public UserGroupToUpdate()
 		{
 		}
 
-		public UserGroupToUpdate(string userGroupId, string name = null, string handle = null, string channelIds = null, string description = null)
+		public UserGroupToUpdate(string userGroupId, string name = null, string description = null, string channelIds = null, string handle = null)
 			: base(name, handle, channelIds, description)
 		{
 			UserGroupId = userGroupId;

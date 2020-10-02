@@ -8,7 +8,8 @@ namespace SlackBot.Api
 		{
 		}
 
-		public ScheduledMessageListRequest(string channelId)
+		public ScheduledMessageListRequest(string channelId, string cursor = null, long? limit = null, string oldest = null, string latest = null)
+			: base(cursor, limit, oldest, latest)
 		{
 			ChannelId = channelId;
 		}

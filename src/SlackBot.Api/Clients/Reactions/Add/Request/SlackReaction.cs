@@ -2,13 +2,13 @@
 
 namespace SlackBot.Api
 {
-	public class Reaction
+	public class SlackReaction
 	{
-		public Reaction()
+		public SlackReaction()
 		{
 		}
 
-		public Reaction(string channelId, string messageTimestamp, string emojiName)
+		public SlackReaction(string channelId, string messageTimestamp, string emojiName)
 		{
 			ChannelId = channelId;
 			MessageTimestamp = messageTimestamp;

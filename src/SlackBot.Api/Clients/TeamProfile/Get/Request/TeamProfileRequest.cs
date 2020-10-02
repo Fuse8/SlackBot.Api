@@ -8,7 +8,7 @@ namespace SlackBot.Api
 		{
 		}
 
-		public TeamProfileRequest(TeamFieldVisibilityType visibility)
+		public TeamProfileRequest(TeamFieldVisibilityType? visibility)
 		{
 			Visibility = visibility;
 		}
@@ -18,6 +18,6 @@ namespace SlackBot.Api
 		/// </summary>
 		/// <example>all</example>
 		[FormPropertyName("visibility")]
-		public TeamFieldVisibilityType Visibility { get; set; }
+		public TeamFieldVisibilityType? Visibility { get; set; }
 	}
 }

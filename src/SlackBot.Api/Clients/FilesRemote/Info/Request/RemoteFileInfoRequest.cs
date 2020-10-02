@@ -6,7 +6,7 @@
 		{
 		}
 
-		public RemoteFileInfoRequest(string fileId = null, string externalId= null)
+		public RemoteFileInfoRequest(string fileId = null, string externalId = null)
 			: base(fileId, externalId)
 		{
 		}
