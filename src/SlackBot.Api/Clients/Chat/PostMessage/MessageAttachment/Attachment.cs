@@ -6,6 +6,33 @@ namespace SlackBot.Api
 {
 	public class Attachment
 	{
+		public Attachment()
+		{
+		}
+
+		public Attachment(string color, List<Field> fields)
+			: this(color, fields, null, null)
+		{
+		}
+
+		public Attachment(string color, List<BlockBase> blocks)
+			: this(color, null, null, blocks)
+		{
+		}
+
+		public Attachment(string color, string text)
+			: this(color, null, text, null)
+		{
+		}
+
+		protected Attachment(string color, List<Field> fields, string text, List<BlockBase> blocks)
+		{
+			Color = color;
+			Blocks = blocks;
+			Text = text;
+			Fields = fields;
+		}
+
 		[JsonProperty("fallback")]
 		public string Fallback { get; set; }
 

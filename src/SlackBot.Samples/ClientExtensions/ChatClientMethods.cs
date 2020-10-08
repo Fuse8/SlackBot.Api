@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SlackBot.Api;
+using SlackBot.Api.Enums;
 using SlackBot.Api.Helpers;
 
 namespace SlackBot.Samples.ClientExtensions
@@ -10,7 +11,7 @@ namespace SlackBot.Samples.ClientExtensions
 	{
 		public static Task<SendMessageResponse> SendMessageWithBlocksAsync(SlackClient slackClient, string channelName)
 		{
-			var blocks = GenerateBlocksForMessage();
+			var blocks = GenerateBlocks();
 
 			var message = new SlackMessage
 			{
@@ -53,6 +54,66 @@ namespace SlackBot.Samples.ClientExtensions
 			};
 
 			return await slackClient.Chat.PostMessageAsync(message);
+		}
+		
+		public static async Task<SendMessageResponse> SendMessagesWithBuilderAsync(SlackClient slackClient, string channelName, string userId)
+		{
+			var messageWithTextHelper = new MessageBuilder(channelName)
+				.ChannelMention(SlackMention.Channel)
+				.LineBreak()
+				.UserMention(userId)
+				.LineBreak()
+				.Text($"{TextHelper.Bold("bold text")} by {nameof(TextHelper)}")
+				.LineBreak()
+				.Text($"{TextHelper.InlineCode("inline code")} by {nameof(TextHelper)}")
+				.LineBreak()
+				.Text($"{TextHelper.Strike("strike text")} by {nameof(TextHelper)}")
+				.LineBreak()
+				.Text($"{TextHelper.Italic("italic text")} by {nameof(TextHelper)}")
+				.LineBreak()
+				.Text($"Link by {nameof(TextHelper)}: {TextHelper.Link("https://api.slack.com/")}")
+				.LineBreak()
+				.Text($"Link by {nameof(TextHelper)}: {TextHelper.Link(new Uri("https://api.slack.com/"))}")
+				.LineBreak()
+				.Text($"Link by {nameof(TextHelper)}: {TextHelper.EmailLink("test@test.com")}")
+				.LineBreak()
+				.LineBreak()
+				.Text($"Code block by {nameof(TextHelper)}:{TextHelper.CodeBlock("code line #1\ncode line #2")}")
+				.LineBreak()
+				.LineBreak()
+				.Text($"Unquoted text by {nameof(TextHelper)}:{TextHelper.Quoted("quoted text #1\nquoted text #2")}Unquoted text again")
+				.LineBreak()
+				.LineBreak()
+				.Text($"List by {nameof(TextHelper)}:{TextHelper.List("list item #1", "list item #2")}");
+
+			await slackClient.Chat.PostMessageAsync(messageWithTextHelper);
+
+			var messageWithTextBuilder = new MessageBuilder(channelName)
+				.UserMentions(new[] { userId, userId }, "\n")
+				.BoldText("bold text", "\n")
+				.InlineCodeText("inline code", "\n")
+				.StrikeText("strike text", TextHelper.LineBreak)
+				.ItalicText("italic text", TextHelper.LineBreak)
+				.CodeBlock("code block", TextHelper.LineBreak)
+				.LinkText("https://api.slack.com/", "Slack api url", TextHelper.LineBreak)
+				.LinkText(new Uri("https://api.slack.com/"), "Slack api url", TextHelper.LineBreak)
+				.EmailLinkText("test@test.com", "Test email", TextHelper.LineBreak)
+				.QuotedText("quoted text #1")
+				.QuotedText("quoted text #2")
+				.ListText(new[] { "list item #1", "list item #2" });
+
+			return await slackClient.Chat.PostMessageAsync(messageWithTextBuilder);
+			//var messageWithTextResponse = await slackClient.Chat.PostMessageAsync(messageWithText);
+
+			// var messageWithBlocks = MessageBuilder.CreateBuilder(channelName)
+			// 	.Reply(messageWithTextResponse.Timestamp, true)
+			// 	.Blocks(CreateHeaderBlock())
+			// 	.Blocks(CreateActionBlock(), CreateContextBlock())
+			// 	.Attachments(new Attachment("#000099", "Attachment1"))
+			// 	.Attachments(new Attachment("#009900", "Attachment2"), new Attachment("#990000", "Attachment3"))
+			// 	.CreateMessage();
+			//
+			// return await slackClient.Chat.PostMessageAsync(messageWithBlocks);
 		}
 
 		public static Task<SendEphemeralMessageResponse> SendEphemeralMessageAsync(SlackClient slackClient, string channelName, string userId)
@@ -137,55 +198,14 @@ namespace SlackBot.Samples.ClientExtensions
 			return slackClient.Chat.PostMessageAsync(message);
 		}
 
-		public static List<BlockBase> GenerateBlocksForMessage()
+		private static List<BlockBase> GenerateBlocks()
 		{
 			var blocks = new List<BlockBase>
 			{
-				new ActionBlock
-				{
-					Elements = new List<IActionElement>
-					{
-						new ButtonActionElement
-						{
-							Text = new PlainTextObject
-							{
-								UseEmoji = true,
-								Text = ":cat: Button",
-							},
-							Url = new Uri("https://google.com"),
-							Confirm = new ConfirmationDialogObject
-							{
-								Title = "Action Block confirmation",
-								Confirm = "Sure",
-								Deny = "Nope",
-								Text = (PlainTextObject)"I wanna open google",
-							},
-						},
-
-						new DatepickerActionElement
-						{
-							Placeholder = "Select date",
-							InitialDate = "2020-02-22",
-						},
-					},
-				},
-				new ContextBlock
-				{
-					Elements = new List<IContextElement>
-					{
-						(PlainTextObject)"This is Context Block",
-						new ImageElement
-						{
-							AltText = "Kitty in the Context block",
-							ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
-						},
-					},
-				},
+				CreateActionBlock(),
+				CreateContextBlock(),
 				new DividerBlock(),
-				new HeaderBlock
-				{
-					Text = "This is Header Block",
-				},
+				CreateHeaderBlock(),
 				new ImageBlock
 				{
 					ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
@@ -213,5 +233,55 @@ namespace SlackBot.Samples.ClientExtensions
 			};
 			return blocks;
 		}
+
+		private static ContextBlock CreateContextBlock()
+			=> new ContextBlock
+			{
+				Elements = new List<IContextElement>
+				{
+					(PlainTextObject)"This is Context Block",
+					new ImageElement
+					{
+						AltText = "Kitty in the Context block",
+						ImageUrl = new Uri("https://unsplash.com/photos/fZ8uf_L52wg/download?force=true&w=640"),
+					},
+				},
+			};
+
+		private static ActionBlock CreateActionBlock()
+			=> new ActionBlock
+			{
+				Elements = new List<IActionElement>
+				{
+					new ButtonActionElement
+					{
+						Text = new PlainTextObject
+						{
+							UseEmoji = true,
+							Text = ":cat: Button",
+						},
+						Url = new Uri("https://google.com"),
+						Confirm = new ConfirmationDialogObject
+						{
+							Title = "Action Block confirmation",
+							Confirm = "Sure",
+							Deny = "Nope",
+							Text = (PlainTextObject)"I wanna open google",
+						},
+					},
+
+					new DatepickerActionElement
+					{
+						Placeholder = "Select date",
+						InitialDate = "2020-02-22",
+					},
+				},
+			};
+
+		private static HeaderBlock CreateHeaderBlock()
+			=> new HeaderBlock
+			{
+				Text = "This is Header Block",
+			};
 	}
 }
