@@ -56,25 +56,20 @@ namespace SlackBot.Api.Helpers
 			return this;
 		}
 
-		public MessageBuilder UserMention(string userId, string separator = DefaultSeparator)
-			=> Mention($"@{userId}", separator);
+		public MessageBuilder PublicChannelMention(string channelId, string separator = DefaultSeparator)
+			=> TextInternal(TextHelper.PublicChannelMention(channelId), separator);
 
-		public MessageBuilder UserMentions(IEnumerable<string> userIds, string separator = DefaultSeparator)
-		{
-			if (userIds != null)
-			{
-				foreach (var userId in userIds)
-				{
-					Mention($"@{userId}", separator);
-					separator = " ";
-				}
-			}
-
-			return this;
-		}
+		public MessageBuilder UserGroupMention(string groupId, string separator = DefaultSeparator)
+			=> TextInternal(TextHelper.UserGroupMention(groupId), separator);
 
 		public MessageBuilder ChannelMention(SlackMention slackMention, string separator = DefaultSeparator)
-			=> Mention($"!{slackMention.ToString().ToLower()}", separator);
+			=> TextInternal(TextHelper.ChannelMention(slackMention), separator);
+
+		public MessageBuilder UserMention(string userId, string separator = DefaultSeparator)
+			=> TextInternal(TextHelper.UserMention(userId), separator);
+
+		public MessageBuilder UserMentions(IEnumerable<string> userIds, string separator = DefaultSeparator)
+			=> TextInternal(TextHelper.UserMentions(userIds), separator);
 		
 		public MessageBuilder Text(string text, string separator = DefaultSeparator)
 			=> TextInternal(text, separator);
@@ -109,6 +104,9 @@ namespace SlackBot.Api.Helpers
 		public MessageBuilder LinkText(string url, string label = null, string separator = DefaultSeparator)
 			=> TextInternal(TextHelper.Link(url, label), separator);
 
+		public MessageBuilder Date(long timestamp, string formatString, string fallbackText, Uri link = null, string separator = DefaultSeparator)
+		=> TextInternal(TextHelper.Date(timestamp, formatString, fallbackText, link), separator);
+
 		public MessageBuilder LineBreak()
 			=> TextInternal(TextHelper.LineBreak, string.Empty);
 
@@ -125,9 +123,6 @@ namespace SlackBot.Api.Helpers
 
 			return this;
 		}
-		
-		private MessageBuilder Mention(string mention, string separator)
-			=> TextInternal($"<{mention}>", separator);
 
 		private MessageBuilder TextInternal(string text, string separator)
 		{

@@ -43,7 +43,7 @@ namespace SlackBot.Api
 			=> SendPostFormUrlEncodedAsync<UserGroupToEnable, UserGroupObjectResponse>("enable", userGroupToEnable);
 
 		/// <inheritdoc cref="ListAsync(UserGroupListRequest)"/>
-		public Task<UserGroupListResponse> ListAsync(bool? includeUsers, bool? includeDisabledGroups = null, bool? includeUserCount = null)
+		public Task<UserGroupListResponse> ListAsync(bool? includeUsers = null, bool? includeDisabledGroups = null, bool? includeUserCount = null)
 			=> ListAsync(new UserGroupListRequest(includeUsers, includeDisabledGroups, includeUserCount));
 
 		/// <summary>

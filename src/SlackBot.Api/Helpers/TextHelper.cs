@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using SlackBot.Api.Enums;
 
 namespace SlackBot.Api.Helpers
 {
@@ -56,7 +58,59 @@ namespace SlackBot.Api.Helpers
 			return text;
 		}
 
+		public static string PublicChannelMention(string channelId)
+			=> SquareBrackets($"#{channelId}");
+
+		public static string UserGroupMention(string groupId)
+			=> SquareBrackets($"!subteam^{groupId}");
+
+		public static string ChannelMention(SlackMention slackMention)
+			=> SquareBrackets($"!{slackMention.ToString().ToLower()}");
+		
+		public static string UserMention(string userId)
+			=> SquareBrackets($"@{userId}");
+		
+		public static string UserMentions(IEnumerable<string> userIds)
+		{
+			string mentions = string.Empty;
+			
+			if (userIds != null)
+			{
+				mentions = string.Join(" ", userIds.Select(UserMention));
+			}
+
+			return mentions;
+		}
+
+		public static string Date(long timestamp, string formatString, string fallbackText)
+			=> Date(timestamp, formatString, fallbackText, (string)null);
+
+		public static string Date(long timestamp, string formatString, string fallbackText, Uri link)
+			=> Date(timestamp, formatString, fallbackText, link?.ToString());
+		
+		public static string Date(long timestamp, string formatString, string fallbackText, string link)
+		{
+			string dateString = string.Empty;
+
+			if (timestamp > 0)
+			{
+				dateString += $"!date^{timestamp}^{formatString}";
+
+				if (link != null)
+				{
+					dateString += $"^{link}";
+				}
+
+				dateString = SquareBrackets(dateString + $"|{fallbackText}");
+			}
+
+			return dateString;
+		}
+
 		private static string FormatText(string text, string formatSymbols)
 			=> $"{formatSymbols}{text}{formatSymbols}";
+		
+		private static string SquareBrackets(string mention)
+			=> $"<{mention}>";
 	}
 }

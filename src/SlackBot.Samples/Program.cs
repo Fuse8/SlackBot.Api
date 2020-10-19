@@ -121,7 +121,7 @@ namespace SlackBot.Samples
 			var sendMessageWithMultipleFilesResponse = await ChatClientMethods.SendMessageWithMultipleFilesAsync(slackClient, _channelName); /**/
 
 			/* Sends message with blocks and attachments using Builder */
-			var sendMessageWithBuilderResponse = await ChatClientMethods.SendMessagesWithBuilderAsync(slackClient, _channelName, _userId); /**/
+			var (messageWithTextHelperResponse, messageWithTextBuilderResponse, messageWithBlocksResponse) = await ChatClientMethods.SendMessagesWithBuilderAsync(slackClient, _channelName, _userId); /**/
 
 			/* Sends ephemeral message * /
 			var sendEphemeralMessageResponse = await ChatClientMethods.SendEphemeralMessageAsync(slackClient, _channelName, _userId); /**/
