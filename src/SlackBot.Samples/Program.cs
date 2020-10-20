@@ -38,7 +38,7 @@ namespace SlackBot.Samples
 		{
 			// To run samples:
 			// 1) Fill in "appsettings.json" config
-			// 2) Remove space in "* /" at the end of description line to run concrete sample
+			// 2) Remove space in "*/" at the end of description line to run concrete sample
 			
 			#region Emoji
 
@@ -52,9 +52,9 @@ namespace SlackBot.Samples
 			
 			#region Team
 
-			using (var disposedSlackClient = SlackClientFactory.CreateSlackClient(_token))
+			using (var slackClientToDispose = SlackClientFactory.CreateSlackClient(_token))
 			{
-				var teamClient = disposedSlackClient.Team;
+				var teamClient = slackClientToDispose.Team;
 				
 				/* Gets team info * /
 				var getTeamInfoResponse = await TeamClientMethods.GetTeamInfoAsync(teamClient);/**/
@@ -64,10 +64,10 @@ namespace SlackBot.Samples
 			
 			#region Bots
 
-			using (var disposedSlackClient = SlackClientFactory.CreateSlackClient(_token))
+			using (var slackClientToDispose = SlackClientFactory.CreateSlackClient(_token))
 			{
 				/* Gets bot info * /
-				var getBotInfoResponse = await BotsClientMethods.GetBotInfoAsync(disposedSlackClient, _channelName); /**/
+				var getBotInfoResponse = await BotsClientMethods.GetBotInfoAsync(slackClientToDispose, _channelName); /**/
 			}
 
 			#endregion
@@ -154,146 +154,146 @@ namespace SlackBot.Samples
 			/* Archives conversation * /
 			var archiveConversationResponse = await ConversationsClientMethods.ArchiveConversationAsync(slackClient, _channelName);/**/
 
-			/* Closes conversation * /
+			/* Closes conversation */
 			var closeConversationResponse = await ConversationsClientMethods.CloseConversationAsync(slackClient, _userId);/**/
 
-			/* Creates channel * /
+			/* Creates channel */
 			var createChannelResponse = await ConversationsClientMethods.CreateChannelAsync(slackClient, _userId);/**/
 
-			/* Gets conversation's history of messages and events * /
+			/* Gets conversation's history of messages and events */
 			var getConversationsHistoryResponse = await ConversationsClientMethods.GetConversationsHistoryAsync(slackClient, _channelName);/**/
 
-			/* Gets information about conversation * /
+			/* Gets information about conversation */
 			var getConversationInfoResponse = await ConversationsClientMethods.GetConversationInfoAsync(slackClient, _channelName);/**/
 
-			/* Creates channel and invites user * /
+			/* Creates channel and invites user */
 			var inviteToConversationResponse = await ConversationsClientMethods.InviteToConversationAsync(slackClient, _userId);/**/
 
-			/* Joins to conversation * /
+			/* Joins to conversation */
 			var joinToConversationResponse = await ConversationsClientMethods.JoinToConversationAsync(slackClient);/**/
 
-			/* Kicks from conversation * /
+			/* Kicks from conversation */
 			var kickFromConversationResponse = await ConversationsClientMethods.KickFromConversationAsync(slackClient, _userId);/**/
 
-			/* Leaves conversation * /
+			/* Leaves conversation */
 			var leaveConversationResponse = await ConversationsClientMethods.LeaveConversationAsync(slackClient, _channelName);/**/
 
-			/* Gets conversation list * /
+			/* Gets conversation list */
 			var getConversationListResponse = await ConversationsClientMethods.GetConversationListAsync(slackClient);/**/
 
-			/* Gets conversation's members * /
+			/* Gets conversation's members */
 			var getConversationMembersResponse = await ConversationsClientMethods.GetConversationMembersAsync(slackClient, _channelName);/**/
 
-			/* Opens conversation * /
+			/* Opens conversation */
 			var openConversationResponse = await ConversationsClientMethods.OpenConversationAsync(slackClient, _userId);/**/
 
-			/* Renames conversation * /
+			/* Renames conversation */
 			var renameConversationResponse = await ConversationsClientMethods.RenameConversationAsync(slackClient);/**/
 
-			/* Gets message replies from conversation * /
+			/* Gets message replies from conversation */
 			var getConversationRepliesResponse = await ConversationsClientMethods.GetConversationRepliesAsync(slackClient, _channelName);/**/
 
-			/* Sets conversation purpose * /
+			/* Sets conversation purpose */
 			var setConversationPurposeResponse = await ConversationsClientMethods.SetConversationPurposeAsync(slackClient, _channelName);/**/
 
-			/* Sets conversation purpose * /
+			/* Sets conversation purpose */
 			var setConversationTopicResponse = await ConversationsClientMethods.SetConversationTopicAsync(slackClient, _channelName);/**/
 
-			/* Unarchives conversation * /
+			/* Unarchives conversation */
 			var unarchiveConversationResponse = await ConversationsClientMethods.UnarchiveConversationAsync(slackClient, _channelName);/**/
 
 			#endregion
 
 			#region Pins
 
-			/* Pins message * /
+			/* Pins message */
 			var pinMessageResponse = await PinsClientMethods.PinMessageAsync(slackClient, _channelName); /**/
 
-			/* Get pinned items * /
+			/* Get pinned items */
 			var getPinListResponse = await PinsClientMethods.GetPinListAsync(slackClient, _channelName); /**/
 
-			/* Removes pinned item * /
+			/* Removes pinned item */
 			var removePinResponse = await PinsClientMethods.RemovePinAsync(slackClient, _channelName); /**/
 
 			#endregion
 
 			#region Reactions
 
-			/* Adds reaction * /
+			/* Adds reaction */
 			var addReactionResponse = await ReactionsClientMethods.AddReactionAsync(slackClient, _channelName); /**/
 
-			/* Gets reactions by item * /
+			/* Gets reactions by item */
 			var getReactionsByItemResponse = await ReactionsClientMethods.GetReactionsByItemAsync(slackClient, _channelName); /**/
 
-			/* Gets reactions by user * /
+			/* Gets reactions by user */
 			var getReactionsByUserResponse = await ReactionsClientMethods.GetReactionsByUserAsync(slackClient, _channelName); /**/
 
-			/* Removes reaction * /
+			/* Removes reaction */
 			var removeReactionResponse = await ReactionsClientMethods.RemoveReactionAsync(slackClient, _channelName);/**/
 
 			#endregion
 
 			#region TeamProfile
 
-			/* Gets team profile * /
+			/* Gets team profile */
 			var getTeamProfileResponse = await TeamProfileClientMethods.GetTeamProfileAsync(slackClient);/**/
 
 			#endregion
 
 			#region UserGroups
 
-			/* Creates user group * /
+			/* Creates user group */
 			var createUserGroupResponse = await UserGroupsClientMethods.CreateUserGroupAsync(slackClient, _channelName);/**/
 
-			/* Disables user group * /
+			/* Disables user group */
 			var disableUserGroupResponse = await UserGroupsClientMethods.DisableUserGroupAsync(slackClient, _channelName);/**/
 
-			/* Enables user group * /
+			/* Enables user group */
 			var enableUserGroupResponse = await UserGroupsClientMethods.EnableUserGroupAsync(slackClient, _channelName);/**/
 
-			/* Gets user group list * /
+			/* Gets user group list */
 			var getUserGroupListResponse = await UserGroupsClientMethods.GetUserGroupListAsync(slackClient, _channelName);/**/
 
-			/* Updates user group * /
+			/* Updates user group */
 			var updateUserGroupResponse = await UserGroupsClientMethods.UpdateUserGroupAsync(slackClient, _channelName);/**/
 
 			#endregion
 
 			#region UserGroupsUsers
 
-			/* Gets user group users * /
+			/* Gets user group users */
 			var getUserGroupUserListResponse = await UserGroupsUsersClientMethods.GetUserGroupUserListAsync(slackClient, _channelName, _userId);/**/
 
-			/* Updates users in user group * /
+			/* Updates users in user group */
 			var updateUsersInUserGroupResponse = await UserGroupsUsersClientMethods.UpdateUsersInUserGroupAsync(slackClient, _channelName, _userId);/**/
 
 			#endregion
 
 			#region Users
 
-			/* Gets list of user channels * /
+			/* Gets list of user channels */
 			var getUserConversationsResponse = await UsersClientMethods.GetUserConversationsAsync(slackClient);/**/
 
-			/* Gets user presence information * /
+			/* Gets user presence information */
 			var getUserPresenceResponse = await UsersClientMethods.GetUserPresenceAsync(slackClient, _userId);/**/
 
-			/* Gets information about user * /
+			/* Gets information about user */
 			var getUserInfoResponse = await UsersClientMethods.GetUserInfoAsync(slackClient, _userId);/**/
 
-			/* Gets list of all users * /
+			/* Gets list of all users */
 			var getUserListResponse = await UsersClientMethods.GetUserListAsync(slackClient);/**/
 
-			/* Gets user by email * /
+			/* Gets user by email */
 			var getUserByEmailResponse = await UsersClientMethods.GetUserByEmailAsync(slackClient, _userId);/**/
 
-			/* Sets user presence * /
+			/* Sets user presence */
 			var setUserPresenceResponse = await UsersClientMethods.SetUserPresenceAsync(slackClient);/**/
 
 			#endregion
 
 			#region UsersProfile
 
-			/* Gets user profile * /
+			/* Gets user profile */
 			var getUserProfileResponse = await UsersProfileClientMethods.GetUserProfileAsync(slackClient, _userId);/**/
 
 			#endregion

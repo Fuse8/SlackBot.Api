@@ -87,8 +87,8 @@ namespace SlackBot.Samples.ClientExtensions
 		public static async Task<OpenedConversationResponse> OpenConversationAsync(SlackClient slackClient, string userId)
         {
 			var openedConversationResponse = await slackClient.Conversations.OpenAsync(userId, true);
-			
-			await ChatClientMethods.SendSimpleMessageAsync(slackClient, nameof(OpenConversationAsync), openedConversationResponse.Channel.Id);
+
+			await ChatClientMethods.SendSimpleMessageAsync(slackClient, openedConversationResponse.Channel.Id, nameof(OpenConversationAsync));
 
 			return openedConversationResponse;
 		}
@@ -108,11 +108,11 @@ namespace SlackBot.Samples.ClientExtensions
 		{
 			var channelId = await GetChannelIdAsync(slackClient, channelName);
 
-			var parentMessage = await ChatClientMethods.SendSimpleMessageAsync(slackClient, nameof(GetConversationRepliesAsync), channelId);
+			var parentMessage = await ChatClientMethods.SendSimpleMessageAsync(slackClient, channelId, nameof(GetConversationRepliesAsync));
 
 			var parentMessageTimestamp = parentMessage.Timestamp;
-			await ChatClientMethods.SendSimpleMessageAsync(slackClient, nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
-			await ChatClientMethods.SendSimpleMessageAsync(slackClient, nameof(GetConversationRepliesAsync), channelId, parentMessageTimestamp);
+			await ChatClientMethods.SendSimpleMessageAsync(slackClient, channelId, nameof(GetConversationRepliesAsync), parentMessageTimestamp);
+			await ChatClientMethods.SendSimpleMessageAsync(slackClient, channelId, nameof(GetConversationRepliesAsync), parentMessageTimestamp);
 
 			return await slackClient.Conversations.RepliesAsync(channelId, parentMessageTimestamp);
 		}

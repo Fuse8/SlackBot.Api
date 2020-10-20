@@ -215,14 +215,13 @@ namespace SlackBot.Samples.ClientExtensions
 
 		public static Task<SendMessageResponse> SendSimpleMessageAsync(
 			SlackClient slackClient,
-			string channelName,
+			string channelIdOrName,
 			string nameOfMethod,
-			string channelId = null,
 			string threadTimestamp = null)
 		{
 			var message = new SlackMessage
 			{
-				ChannelIdOrName = channelId ?? channelName,
+				ChannelIdOrName = channelIdOrName,
 				Text = $"{nameOfMethod} method",
 				ThreadTimestamp = threadTimestamp
 			};
