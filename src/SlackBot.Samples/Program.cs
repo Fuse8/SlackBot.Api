@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿// ReSharper disable RedundantUsingDirective
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using SlackBot.Api;
 using SlackBot.Samples.ClientExtensions;
@@ -35,7 +36,9 @@ namespace SlackBot.Samples
 		// ReSharper disable once InconsistentNaming
 		public static async Task Main()
 		{
-			//TODO add comment about uncomment code
+			// To run samples:
+			// 1) Fill in "appsettings.json" config
+			// 2) Remove space in "* /" at the end of description line to run concrete sample
 			
 			#region Emoji
 
@@ -120,7 +123,7 @@ namespace SlackBot.Samples
 			/* Uploads some files and sends message with them * /
 			var sendMessageWithMultipleFilesResponse = await ChatClientMethods.SendMessageWithMultipleFilesAsync(slackClient, _channelName); /**/
 
-			/* Sends message with blocks and attachments using Builder */
+			/* Sends message with blocks and attachments using Builder * /
 			var (messageWithTextHelperResponse, messageWithTextBuilderResponse, messageWithBlocksResponse) = await ChatClientMethods.SendMessagesWithBuilderAsync(slackClient, _channelName, _userId); /**/
 
 			/* Sends ephemeral message * /
