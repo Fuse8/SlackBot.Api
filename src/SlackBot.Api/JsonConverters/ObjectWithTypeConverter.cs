@@ -4,7 +4,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SlackBot.Api.Helpers;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts;
 
 namespace SlackBot.Api.JsonConverters
 {

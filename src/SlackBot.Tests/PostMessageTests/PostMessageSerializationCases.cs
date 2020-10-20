@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SlackBot.Api.Models.Chat.PostMessage;
-using SlackBot.Api.Models.Chat.PostMessage.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.Blocks;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts;
-using SlackBot.Api.Models.Chat.PostMessage.Contracts.BlockElements;
-using SlackBot.Api.Models.Chat.PostMessage.Enums;
-using SlackBot.Api.Models.Chat.PostMessage.MessageAttachment;
-using SlackBot.Api.Models.Chat.PostMessage.MessageObjects;
-using SlackBot.Api.Models.Chat.PostMessage.MessageObjects.TextObjects;
+using SlackBot.Api;
 
 namespace SlackBot.Tests.PostMessageTests
 {
@@ -16,9 +8,9 @@ namespace SlackBot.Tests.PostMessageTests
 	{
 		public static object[] MessageCases =
 		{
-			new List<object>
+			new object[]
 			{
-				new Message
+				new SlackMessage
 				{
 					ChannelIdOrName = "channel",
 					Attachments = new List<Attachment>(),

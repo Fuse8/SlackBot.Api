@@ -1,7 +1,6 @@
 ﻿using System;
 using SlackBot.Api.Enums;
 using SlackBot.Api.Extensions;
-using SlackBot.Api.Models.GeneralObjects;
 
 namespace SlackBot.Api.Exceptions
 {

@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using SlackBot.Api.Enums;
 using SlackBot.Api.JsonConverters;
 
+[assembly: InternalsVisibleTo("SlackBot.Tests")]
 namespace SlackBot.Api.Extensions
 {
-	public static class JsonExtensions
+	internal static class JsonExtensions
 	{
 		public static T FromJson<T>(
 			this string obj,
