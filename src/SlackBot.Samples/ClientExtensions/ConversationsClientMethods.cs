@@ -10,11 +10,15 @@ namespace SlackBot.Samples.ClientExtensions
 		private const string NewChannelName = "some-new-channel";
 		
 		public static async Task<SlackBaseResponse> ArchiveConversationAsync(SlackClient slackClient, string channelName, string conversationId = null)
-        {
-	        var channelId = conversationId ?? await GetChannelIdAsync(slackClient, channelName);
+		{
+			var channelId = conversationId ?? await GetChannelIdAsync(slackClient, channelName);
 
-	        return await slackClient.Conversations.ArchiveAsync(channelId);
-        }
+			var archiveConversationResponse = await ArchiveConversationInternalAsync(slackClient, channelId);
+
+			await UnarchiveConversationInternalAsync(slackClient, channelId);
+
+			return archiveConversationResponse;
+		}
 
 		public static async Task<ClosedConversationResponse> CloseConversationAsync(SlackClient slackClient, string userId)
 		{
@@ -23,16 +27,14 @@ namespace SlackBot.Samples.ClientExtensions
 			return await slackClient.Conversations.CloseAsync(openConversationResponse.Channel.Id);
 		}
 
-		public static async Task<ConversationResponse> CreateChannelAsync(SlackClient slackClient, string userId)
-		{
-			var (createChannelResponse, _) = await CreateChannelAndInviteAsync(slackClient, userId);
-
-			return createChannelResponse;
-		}
+		public static Task<ConversationResponse> CreateChannelAsync(SlackClient slackClient, string userId)
+			=> CreateChannelInternalAsync(slackClient);
 
 		public static async Task<ConversationsHistoryResponse> GetConversationsHistoryAsync(SlackClient slackClient, string channelName)
         {
 	        var channelId = await GetChannelIdAsync(slackClient, channelName);
+
+			await ChatClientMethods.SendSimpleMessageAsync(slackClient, channelId, nameof(GetConversationsHistoryAsync));
 
 	        return await slackClient.Conversations.HistoryAsync(channelId, 1000);
         }
@@ -46,9 +48,9 @@ namespace SlackBot.Samples.ClientExtensions
 
 		public static async Task<ConversationResponse> InviteToConversationAsync(SlackClient slackClient, string userId)
         {
-			var (_, inviteToConversationResponse) = await CreateChannelAndInviteAsync(slackClient, userId);
+			var (channelId, _) = await TryCreateChannelAsync(slackClient);
 
-			return inviteToConversationResponse;
+			return await InviteToConversationInternalAsync(slackClient, channelId, userId);
         }
 
 		public static async Task<ConversationResponse> JoinToConversationAsync(SlackClient slackClient)
@@ -135,9 +137,9 @@ namespace SlackBot.Samples.ClientExtensions
         {
 	        var channelId = await GetChannelIdAsync(slackClient, channelName);
 
-			await ArchiveConversationAsync(slackClient, channelId);
+			await ArchiveConversationInternalAsync(slackClient, channelId);
 
-			return await slackClient.Conversations.UnarchiveAsync(channelId);
+			return await UnarchiveConversationInternalAsync(slackClient, channelId);
         }
 
 		public static async Task<string> GetChannelIdAsync(SlackClient slackClient, string channelName)
@@ -167,17 +169,6 @@ namespace SlackBot.Samples.ClientExtensions
 			return (channelId, channelName);
 		}
 
-		private static async Task<(ConversationResponse CreateChannelResponse, ConversationResponse InviteToConversationResponse)> CreateChannelAndInviteAsync(
-			SlackClient slackClient,
-			string userId)
-		{
-			var createChannelResponse = await CreateChannelInternalAsync(slackClient);
-
-			var inviteToConversationResponse = await InviteToConversationInternalAsync(slackClient, createChannelResponse.Channel.Id, userId);
-
-			return (createChannelResponse, inviteToConversationResponse);
-		}
-
 		private static Task<ConversationResponse> CreateChannelInternalAsync(SlackClient slackClient, string channelName = NewChannelName)
 			=> slackClient.Conversations.CreateAsync(channelName);
 
@@ -194,5 +185,11 @@ namespace SlackBot.Samples.ClientExtensions
 
 		private static Task<ConversationResponse> InviteToConversationInternalAsync(SlackClient slackClient, string channelId, string userIds)
 			=> slackClient.Conversations.InviteAsync(channelId, userIds);
+
+		private static Task<SlackBaseResponse> ArchiveConversationInternalAsync(SlackClient slackClient, string channelId)
+			=> slackClient.Conversations.ArchiveAsync(channelId);
+
+		private static Task<SlackBaseResponse> UnarchiveConversationInternalAsync(SlackClient slackClient, string channelId)
+			=> slackClient.Conversations.UnarchiveAsync(channelId);
 	}
 }
