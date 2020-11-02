@@ -67,58 +67,58 @@ namespace SlackBot.Samples.ClientExtensions
 			var nowTimestamp = UnixTimeHelper.ToUnixTime(now);
 			var channelId = await ConversationsClientMethods.GetChannelIdAsync(slackClient, channelName);
 
-			var messageWithTextHelper = new MessageBuilder(channelName)
-				.Text($"Channel mention by {nameof(TextHelper)}: {TextHelper.ChannelMention(SlackMention.Channel)}")
+			var messageWithTextHelper = new SlackMessageBuilder(channelName)
+				.Text($"Channel mention by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.ChannelMention(SlackMention.Channel)}")
 				.LineBreak()
-				.Text($"Users mention by {nameof(TextHelper)}: {TextHelper.UserMentions(new[] { userId, userId })}")
+				.Text($"Users mention by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.UserMentions(new[] { userId, userId })}")
 				.LineBreak()
-				.Text($"Public channel mention by {nameof(TextHelper)}: {TextHelper.PublicChannelMention(channelId)}")
+				.Text($"Public channel mention by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.PublicChannelMention(channelId)}")
 				.LineBreak()
-				.Text($"{TextHelper.Bold("bold text")} by {nameof(TextHelper)}")
+				.Text($"{SlackMessageTextHelper.Bold("bold text")} by {nameof(SlackMessageTextHelper)}")
 				.LineBreak()
-				.Text($"{TextHelper.InlineCode("inline code")} by {nameof(TextHelper)}")
+				.Text($"{SlackMessageTextHelper.InlineCode("inline code")} by {nameof(SlackMessageTextHelper)}")
 				.LineBreak()
-				.Text($"{TextHelper.Strike("strike text")} by {nameof(TextHelper)}")
+				.Text($"{SlackMessageTextHelper.Strike("strike text")} by {nameof(SlackMessageTextHelper)}")
 				.LineBreak()
-				.Text($"{TextHelper.Italic("italic text")} by {nameof(TextHelper)}")
+				.Text($"{SlackMessageTextHelper.Italic("italic text")} by {nameof(SlackMessageTextHelper)}")
 				.LineBreak()
-				.Text($"Link by {nameof(TextHelper)}: {TextHelper.Link(SampleUrl)}")
+				.Text($"Link by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.Link(SampleUrl)}")
 				.LineBreak()
-				.Text($"Link by {nameof(TextHelper)}: {TextHelper.Link(new Uri(SampleUrl))}")
+				.Text($"Link by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.Link(new Uri(SampleUrl))}")
 				.LineBreak()
-				.Text($"Link by {nameof(TextHelper)}: {TextHelper.EmailLink("test@test.com")}")
-				.LineBreak()
-				.LineBreak()
-				.Text($"Code block by {nameof(TextHelper)}:{TextHelper.CodeBlock("code line #1\ncode line #2")}")
+				.Text($"Link by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.EmailLink("test@test.com")}")
 				.LineBreak()
 				.LineBreak()
-				.Text($"Unquoted text by {nameof(TextHelper)}:{TextHelper.Quoted("quoted text #1\nquoted text #2")}Unquoted text again")
+				.Text($"Code block by {nameof(SlackMessageTextHelper)}:{SlackMessageTextHelper.CodeBlock("code line #1\ncode line #2")}")
 				.LineBreak()
 				.LineBreak()
-				.Text($"List by {nameof(TextHelper)}:{TextHelper.List("list item #1", "list item #2")}")
+				.Text($"Unquoted text by {nameof(SlackMessageTextHelper)}:{SlackMessageTextHelper.Quoted("quoted text #1\nquoted text #2")}Unquoted text again")
 				.LineBreak()
 				.LineBreak()
-				.Text($"User mention by {nameof(TextHelper)}: {TextHelper.UserMention(userId)}")
+				.Text($"List by {nameof(SlackMessageTextHelper)}:{SlackMessageTextHelper.List("list item #1", "list item #2")}")
 				.LineBreak()
-				.Text(TextHelper.Date(nowTimestamp, $"Date by {nameof(TextHelper)}: {{date_num}} {{time}}", now.ToString("yyyy-MM-dd hh:mm")));
+				.LineBreak()
+				.Text($"User mention by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.UserMention(userId)}")
+				.LineBreak()
+				.Text(SlackMessageTextHelper.Date(nowTimestamp, $"Date by {nameof(SlackMessageTextHelper)}: {{date_num}} {{time}}", now.ToString("yyyy-MM-dd hh:mm")));
 
-			var messageWithTextBuilder = new MessageBuilder(channelId)
+			var messageWithTextBuilder = new SlackMessageBuilder(channelId)
 				.ChannelMention(SlackMention.Here)
 				.UserMentions(new[] { userId, userId }, "\n")
 				.PublicChannelMention(channelId, "\n")
 				.BoldText("bold text", "\n")
 				.InlineCodeText("inline code", "\n")
-				.StrikeText("strike text", TextHelper.LineBreak)
-				.ItalicText("italic text", TextHelper.LineBreak)
-				.CodeBlock("code block", TextHelper.LineBreak)
-				.LinkText(SampleUrl, "Slack api url", TextHelper.LineBreak)
-				.LinkText(new Uri(SampleUrl), "Slack api url", TextHelper.LineBreak)
-				.EmailLinkText("test@test.com", "Test email", TextHelper.LineBreak)
+				.StrikeText("strike text", SlackMessageTextHelper.LineBreak)
+				.ItalicText("italic text", SlackMessageTextHelper.LineBreak)
+				.CodeBlock("code block", SlackMessageTextHelper.LineBreak)
+				.LinkText(SampleUrl, "Slack api url", SlackMessageTextHelper.LineBreak)
+				.LinkText(new Uri(SampleUrl), "Slack api url", SlackMessageTextHelper.LineBreak)
+				.EmailLinkText("test@test.com", "Test email", SlackMessageTextHelper.LineBreak)
 				.QuotedText("quoted text #1")
 				.QuotedText("quoted text #2")
 				.ListText(new[] { "list item #1", "list item #2" })
 				.UserMention(userId)
-				.Date(nowTimestamp, "{date_num} {time}", now.ToString("yyyy-MM-dd hh:mm"), new Uri(SampleUrl), TextHelper.LineBreak);
+				.Date(nowTimestamp, "{date_num} {time}", now.ToString("yyyy-MM-dd hh:mm"), new Uri(SampleUrl), SlackMessageTextHelper.LineBreak);
 
 			var userGroupListResponse = await slackClient.UserGroups.ListAsync();
 			var userGroup = userGroupListResponse.UserGroups.FirstOrDefault();
@@ -127,15 +127,15 @@ namespace SlackBot.Samples.ClientExtensions
 				var userGroupId = userGroup.Id;
 				messageWithTextHelper = messageWithTextHelper
 					.LineBreak()
-					.Text($"User group mention by {nameof(TextHelper)}: {TextHelper.UserGroupMention(userGroupId)}");
+					.Text($"User group mention by {nameof(SlackMessageTextHelper)}: {SlackMessageTextHelper.UserGroupMention(userGroupId)}");
 
-				messageWithTextBuilder = messageWithTextBuilder.UserGroupMention(userGroupId, TextHelper.LineBreak);
+				messageWithTextBuilder = messageWithTextBuilder.UserGroupMention(userGroupId, SlackMessageTextHelper.LineBreak);
 			}
 
 			var messageWithTextHelperResponse = await slackClient.Chat.PostMessageAsync(messageWithTextHelper);
 			var messageWithTextBuilderResponse = await slackClient.Chat.PostMessageAsync(messageWithTextBuilder);
 
-			 var messageWithBlocks = MessageBuilder.CreateBuilder(channelName)
+			 var messageWithBlocks = SlackMessageBuilder.CreateBuilder(channelName)
 				.Reply(messageWithTextBuilderResponse.Timestamp, true)
 			 	.Blocks(CreateHeaderBlock())
 			 	.Blocks(CreateActionBlock(), CreateContextBlock())

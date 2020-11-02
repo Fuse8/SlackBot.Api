@@ -84,7 +84,7 @@ namespace SlackBot.Api
 			string fileType = null,
 			Stream indexableContentStream = null,
 			string externalId = null)
-			=> UpdateAsync(new RemoteFileToUpdate(fileId, externalUrl,title, previewImageStream, fileType, indexableContentStream, externalId));
+			=> UpdateAsync(new RemoteFileToUpdate(fileId, externalUrl, title, previewImageStream, fileType, indexableContentStream, externalId));
 
 		/// <summary>
 		/// Updates an existing remote file.
