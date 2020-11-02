@@ -1,6 +1,6 @@
 ﻿namespace SlackBot.Api.Enums
 {
-	public enum ExceptionHandlingMode
+	internal enum ExceptionHandlingMode
 	{
 		DoNotProcess,
 
